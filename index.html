@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethic Progress Bar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   BASE
+═══════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:     #07090e;
+  --s1:     #0d1219;
+  --s2:     #111827;
+  --s3:     #161f2e;
+  --gold:   #c8962a;
+  --goldl:  #e4b048;
+  --cream:  #ede6d8;
+  --text:   #bab5ab;
+  --muted:  #525c6e;
+  --b1:     rgba(200,150,42,0.13);
+  --b2:     rgba(200,150,42,0.06);
+  --nav-h:  46px;
+}
+
+html, body {
+  width:100%; height:100%;
+  overflow:hidden;
+  background:var(--bg); color:var(--text);
+  font-family:'DM Sans',sans-serif; font-size:13px;
+  display:flex; flex-direction:column;
+}
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+.nav {
+  height:var(--nav-h); flex-shrink:0;
+  background:rgba(7,9,14,0.96); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--b1);
+  display:flex; align-items:center; gap:0.9rem;
+  padding:0 1.4rem; z-index:300;
+}
+.nav-logo { font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:700; color:var(--gold); text-decoration:none; }
+.nav-div  { width:1px; height:14px; background:var(--b1); }
+.nav-hint { font-size:0.7rem; color:var(--muted); }
+.nav-back {
+  margin-left:auto; font-size:0.7rem; color:var(--muted);
+  text-decoration:none; padding:0.25rem 0.65rem;
+  border:1px solid var(--b1); transition:all .18s;
+}
+.nav-back:hover { color:var(--gold); border-color:var(--gold); }
+
+/* ═══════════════════════════════════════
+   APP SHELL
+═══════════════════════════════════════ */
+.app {
+  flex:1; min-height:0;
+  display:flex;
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════ */
+.sb {
+  width:256px; flex-shrink:0;
+  background:var(--s1);
+  border-right:1px solid var(--b1);
+  display:flex; flex-direction:column;
+  overflow-y:auto; overflow-x:hidden;
+}
+.sb::-webkit-scrollbar { width:3px; }
+.sb::-webkit-scrollbar-thumb { background:rgba(200,150,42,0.18); border-radius:2px; }
+
+/* ── Brand ── */
+.sb-brand {
+  padding:1rem 1rem 0.85rem;
+  border-bottom:1px solid var(--b2);
+  background:linear-gradient(180deg, var(--s2) 0%, var(--s1) 100%);
+}
+.sb-brand-title { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:900; color:var(--cream); line-height:1; }
+.sb-brand-title em { color:var(--gold); font-style:normal; }
+.sb-brand-sub { font-size:0.66rem; color:var(--muted); margin-top:0.3rem; line-height:1.5; }
+
+/* ── Generic section ── */
+.sb-sec { border-bottom:1px solid var(--b2); padding:0.7rem 0.9rem; }
+.sb-sec:last-child { border-bottom:none; }
+.sb-lbl { font-size:0.55rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--gold); margin-bottom:0.55rem; }
+
+/* ── View tabs ── */
+.vtabs { display:flex; flex-direction:column; gap:0.2rem; }
+.vt {
+  display:flex; align-items:center; gap:0.4rem;
+  padding:0.38rem 0.6rem;
+  border:1px solid var(--b2); background:transparent;
+  color:var(--muted); font-family:'DM Sans',sans-serif; font-size:0.72rem;
+  cursor:pointer; transition:all .15s; text-align:left; width:100%;
+}
+.vt-icon { font-size:0.8rem; flex-shrink:0; }
+.vt.on { background:var(--s3); border-color:var(--gold); color:var(--cream); }
+.vt:hover:not(.on) { border-color:rgba(200,150,42,0.35); color:var(--text); }
+
+.vt-desc {
+  margin-top:0.5rem; padding:0.45rem 0.65rem;
+  background:var(--s2); border-left:2px solid var(--gold);
+  font-size:0.65rem; color:var(--muted); line-height:1.6;
+}
+
+/* ── Filter chips ── */
+.chips { display:flex; flex-direction:column; gap:0.18rem; }
+.ch {
+  padding:0.26rem 0.5rem; font-size:0.7rem;
+  border:1px solid var(--b2); background:transparent;
+  color:var(--muted); cursor:pointer; transition:all .15s;
+  font-family:'DM Sans',sans-serif; text-align:left; width:100%;
+}
+.ch.on { background:rgba(200,150,42,0.1); border-color:var(--gold); color:var(--goldl); font-weight:500; }
+.ch:hover:not(.on) { border-color:rgba(200,150,42,0.3); color:var(--text); }
+
+/* ── Select dropdowns ── */
+.sb-ctls { display:flex; flex-direction:column; gap:0.4rem; }
+.sb-ctl  { display:flex; flex-direction:column; gap:0.18rem; }
+.sb-ctl-lbl { font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+.sw { position:relative; }
+.sw select {
+  appearance:none; width:100%;
+  background:var(--bg); border:1px solid var(--b2);
+  color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.7rem;
+  padding:0.28rem 1.4rem 0.28rem 0.5rem; cursor:pointer; outline:none;
+}
+.sw select:hover { border-color:rgba(200,150,42,0.35); }
+.sw::after { content:'▾'; position:absolute; right:0.4rem; top:50%; transform:translateY(-50%); color:var(--gold); font-size:0.6rem; pointer-events:none; }
+
+/* ── Legend ── */
+.leg-grid { display:flex; flex-direction:column; gap:0.28rem; }
+.leg-row  { display:flex; align-items:center; gap:0.45rem; font-size:0.7rem; }
+.leg-dot  { width:8px; height:8px; border-radius:1px; flex-shrink:0; }
+.leg-name { flex:1; color:var(--text); }
+.leg-bar  { width:40px; height:2px; background:var(--b2); border-radius:1px; overflow:hidden; flex-shrink:0; }
+.leg-bar-f{ height:100%; border-radius:1px; }
+.leg-pts  { font-size:0.59rem; color:var(--gold); min-width:34px; text-align:right; opacity:0.8; }
+
+/* ── Methodology accordion ── */
+.meth-hdr {
+  width:100%; display:flex; align-items:center; justify-content:space-between;
+  background:none; border:none; padding:0;
+  font-family:'DM Sans',sans-serif; font-size:0.7rem; color:var(--muted);
+  cursor:pointer; transition:color .15s;
+}
+.meth-hdr:hover { color:var(--gold); }
+.meth-arr { font-size:0.58rem; transition:transform .22s; display:inline-block; }
+.meth-hdr.on .meth-arr { transform:rotate(90deg); }
+.meth-body { overflow:hidden; max-height:0; transition:max-height .35s ease; }
+.meth-body.on { max-height:1200px; }
+.meth-inner { margin-top:0.6rem; display:flex; flex-direction:column; gap:0.35rem; }
+.meth-group-title {
+  font-size:0.57rem; letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--gold); padding-top:0.45rem; margin-top:0.1rem;
+  border-top:1px solid var(--b2);
+}
+.meth-group-title:first-child { border-top:none; padding-top:0; margin-top:0; }
+.meth-dim {
+  background:var(--bg); border:1px solid var(--b2); padding:0.38rem 0.5rem;
+}
+.meth-dim-t { font-size:0.6rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold); margin-bottom:0.12rem; }
+.meth-dim p { font-size:0.65rem; color:var(--muted); line-height:1.5; }
+.meth-eq {
+  padding:0.4rem 0.55rem; background:var(--bg); border-left:2px solid var(--gold);
+  font-size:0.65rem; color:var(--text); line-height:1.6; margin-top:0.2rem;
+}
+.meth-eq strong { color:var(--gold); }
+.meth-note { font-size:0.62rem; color:var(--muted); font-style:italic; line-height:1.5; margin-top:0.2rem; }
+
+/* ═══════════════════════════════════════
+   MAIN + CHART
+═══════════════════════════════════════ */
+.main {
+  flex:1; min-width:0; min-height:0;
+  display:flex; flex-direction:column;
+  padding:0.9rem 1.1rem;
+  gap:0; overflow:hidden;
+}
+
+.chart-shell {
+  flex:1; min-height:0;
+  background:var(--s1); border:1px solid var(--b1);
+  display:flex; flex-direction:column;
+  position:relative; overflow:hidden;
+}
+
+/* Rotated Y label */
+.y-vert {
+  position:absolute; left:0.35rem; top:50%;
+  writing-mode:vertical-lr; transform:rotate(180deg) translateY(50%);
+  font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--muted); white-space:nowrap; pointer-events:none; z-index:2;
+}
+
+/* inner flex: y-axis col + plot area */
+.c-layout {
+  display:flex;
+  padding:0.85rem 0.9rem 0 2.5rem;
+  min-height:0; flex-shrink:0;
+}
+.y-col { width:40px; flex-shrink:0; position:relative; }
+.plot  { flex:1; position:relative; min-width:0; overflow:hidden; }
+
+/* Y ticks */
+.ytick { position:absolute; right:0; display:flex; align-items:center; gap:3px; transform:translateY(50%); }
+.ytick-lbl { font-size:0.57rem; color:var(--muted); white-space:nowrap; }
+.ytick-mk  { width:4px; height:1px; background:rgba(200,150,42,0.3); }
+
+/* Grid */
+.hgl  { position:absolute; left:0; right:0; height:1px; background:var(--b2); pointer-events:none; }
+.base { position:absolute; left:0; right:0; bottom:0; height:2px; background:rgba(200,150,42,0.35); z-index:3; }
+
+/* ── grouped bars ── */
+.bars { position:absolute; inset:0; display:flex; align-items:flex-end; gap:5px; padding:0 2px; }
+.bgrp { flex:1; min-width:0; height:100%; display:flex; align-items:flex-end; }
+.bstk { width:100%; display:flex; flex-direction:column-reverse; overflow:hidden; }
+.bseg {
+  width:100%; flex-shrink:0; cursor:pointer;
+  transition:filter .13s; border-top:1px solid rgba(0,0,0,0.14);
+}
+.bseg:hover { filter:brightness(1.35); position:relative; z-index:8; }
+.bseg:last-child { border-top-left-radius:2px; border-top-right-radius:2px; }
+
+/* ── timeline bars ── */
+.tl-canvas { position:absolute; inset:0; overflow:hidden; }
+.tl-bar {
+  position:absolute; bottom:0; z-index:2; cursor:pointer;
+  border-top-left-radius:2px; border-top-right-radius:2px;
+  transition:filter .13s;
+}
+.tl-bar:hover { filter:brightness(1.35); z-index:10; }
+.tl-era   { position:absolute; bottom:0; top:0; width:1px; background:rgba(200,150,42,0.1); pointer-events:none; }
+.tl-era-l { position:absolute; font-size:0.54rem; color:rgba(82,92,110,0.5); transform:translateX(-50%); white-space:nowrap; pointer-events:none; }
+
+/* ── x/labels strip ── */
+.x-strip {
+  flex-shrink:0;
+  border-top:1px solid rgba(200,150,42,0.2);
+  background:var(--s1);
+}
+/* grouped labels */
+.glabels {
+  display:flex; gap:5px;
+  padding:0.38rem 0.9rem 0.55rem calc(2.5rem + 40px + 2px);
+}
+.glbl { flex:1; min-width:0; text-align:center; }
+.glbl-n { font-size:0.63rem; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.glbl-m { font-size:0.55rem; color:var(--muted); margin-top:0.12rem; }
+/* timeline info */
+.tlinfo {
+  padding:0.38rem 0.9rem 0.55rem calc(2.5rem + 40px + 6px);
+  font-size:0.6rem; color:var(--muted);
+}
+
+/* ═══════════════════════════════════════
+   TOOLTIP
+═══════════════════════════════════════ */
+.tt {
+  position:fixed; z-index:9000;
+  background:var(--s2); border:1px solid rgba(200,150,42,0.4);
+  padding:0.75rem 0.9rem; max-width:270px; min-width:190px;
+  pointer-events:none; opacity:0; transform:translateY(4px);
+  transition:opacity .1s, transform .1s;
+  box-shadow:0 10px 35px rgba(0,0,0,0.65);
+}
+.tt.on { opacity:1; transform:translateY(0); }
+.tt-yr  { font-size:0.6rem; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; margin-bottom:0.18rem; }
+.tt-nm  { font-family:'Playfair Display',serif; font-size:0.9rem; color:var(--cream); margin-bottom:0.22rem; line-height:1.2; }
+.tt-grp { font-size:0.64rem; margin-bottom:0.2rem; }
+.tt-cat { font-size:0.64rem; color:var(--muted); margin-bottom:0.38rem; }
+.tt-dsc { font-size:0.7rem; color:var(--muted); line-height:1.55; }
+.tt-row { display:flex; align-items:center; gap:0.38rem; margin-top:0.55rem; }
+.tt-rl  { font-size:0.6rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.07em; }
+.tt-rb  { flex:1; height:2.5px; background:rgba(200,150,42,0.1); border-radius:2px; overflow:hidden; }
+.tt-rf  { height:100%; border-radius:2px; }
+.tt-rn  { font-size:0.7rem; color:var(--gold); font-weight:500; min-width:22px; text-align:right; }
+.tt-hint{ margin-top:0.38rem; font-size:0.6rem; color:rgba(82,92,110,0.5); font-style:italic; }
+
+/* ═══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+.modal-bg {
+  position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:600;
+  display:flex; align-items:center; justify-content:center;
+  padding:1.5rem; opacity:0; pointer-events:none;
+  transition:opacity .22s; backdrop-filter:blur(5px);
+}
+.modal-bg.on { opacity:1; pointer-events:all; }
+.modal {
+  background:var(--s1); border:1px solid rgba(200,150,42,0.28);
+  max-width:540px; width:100%; max-height:88vh; overflow-y:auto;
+  padding:1.75rem; position:relative;
+  transform:scale(0.96) translateY(12px); transition:transform .22s;
+}
+.modal-bg.on .modal { transform:scale(1) translateY(0); }
+.modal-x { position:absolute; top:0.75rem; right:0.75rem; background:none; border:none; color:var(--muted); font-size:0.95rem; cursor:pointer; padding:0.2rem 0.45rem; }
+.modal-x:hover { color:var(--cream); }
+.m-cat  { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.3rem; }
+.m-h    { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--cream); margin-bottom:0.4rem; }
+.m-meta { font-size:0.75rem; color:var(--muted); margin-bottom:1.1rem; display:flex; gap:0.9rem; flex-wrap:wrap; }
+.m-imp  { background:var(--bg); padding:0.8rem 0.9rem; margin-bottom:1rem; border-left:3px solid var(--gold); }
+.m-imp-t{ font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:0.3rem; }
+.m-imp p{ font-size:0.79rem; color:var(--text); line-height:1.7; }
+.m-body { font-size:0.79rem; color:var(--muted); line-height:1.75; }
+.m-sc   { margin-top:1.1rem; padding-top:1.1rem; border-top:1px solid var(--b1); }
+.m-sc-t { font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:0.65rem; }
+.m-row  { display:flex; align-items:center; gap:0.65rem; margin-bottom:0.38rem; }
+.m-rl   { font-size:0.7rem; color:var(--muted); width:150px; flex-shrink:0; }
+.m-rb   { flex:1; height:4px; background:rgba(200,150,42,0.09); border-radius:2px; overflow:hidden; }
+.m-rf   { height:100%; border-radius:2px; }
+.m-rn   { font-size:0.7rem; color:var(--text); min-width:30px; text-align:right; }
+.m-tot  { display:flex; justify-content:space-between; margin-top:0.65rem; padding-top:0.65rem; border-top:1px solid var(--b2); }
+.m-tot-l{ font-size:0.76rem; color:var(--cream); }
+.m-tot-n{ font-size:0.86rem; color:var(--gold); font-weight:600; }
+
+::-webkit-scrollbar { width:3px; height:3px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:rgba(200,150,42,0.2); border-radius:2px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">EPB</a>
+  <div class="nav-div"></div>
+  <span class="nav-hint">Ethic Progress Bar · Visualisierung</span>
+  <a class="nav-back" href="index.html">← Zurück</a>
+</nav>
+
+<!-- APP SHELL -->
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sb">
+
+    <div class="sb-brand">
+      <div class="sb-brand-title">Ethic <em>Progress Bar</em></div>
+      <div class="sb-brand-sub">Bedeutende Erfindungen der Menschheit – nach Einfluss &amp; Ursprung visualisiert.</div>
+    </div>
+
+    <!-- Ansicht -->
+    <div class="sb-sec">
+      <div class="sb-lbl">Ansicht</div>
+      <div class="vtabs" id="vtabs">
+        <button class="vt on" data-v="grouped"><span class="vt-icon">📊</span> Nach Kulturkreis</button>
+        <button class="vt"    data-v="timeline"><span class="vt-icon">📅</span> Zeitstrahl</button>
+        <button class="vt"    data-v="revolution"><span class="vt-icon">⚡</span> Revolutionär für ihre Zeit</button>
+      </div>
+      <div class="vt-desc" id="vtDesc"></div>
+    </div>
+
+    <!-- Kategorie -->
+    <div class="sb-sec">
+      <div class="sb-lbl">Kategorie</div>
+      <div class="chips" id="chips">
+        <button class="ch on" data-c="all">Alle</button>
+        <button class="ch" data-c="Medizin">🏥 Medizin</button>
+        <button class="ch" data-c="Physik & Technik">⚙️ Physik &amp; Technik</button>
+        <button class="ch" data-c="Mathematik">🔢 Mathematik</button>
+        <button class="ch" data-c="Kommunikation">📡 Kommunikation</button>
+        <button class="ch" data-c="Wirtschaft">💰 Wirtschaft</button>
+        <button class="ch" data-c="Infrastruktur">🏗️ Infrastruktur</button>
+      </div>
+    </div>
+
+    <!-- Sortierung (hidden in timeline) -->
+    <div class="sb-sec" id="sortSec">
+      <div class="sb-lbl">Optionen</div>
+      <div class="sb-ctls">
+        <div class="sb-ctl"><span class="sb-ctl-lbl">Sortierung</span>
+          <div class="sw"><select id="sortSel">
+            <option value="score">Nach Gesamteinfluss</option>
+            <option value="count">Nach Anzahl Erfindungen</option>
+            <option value="alpha">Alphabetisch</option>
+            <option value="oldest">Nach ältester Erfindung</option>
+          </select></div>
+        </div>
+        <div class="sb-ctl"><span class="sb-ctl-lbl">Mindest-Score</span>
+          <div class="sw"><select id="minSel">
+            <option value="0">Alle zeigen</option>
+            <option value="40">≥ 40 Punkte</option>
+            <option value="60">≥ 60 Punkte</option>
+            <option value="75">≥ 75 Punkte</option>
+          </select></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legende -->
+    <div class="sb-sec">
+      <div class="sb-lbl">Kulturkreise</div>
+      <div class="leg-grid" id="legGrid"></div>
+    </div>
+
+    <!-- Methodik -->
+    <div class="sb-sec">
+      <button class="meth-hdr" id="methHdr">
+        <span>ℹ️ Score-Methodik</span>
+        <span class="meth-arr">▶</span>
+      </button>
+      <div class="meth-body" id="methBody">
+        <div class="meth-inner">
+
+          <div class="meth-group-title">Score A – Gesellschaftlicher Nutzen heute (max. 100)</div>
+          <div class="meth-dim"><div class="meth-dim-t">🌍 Reichweite (0–25)</div><p>Lokal (≤8) · Regional (9–15) · Kontinental (16–21) · Global (22–25)</p></div>
+          <div class="meth-dim"><div class="meth-dim-t">⏳ Dauerhaftigkeit (0–25)</div><p>Jahrzehnte (≤10) · Jahrhunderte (11–18) · Dauerhaft/Jahrtausende (19–25)</p></div>
+          <div class="meth-dim"><div class="meth-dim-t">🔗 Multiplikator (0–30)</div><p>Gering (≤10) · Mittel (11–20) · Transformativ, viele Folgeerfindungen (21–30)</p></div>
+          <div class="meth-dim"><div class="meth-dim-t">🏥 Lebensqualität (0–20)</div><p>Minimal (≤6) · Spürbar (7–13) · Fundamental (14–20)</p></div>
+          <div class="meth-eq"><strong>Score A = Reichweite + Dauerhaftigkeit + Multiplikator + Lebensqualität</strong></div>
+
+          <div class="meth-group-title">Score B – Revolutionär für ihre Zeit (max. 100)</div>
+          <div class="meth-dim"><div class="meth-dim-t">🧠 Konzeptbruch (0–40)</div><p>Logische Weiterentwicklung (≤10) · Überraschend (11–25) · Vollständig ohne Vorläufer (26–40)</p></div>
+          <div class="meth-dim"><div class="meth-dim-t">⚡ Sofortwirkung (0–30)</div><p>Langsam (≤10) · Innerhalb einer Generation (11–20) · Sofort &amp; massiv (21–30)</p></div>
+          <div class="meth-dim"><div class="meth-dim-t">🌐 Gesellschafts-Schock (0–30)</div><p>Kaum (≤8) · Merklich (9–18) · Erschütterte Weltbild &amp; Ordnung (19–30)</p></div>
+          <div class="meth-eq"><strong>Score B = Konzeptbruch + Sofortwirkung + Gesellschafts-Schock</strong></div>
+          <div class="meth-note">Antike Erfindungen ohne Vorläufer (Landwirtschaft B=98, Schrift B=94) dominieren Score B. Das Internet (B=56) war einflussreich, aber in einer Welt, die bereits Computer kannte.</div>
+
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN CHART AREA -->
+  <main class="main" id="mainEl">
+    <div class="chart-shell" id="shell">
+      <div class="y-vert" id="yLbl">Gesellschaftlicher Einfluss</div>
+      <!-- chart body injected here by JS -->
+      <div id="cBody" style="flex:1;min-height:0;display:flex;flex-direction:column;"></div>
+      <div class="x-strip" id="xStrip"></div>
+    </div>
+  </main>
+
+</div>
+
+<!-- TOOLTIP -->
+<div class="tt" id="tt">
+  <div class="tt-yr"  id="ttYr"></div>
+  <div class="tt-nm"  id="ttNm"></div>
+  <div class="tt-grp" id="ttGrp"></div>
+  <div class="tt-cat" id="ttCat"></div>
+  <div class="tt-dsc" id="ttDsc"></div>
+  <div class="tt-row">
+    <span class="tt-rl" id="ttRl">Score</span>
+    <div class="tt-rb"><div class="tt-rf" id="ttRf"></div></div>
+    <span class="tt-rn" id="ttRn"></span>
+  </div>
+  <div class="tt-hint">Klicken für Details ↗</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <button class="modal-x" id="modalX">✕</button>
+    <div class="m-cat"  id="mCat"></div>
+    <h2 class="m-h"    id="mH"></h2>
+    <div class="m-meta" id="mMeta"></div>
+    <div class="m-imp"><div class="m-imp-t">Gesellschaftliche Wirkung</div><p id="mImp"></p></div>
+    <div class="m-body" id="mBody"></div>
+    <div class="m-sc">
+      <div class="m-sc-t">Score-Aufschlüsselung</div>
+      <div id="mRows"></div>
+      <div class="m-tot"><span class="m-tot-l" id="mTotL">Gesamt</span><span class="m-tot-n" id="mTot"></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// DATA
+// ══════════════════════════════════════
+const GRP = [
+  { id:'europa',      name:'Europa',               col:'#c8962a' },
+  { id:'ostasien',    name:'Ostasien',              col:'#4a7fb5' },
+  { id:'nahost',      name:'Naher Osten / MENA',   col:'#6faa55' },
+  { id:'suedasien',   name:'Südasien',              col:'#c05a4a' },
+  { id:'mesopo',      name:'Mesopotamien / Antike', col:'#c9853a' },
+  { id:'afrika',      name:'Afrika',                col:'#4aab9a' },
+  { id:'amerika',     name:'Amerika',               col:'#7a5ab5' },
+];
+const GM = Object.fromEntries(GRP.map(g=>[g.id,g]));
+
+// Fields: g=group, n=name, y=year, c=cat
+// Score A: reach(0-25)+dur(0-25)+mult(0-30)+qual(0-20) = 100
+// Score B: cbrk(0-40)+imm(0-30)+shk(0-30) = 100
+const INV = [
+  // MESOPOTAMIEN
+  {g:'mesopo', n:'Landwirtschaft',          y:-10000, c:'Infrastruktur',    reach:25,dur:25,mult:30,qual:20, cbrk:40,imm:30,shk:28, inv:'Frühe Bauern', org:'Naher Osten',
+    dsc:'Domestizierung von Pflanzen und Tieren im Fruchtbaren Halbmond – fundamentalste Wende der Menschheitsgeschichte.',
+    imp:'Ermöglichte sesshaftes Leben, Bevölkerungswachstum, Arbeitsteilung und alle späteren Zivilisationen. Ohne sie: keine Städte, kein Staat.'},
+  {g:'mesopo', n:'Bewässerung / Kanalbau',  y:-6000,  c:'Infrastruktur',    reach:19,dur:20,mult:18,qual:16, cbrk:28,imm:26,shk:18, inv:'Sumerer', org:'Irak',
+    dsc:'Ausgedehnte Bewässerungssysteme legten die Grundlage für städtische Zivilisation.',
+    imp:'Ermöglichte Überschussproduktion, Städtewachstum und Arbeitsteilung.'},
+  {g:'mesopo', n:'Rad',                     y:-3500,  c:'Infrastruktur',    reach:23,dur:25,mult:26,qual:18, cbrk:36,imm:28,shk:22, inv:'Unbekannt', org:'Mesopotamien / Sumer',
+    dsc:'Das Rad (~3500 v. Chr.) – erst Töpferscheibe, dann Fahrzeugrad.',
+    imp:'Grundlage aller Fahrzeuge und rotierenden Mechanismen. Revolutionierte Transport und Kriegsführung.'},
+  {g:'mesopo', n:'Schrift (Keilschrift)',   y:-3200,  c:'Kommunikation',    reach:23,dur:25,mult:29,qual:18, cbrk:40,imm:24,shk:30, inv:'Sumerer', org:'Irak (Uruk)',
+    dsc:'Sumerische Keilschrift (~3200 v. Chr.) – älteste bekannte Schrift.',
+    imp:'Ohne Schrift keine Wissenschaft, kein Recht, keine Geschichte. Grundlage aller Zivilisationen.'},
+  {g:'mesopo', n:'Kalender',               y:-3000,  c:'Mathematik',       reach:22,dur:25,mult:16,qual:15, cbrk:30,imm:22,shk:20, inv:'Babylonische Astronomen', org:'Irak',
+    dsc:'Mesopotamische Astronomen entwickelten präzise Lunisolarkalender.',
+    imp:'Ermöglichte Landwirtschaftsplanung und koordiniertes gesellschaftliches Leben.'},
+  {g:'mesopo', n:'Rechtssystem (Hammurabi)',y:-1754,  c:'Wirtschaft',       reach:18,dur:24,mult:20,qual:16, cbrk:32,imm:22,shk:26, inv:'König Hammurabi', org:'Babylonien',
+    dsc:'Codex Hammurabi (~1754 v. Chr.) – 282 Gesetze, erste kodifizierte Normen.',
+    imp:'Grundlage aller modernen Rechtssysteme. Prinzipien wie Verhältnismäßigkeit.'},
+
+  // AFRIKA
+  {g:'afrika',  n:'Ackerbau (Afrika)',       y:-5000,  c:'Infrastruktur',    reach:14,dur:22,mult:12,qual:13, cbrk:28,imm:22,shk:16, inv:'Sahelzonen-Kulturen', org:'Mali / Niger',
+    dsc:'Westafrikanische Kulturen domestizierten Hirse und Sorghum unabhängig.',
+    imp:'Ernährungsgrundlage für West- und Zentralafrika über Jahrtausende.'},
+  {g:'afrika',  n:'Mathematik (Ägypten)',    y:-3000,  c:'Mathematik',       reach:18,dur:20,mult:18,qual:13, cbrk:28,imm:18,shk:18, inv:'Ägyptische Schreiber', org:'Ägypten',
+    dsc:'Ägyptische Geometrie und Bruchrechnung für Bau und Verwaltung.',
+    imp:'Grundlage des Pyramidenbaus. Beeinflusste griechische Mathematik maßgeblich.'},
+  {g:'afrika',  n:'Medizin (Ägypten)',       y:-2700,  c:'Medizin',          reach:15,dur:18,mult:14,qual:14, cbrk:26,imm:20,shk:18, inv:'Imhotep u.a.', org:'Ägypten',
+    dsc:'Papyri belegen chirurgische Eingriffe und Diagnosen (~2700 v. Chr.).',
+    imp:'Erste dokumentierte medizinische Texte. Beeinflusste griechische und islamische Medizin.'},
+  {g:'afrika',  n:'Metallurgie (Eisen)',     y:-1400,  c:'Physik & Technik', reach:20,dur:22,mult:18,qual:15, cbrk:30,imm:24,shk:20, inv:'Verschiedene Kulturen', org:'Tansania, Nigeria',
+    dsc:'Subsaharisches Afrika entwickelte Eisenverhüttung unabhängig.',
+    imp:'Revolutionierte Werkzeuge, Waffen und Landwirtschaft weltweit.'},
+
+  // OSTASIEN
+  {g:'ostasien',n:'Seide',                  y:-3000,  c:'Wirtschaft',       reach:17,dur:20,mult:14,qual:11, cbrk:24,imm:16,shk:14, inv:'Leizu (legendär)', org:'China',
+    dsc:'China entwickelte Seidenherstellung und begründete die Seidenstraße.',
+    imp:'Globales Handelsnetz, Kulturaustausch zwischen Asien und Europa.'},
+  {g:'ostasien',n:'Papier',                 y:-105,   c:'Kommunikation',    reach:25,dur:25,mult:27,qual:17, cbrk:36,imm:20,shk:22, inv:'Cai Lun', org:'China',
+    dsc:'Cai Lun entwickelte Papier aus Pflanzenfasern (105 n. Chr.).',
+    imp:'Ermöglichte massenhafte Wissensverbreitung via Seidenstraße.'},
+  {g:'ostasien',n:'Porzellan',              y:620,    c:'Wirtschaft',       reach:15,dur:17,mult:10,qual:9,  cbrk:18,imm:14,shk:12, inv:'Unbekannt', org:'China (Tang-Ära)',
+    dsc:'Tang-Ära China perfektionierte Porzellan als wichtigstes Exportgut.',
+    imp:'Weltweit begehrtes Handelsgut, beeinflusste europäische Keramik.'},
+  {g:'ostasien',n:'Schießpulver',           y:850,    c:'Physik & Technik', reach:22,dur:18,mult:16,qual:10, cbrk:36,imm:26,shk:28, inv:'Taoistische Alchemisten', org:'China',
+    dsc:'Schießpulver entdeckt im 9. Jh.',
+    imp:'Veränderte Kriegsführung weltweit. Auch für Bergbau und Sprengstoff.'},
+  {g:'ostasien',n:'Buchdruck (Holzblock)',  y:868,    c:'Kommunikation',    reach:17,dur:20,mult:20,qual:14, cbrk:30,imm:18,shk:16, inv:'Bi Sheng u.a.', org:'China',
+    dsc:'Holzblockdruck und bewegliche Letter Jahrhunderte vor Gutenberg.',
+    imp:'Verbreitete Wissen in China. Vorläufer des europäischen Buchdrucks.'},
+  {g:'ostasien',n:'Kompass',               y:1044,   c:'Physik & Technik', reach:22,dur:18,mult:20,qual:13, cbrk:32,imm:22,shk:20, inv:'Unbekannt', org:'China',
+    dsc:'Magnetischer Kompass – via arabische Händler nach Europa.',
+    imp:'Ermöglichte Hochseeschifffahrt, Entdeckungszeitalter und globalen Seehandel.'},
+
+  // NAHER OSTEN
+  {g:'nahost',  n:'Destillation',           y:800,    c:'Physik & Technik', reach:18,dur:20,mult:16,qual:12, cbrk:28,imm:18,shk:16, inv:'Jabir ibn Hayyan', org:'Irak',
+    dsc:'Arabische Alchemisten perfektionierten die Destillation.',
+    imp:'Grundlage für Alkohol, Parfüm, Medikamente und organische Chemie.'},
+  {g:'nahost',  n:'Algebra',               y:820,    c:'Mathematik',       reach:24,dur:25,mult:28,qual:17, cbrk:36,imm:16,shk:22, inv:'Al-Khwarizmi', org:'Irak/Bagdad',
+    dsc:'Al-Khwarizmi begründete die Algebra als eigenständige Disziplin.',
+    imp:'Ohne Algebra keine Physik, Ingenieurwesen oder Computerwissenschaft.'},
+  {g:'nahost',  n:'Chirurgie (al-Zahrawi)',y:1000,   c:'Medizin',          reach:19,dur:22,mult:18,qual:18, cbrk:28,imm:24,shk:18, inv:'Al-Zahrawi', org:'Spanien/Córdoba',
+    dsc:'Al-Zahrawis illustriertes Chirurgiewerk – das erste seiner Art.',
+    imp:'Viele Instrumente noch heute in Gebrauch. Grundlage europäischer Chirurgie.'},
+  {g:'nahost',  n:'Kaffee',                y:1000,   c:'Wirtschaft',       reach:18,dur:18,mult:10,qual:11, cbrk:14,imm:16,shk:12, inv:'Unbekannt', org:'Äthiopien/Jemen',
+    dsc:'Arabische Kultur entdeckte und verbreitete Kaffee ab dem 10. Jh.',
+    imp:'Globale Industrie, Kaffeehäuser als intellektuelle Zentren.'},
+  {g:'nahost',  n:'Optik (Ibn al-Haytham)',y:1011,   c:'Physik & Technik', reach:21,dur:24,mult:24,qual:14, cbrk:34,imm:14,shk:22, inv:'Ibn al-Haytham', org:'Ägypten/Irak',
+    dsc:'Ibn al-Haythams "Buch der Optik" begründete die experimentelle Methode.',
+    imp:'Grundlage für Brillen, Teleskope, Mikroskope, Kameras.'},
+
+  // SÜDASIEN
+  {g:'suedasien',n:'Baumwolle (Textil)',    y:-3000,  c:'Wirtschaft',       reach:20,dur:22,mult:12,qual:14, cbrk:20,imm:18,shk:12, inv:'Indus-Zivilisation', org:'Pakistan/Indien',
+    dsc:'Industal-Zivilisation kultivierte Baumwolle vor 5000 Jahren.',
+    imp:'Grundlage globaler Textilindustrie. Prägend für frühe Industrialisierung.'},
+  {g:'suedasien',n:'Medizin (Ayurveda)',    y:-1500,  c:'Medizin',          reach:14,dur:18,mult:10,qual:12, cbrk:22,imm:18,shk:14, inv:'Vedische Autoren', org:'Indien',
+    dsc:'Vedische Texte beschreiben Ayurveda als umfassendes Medizinsystem.',
+    imp:'Beeinflusste frühislamische Medizin; Yoga heute globale Gesundheitspraxis.'},
+  {g:'suedasien',n:'Dezimalsystem',         y:500,    c:'Mathematik',       reach:25,dur:25,mult:28,qual:17, cbrk:38,imm:14,shk:20, inv:'Aryabhata u.a.', org:'Indien',
+    dsc:'Indische Mathematiker entwickelten das Dezimalsystem mit Stellenwert.',
+    imp:'Ohne Dezimalsystem keine moderne Wissenschaft, Technik oder Wirtschaft.'},
+  {g:'suedasien',n:'Null',                  y:628,    c:'Mathematik',       reach:25,dur:25,mult:30,qual:18, cbrk:40,imm:12,shk:24, inv:'Brahmagupta', org:'Indien',
+    dsc:'Brahmagupta definierte 628 n. Chr. die Null als vollwertige Zahl.',
+    imp:'Grundlage aller modernen Mathematik und des Binärcodes.'},
+
+  // EUROPA
+  {g:'europa',  n:'Druckerpresse',          y:1440,   c:'Kommunikation',    reach:22,dur:24,mult:28,qual:16, cbrk:34,imm:20,shk:28, inv:'Johannes Gutenberg', org:'Deutschland',
+    dsc:'Gutenbergs Druckerpresse (1440) ermöglichte Massenreproduktion von Texten.',
+    imp:'Ermöglichte Reformation, Aufklärung und wissenschaftliche Revolution.'},
+  {g:'europa',  n:'Dampfmaschine',          y:1769,   c:'Physik & Technik', reach:24,dur:22,mult:28,qual:18, cbrk:30,imm:28,shk:22, inv:'James Watt', org:'Schottland',
+    dsc:'Watts Dampfmaschine (1769) trieb die Industrielle Revolution an.',
+    imp:'Fabrikproduktion, Eisenbahn, Dampfschiff. Veränderte Arbeit und globale Wirtschaft.'},
+  {g:'europa',  n:'Eisenbahn',              y:1804,   c:'Infrastruktur',    reach:23,dur:21,mult:24,qual:17, cbrk:26,imm:28,shk:20, inv:'Stephenson / Trevithick', org:'England',
+    dsc:'Dampfeisenbahn verband Kontinente und ermöglichte Massentransport.',
+    imp:'Trieb Industrialisierung und globalen Handel voran. Verdichtete Raum und Zeit.'},
+  {g:'europa',  n:'Impfung',                y:1796,   c:'Medizin',          reach:25,dur:25,mult:22,qual:20, cbrk:36,imm:26,shk:28, inv:'Edward Jenner', org:'England',
+    dsc:'Jenners Kuhpockenimpfstoff (1796) begründete die Immunologie.',
+    imp:'Rettete Hunderte Millionen Leben. Pocken ausgerottet. Grundlage aller Impfstoffe.'},
+  {g:'europa',  n:'Telefon',                y:1876,   c:'Kommunikation',    reach:23,dur:18,mult:20,qual:16, cbrk:28,imm:24,shk:22, inv:'Alexander Graham Bell', org:'USA/Schottland',
+    dsc:'Bell erfand 1876 das Telefon – instantane Sprachkommunikation.',
+    imp:'Grundlage des modernen Telekommunikationsnetzes.'},
+  {g:'europa',  n:'Automobil',              y:1885,   c:'Physik & Technik', reach:23,dur:20,mult:18,qual:17, cbrk:22,imm:20,shk:16, inv:'Karl Benz', org:'Deutschland',
+    dsc:'Benz\'s Patent-Motorwagen (1885) war das erste praxistaugliche Benzinfahrzeug.',
+    imp:'Schuf globale Mobilitätswirtschaft. Veränderte Stadtplanung und Gesellschaft.'},
+  {g:'europa',  n:'Röntgenstrahlen',        y:1895,   c:'Medizin',          reach:22,dur:23,mult:18,qual:18, cbrk:32,imm:26,shk:22, inv:'Wilhelm Röntgen', org:'Deutschland',
+    dsc:'Röntgen entdeckte 1895 die nach ihm benannten Strahlen.',
+    imp:'Revolutionierte Diagnostik. Grundlage für CT, MRT und bildgebende Medizin.'},
+  {g:'europa',  n:'Relativitätstheorie',    y:1905,   c:'Physik & Technik', reach:20,dur:25,mult:26,qual:14, cbrk:40,imm:8, shk:30, inv:'Albert Einstein', org:'Deutschland',
+    dsc:'Einstein vereinte Raum und Zeit, formulierte E=mc².',
+    imp:'Grundlage für GPS, Kernenergie, Lasertechnologie und moderne Kosmologie.'},
+  {g:'europa',  n:'Penicillin',             y:1928,   c:'Medizin',          reach:24,dur:23,mult:20,qual:20, cbrk:28,imm:26,shk:20, inv:'Alexander Fleming', org:'Schottland',
+    dsc:'Flemings Penicillin-Entdeckung (1928) begründete die Antibiotika-Ära.',
+    imp:'Machte tödliche Infektionen heilbar. Rettete über 200 Mio. Menschen.'},
+  {g:'europa',  n:'World Wide Web',         y:1991,   c:'Kommunikation',    reach:25,dur:22,mult:29,qual:20, cbrk:22,imm:24,shk:18, inv:'Tim Berners-Lee', org:'CERN, Schweiz',
+    dsc:'Berners-Lee erfand 1991 das Web als universelles Informationssystem.',
+    imp:'Veränderte Kommunikation, Wirtschaft, Wissenschaft und Kultur weltweit.'},
+
+  // AMERIKA
+  {g:'amerika', n:'Mais (Domestikation)',   y:-7000,  c:'Wirtschaft',       reach:22,dur:25,mult:14,qual:16, cbrk:26,imm:22,shk:14, inv:'Mesoamerikanische Bauern', org:'Mexiko',
+    dsc:'Mesoamerikanische Kulturen domestizierten Mais (~7000 v. Chr.).',
+    imp:'Nach 1492 globale Verbreitung. Eine der drei meistproduzierten Kulturpflanzen.'},
+  {g:'amerika', n:'Flugzeug',               y:1903,   c:'Infrastruktur',    reach:24,dur:22,mult:20,qual:18, cbrk:30,imm:22,shk:26, inv:'Wright Brothers', org:'USA',
+    dsc:'Die Wright-Brüder realisierten 1903 den ersten kontrollierten Motorflug.',
+    imp:'Schuf globalen Luftverkehr, veränderte Krieg, Handel und Tourismus.'},
+  {g:'amerika', n:'Mikrochip / Computer',   y:1947,   c:'Physik & Technik', reach:25,dur:23,mult:30,qual:20, cbrk:26,imm:16,shk:20, inv:'Bell Labs / Von Neumann', org:'USA',
+    dsc:'Transistor (1947) und Mikroprozessor – Grundlage der digitalen Revolution.',
+    imp:'Ohne Computer kein Internet, keine Raumfahrt, keine moderne Medizin.'},
+  {g:'amerika', n:'DNA-Struktur',           y:1953,   c:'Medizin',          reach:22,dur:25,mult:26,qual:19, cbrk:38,imm:10,shk:28, inv:'Watson, Crick, Franklin', org:'UK/USA',
+    dsc:'Entdeckung der Doppelhelix (1953) revolutionierte Biologie und Medizin.',
+    imp:'Grundlage für Genetik, Gentherapie, Forensik, Biotechnologie und mRNA-Impfstoffe.'},
+  {g:'amerika', n:'Internet (ARPANET)',     y:1969,   c:'Kommunikation',    reach:25,dur:23,mult:30,qual:20, cbrk:24,imm:14,shk:18, inv:'DARPA / UCLA', org:'USA',
+    dsc:'ARPANET (1969) – technische Grundlage der digitalen Vernetzung.',
+    imp:'Grundlage des Internets. Veränderte Kommunikation und Wirtschaft global.'},
+  {g:'amerika', n:'Raumfahrt / GPS',        y:1969,   c:'Physik & Technik', reach:21,dur:20,mult:20,qual:16, cbrk:28,imm:22,shk:24, inv:'NASA', org:'USA',
+    dsc:'Apollo-Programm (1969) – Menschen auf dem Mond.',
+    imp:'GPS, Kommunikationssatelliten, neue Materialien aus der Raumfahrtforschung.'},
+];
+
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let VIEW  = 'grouped';
+let CATS  = new Set(['all']);
+let SORT  = 'score';
+let MINSC = 0;
+
+const sA = i => i.reach+i.dur+i.mult+i.qual;
+const sB = i => i.cbrk+i.imm+i.shk;
+const SC  = i => VIEW==='revolution' ? sB(i) : sA(i);
+
+const filt = gid => INV
+  .filter(i => i.g===gid && SC(i)>=MINSC && (CATS.has('all')||CATS.has(i.c)))
+  .sort((a,b)=>a.y-b.y);
+
+const gTot  = gid => filt(gid).reduce((s,i)=>s+SC(i), 0);
+const maxTot = () => Math.max(...GRP.map(g=>gTot(g.id)), 1);
+const fmtY  = y  => y<0 ? `${Math.abs(y)} v. Chr.` : `${y} n. Chr.`;
+
+function sortedGrp(){
+  return [...GRP].sort((a,b)=>{
+    if(SORT==='score')  return gTot(b.id)-gTot(a.id);
+    if(SORT==='count')  return filt(b.id).length-filt(a.id).length;
+    if(SORT==='alpha')  return a.name.localeCompare(b.name);
+    if(SORT==='oldest'){
+      const f = id => Math.min(...filt(id).map(i=>i.y).concat([9999]));
+      return f(a.id)-f(b.id);
+    }
+    return 0;
+  });
+}
+
+function shadeCol(hex, idx, total){
+  const t = total<=1 ? 0.78 : 0.50+0.50*(idx/(total-1));
+  const n = parseInt(hex.replace('#',''),16);
+  const r = Math.min(255,Math.round(((n>>16)&0xff)*t));
+  const g = Math.min(255,Math.round(((n>>8) &0xff)*t));
+  const b = Math.min(255,Math.round(( n     &0xff)*t));
+  return `rgb(${r},${g},${b})`;
+}
+
+// ══════════════════════════════════════
+// MEASURE
+// Returns { chartH, plotW } based on current DOM
+// ══════════════════════════════════════
+function measure(){
+  const shell = document.getElementById('shell');
+  if(!shell) return {chartH:300, plotW:600};
+  const shellH = shell.clientHeight;
+  // x-strip height ~ 30px, top padding 0.85rem~13px
+  const chartH = Math.max(120, shellH - 44);
+  // plotW measured from cBody width minus y-col(40px) + paddings(2.5rem+0.9rem = ~54px)
+  const bodyW = document.getElementById('cBody').clientWidth || shell.clientWidth;
+  const plotW = Math.max(100, bodyW - 40 - 54);
+  return {chartH, plotW};
+}
+
+// ══════════════════════════════════════
+// TOOLTIP
+// ══════════════════════════════════════
+const TT = document.getElementById('tt');
+function showTT(e, inv, col){
+  const sc=SC(inv), g=GM[inv.g];
+  document.getElementById('ttYr').textContent  = fmtY(inv.y);
+  document.getElementById('ttNm').textContent  = inv.n;
+  document.getElementById('ttGrp').innerHTML   = `<span style="color:${g.col}">● ${g.name}</span>`;
+  document.getElementById('ttCat').textContent = '📁 '+inv.c;
+  document.getElementById('ttDsc').textContent = inv.dsc;
+  document.getElementById('ttRl').textContent  = VIEW==='revolution' ? 'Score B' : 'Score A';
+  document.getElementById('ttRf').style.cssText = `width:${sc}%;background:${col};`;
+  document.getElementById('ttRn').textContent  = sc;
+  TT.classList.add('on');
+  posTT(e);
+}
+function posTT(e){
+  const W=275,H=190;
+  let x=e.clientX+14, y=e.clientY-18;
+  if(x+W>window.innerWidth-4)  x=e.clientX-W-14;
+  if(y+H>window.innerHeight-4) y=e.clientY-H-4;
+  TT.style.left=x+'px'; TT.style.top=y+'px';
+}
+function hideTT(){ TT.classList.remove('on'); }
+
+// ══════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════
+function openModal(inv, col){
+  const g=GM[inv.g];
+  document.getElementById('mCat').textContent  = inv.c;
+  document.getElementById('mH').textContent    = inv.n;
+  document.getElementById('mMeta').innerHTML   =
+    `<span>📅 ${fmtY(inv.y)}</span><span>👤 ${inv.inv}</span><span>📍 ${inv.org}</span><span style="color:${g.col}">● ${g.name}</span>`;
+  document.getElementById('mImp').textContent  = inv.imp;
+  document.getElementById('mBody').textContent = inv.dsc;
+  let dims, lbl;
+  if(VIEW==='revolution'){
+    dims=[{l:'🧠 Konzeptbruch (max 40)',v:inv.cbrk,m:40},{l:'⚡ Sofortwirkung (max 30)',v:inv.imm,m:30},{l:'🌐 Gesellschafts-Schock (max 30)',v:inv.shk,m:30}];
+    lbl='Score B – Revolutionär';
+  } else {
+    dims=[{l:'🌍 Reichweite (max 25)',v:inv.reach,m:25},{l:'⏳ Dauerhaftigkeit (max 25)',v:inv.dur,m:25},{l:'🔗 Multiplikator (max 30)',v:inv.mult,m:30},{l:'🏥 Lebensqualität (max 20)',v:inv.qual,m:20}];
+    lbl='Score A – Gesellschaftlicher Einfluss';
+  }
+  document.getElementById('mTotL').textContent=lbl;
+  document.getElementById('mTot').textContent=SC(inv)+' / 100';
+  document.getElementById('mRows').innerHTML=dims.map(d=>`
+    <div class="m-row">
+      <span class="m-rl">${d.l}</span>
+      <div class="m-rb"><div class="m-rf" style="width:${(d.v/d.m)*100}%;background:${col};"></div></div>
+      <span class="m-rn">${d.v}/${d.m}</span>
+    </div>`).join('');
+  document.getElementById('modalBg').classList.add('on');
+}
+document.getElementById('modalX').addEventListener('click',()=>document.getElementById('modalBg').classList.remove('on'));
+document.getElementById('modalBg').addEventListener('click',e=>{
+  if(e.target===document.getElementById('modalBg')) document.getElementById('modalBg').classList.remove('on');
+});
+
+// ══════════════════════════════════════
+// BUILD AXES
+// ══════════════════════════════════════
+function buildYcol(el, maxV, h){
+  let s='';
+  for(let i=0;i<=5;i++){
+    const b=i/5*h;
+    s+=`<div class="ytick" style="bottom:${b}px"><span class="ytick-lbl">${Math.round(maxV*i/5)}</span><div class="ytick-mk"></div></div>`;
+  }
+  el.style.height=h+'px';
+  el.innerHTML=s;
+}
+function buildHgrid(el, h){
+  let s='';
+  for(let i=1;i<=5;i++) s+=`<div class="hgl" style="bottom:${i/5*h}px"></div>`;
+  el.innerHTML+=s;
+}
+
+// ══════════════════════════════════════
+// RENDER LEGEND
+// ══════════════════════════════════════
+function renderLegend(){
+  const maxT = maxTot();
+  document.getElementById('legGrid').innerHTML = GRP.map(g=>{
+    const tot=gTot(g.id);
+    const pct = maxT>0 ? (tot/maxT)*100 : 0;
+    return `<div class="leg-row">
+      <div class="leg-dot" style="background:${g.col}"></div>
+      <span class="leg-name">${g.name}</span>
+      <div class="leg-bar"><div class="leg-bar-f" style="width:${pct}%;background:${g.col}"></div></div>
+      <span class="leg-pts">${tot}</span>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════
+// RENDER GROUPED
+// ══════════════════════════════════════
+function renderGrouped(){
+  const {chartH} = measure();
+  const cBody = document.getElementById('cBody');
+  const xStrip = document.getElementById('xStrip');
+  cBody.innerHTML=''; xStrip.innerHTML='';
+
+  document.getElementById('yLbl').textContent =
+    VIEW==='revolution' ? 'Revolutionärer Einfluss (kumuliert)' : 'Gesellschaftlicher Einfluss (kumuliert)';
+
+  // C-layout
+  const layout = document.createElement('div');
+  layout.className='c-layout';
+
+  const yCol = document.createElement('div');
+  yCol.className='y-col';
+  buildYcol(yCol, maxTot(), chartH);
+
+  const plot = document.createElement('div');
+  plot.className='plot';
+  plot.style.height=chartH+'px';
+  buildHgrid(plot, chartH);
+  const base=document.createElement('div'); base.className='base'; plot.appendChild(base);
+
+  // bars
+  const barsWrap=document.createElement('div'); barsWrap.className='bars';
+  const sg = sortedGrp();
+  sg.forEach(g=>{
+    const invs=filt(g.id);
+    const tot=invs.reduce((s,i)=>s+SC(i),0);
+    const stackPx=tot>0?Math.round((tot/maxTot())*chartH):0;
+
+    const bg=document.createElement('div'); bg.className='bgrp';
+    const st=document.createElement('div'); st.className='bstk'; st.style.height=stackPx+'px';
+    invs.forEach((inv,idx)=>{
+      const sc=SC(inv);
+      const segPx=tot>0?Math.max(2,Math.round((sc/tot)*stackPx)):0;
+      const seg=document.createElement('div'); seg.className='bseg';
+      seg.style.height=segPx+'px';
+      seg.style.background=shadeCol(g.col,idx,invs.length);
+      seg.addEventListener('mouseenter',e=>showTT(e,inv,g.col));
+      seg.addEventListener('mousemove',posTT);
+      seg.addEventListener('mouseleave',hideTT);
+      seg.addEventListener('click',()=>{hideTT();openModal(inv,g.col);});
+      st.appendChild(seg);
+    });
+    bg.appendChild(st);
+    barsWrap.appendChild(bg);
+  });
+  plot.appendChild(barsWrap);
+  layout.appendChild(yCol);
+  layout.appendChild(plot);
+  cBody.appendChild(layout);
+
+  // labels strip
+  const gl=document.createElement('div'); gl.className='glabels';
+  sg.forEach(g=>{
+    const invs=filt(g.id);
+    const tot=invs.reduce((s,i)=>s+SC(i),0);
+    const lc=document.createElement('div'); lc.className='glbl';
+    lc.innerHTML=`<div class="glbl-n">${g.name}</div><div class="glbl-m">${invs.length} Erf. · ${tot}</div>`;
+    gl.appendChild(lc);
+  });
+  xStrip.appendChild(gl);
+}
+
+// ══════════════════════════════════════
+// RENDER TIMELINE
+// ══════════════════════════════════════
+function renderTimeline(){
+  const cBody  = document.getElementById('cBody');
+  const xStrip = document.getElementById('xStrip');
+  cBody.innerHTML=''; xStrip.innerHTML='';
+  document.getElementById('yLbl').textContent='Score der Erfindung';
+
+  const allInvs = INV
+    .filter(i=>SC(i)>=MINSC&&(CATS.has('all')||CATS.has(i.c)))
+    .sort((a,b)=>a.y-b.y);
+
+  if(!allInvs.length){
+    cBody.innerHTML='<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted);">Keine Erfindungen für diese Filter.</div>';
+    return;
+  }
+
+  // ── Build skeleton to measure actual plot width ──
+  const layout=document.createElement('div'); layout.className='c-layout';
+  const yCol=document.createElement('div');   yCol.className='y-col';
+  const plot=document.createElement('div');   plot.className='plot'; plot.style.overflow='hidden';
+  layout.appendChild(yCol); layout.appendChild(plot);
+  cBody.appendChild(layout);
+
+  // Force layout so getBoundingClientRect works
+  const plotW = plot.getBoundingClientRect().width;
+  const {chartH} = measure();
+
+  // Size everything now that we know plotW
+  const N=allInvs.length, GAP=3;
+  const BAR_W = Math.max(5, Math.floor((plotW-(N-1)*GAP)/N));
+  const maxSc  = Math.max(...allInvs.map(i=>SC(i)),1);
+
+  buildYcol(yCol, maxSc, chartH);
+  plot.style.height=chartH+'px';
+  buildHgrid(plot, chartH);
+  const base=document.createElement('div'); base.className='base'; plot.appendChild(base);
+
+  const canvas=document.createElement('div');
+  canvas.className='tl-canvas';
+  canvas.style.width=(N*BAR_W+(N-1)*GAP)+'px';
+  canvas.style.height=chartH+'px';
+
+  // Era lines
+  const eras=[-10000,-5000,-3000,-1000,0,500,1000,1500,1750,1850,1900,1950,2000];
+  eras.forEach(ey=>{
+    let ci=0,cd=Infinity;
+    allInvs.forEach((inv,idx)=>{ const d=Math.abs(inv.y-ey); if(d<cd){cd=d;ci=idx;} });
+    if(cd>500) return;
+    const xc=ci*(BAR_W+GAP)+BAR_W/2;
+    const el=document.createElement('div'); el.className='tl-era'; el.style.left=xc+'px'; canvas.appendChild(el);
+    const lb=document.createElement('div'); lb.className='tl-era-l'; lb.style.left=xc+'px'; lb.style.bottom='4px';
+    lb.textContent=ey<0?Math.abs(ey)+'v':ey===0?'0':String(ey); canvas.appendChild(lb);
+  });
+
+  // Bars
+  allInvs.forEach((inv,idx)=>{
+    const sc=SC(inv), bh=Math.max(4,Math.round((sc/maxSc)*chartH));
+    const g=GM[inv.g];
+    const bar=document.createElement('div'); bar.className='tl-bar';
+    bar.style.cssText=`left:${idx*(BAR_W+GAP)}px;width:${BAR_W}px;height:${bh}px;background:${g.col};opacity:0.86;`;
+    bar.addEventListener('mouseenter',e=>showTT(e,inv,g.col));
+    bar.addEventListener('mousemove',posTT);
+    bar.addEventListener('mouseleave',hideTT);
+    bar.addEventListener('click',()=>{hideTT();openModal(inv,g.col);});
+    canvas.appendChild(bar);
+  });
+
+  plot.appendChild(canvas);
+
+  // x-strip info
+  const inf=document.createElement('div'); inf.className='tlinfo';
+  inf.innerHTML=`← ${fmtY(allInvs[0].y)} &ensp;·&ensp; ${fmtY(allInvs[N-1].y)} →&ensp;&ensp;Farbe = Kulturkreis &ensp;·&ensp; Höhe = Score &ensp;·&ensp; ${N} Erfindungen dargestellt`;
+  xStrip.appendChild(inf);
+}
+
+// ══════════════════════════════════════
+// MAIN RENDER
+// ══════════════════════════════════════
+function render(){
+  renderLegend();
+  if(VIEW==='timeline') renderTimeline();
+  else renderGrouped();
+}
+
+// ══════════════════════════════════════
+// VIEW DESCRIPTIONS
+// ══════════════════════════════════════
+const DESCS = {
+  grouped:    'Balken = Kulturkreise. Höhe = kumulierter Einfluss (Score A). Schichten = einzelne Erfindungen, von unten (älteste) nach oben (neueste). Hover = Info, Klick = Details.',
+  timeline:   'Chronologischer Zeitstrahl. Jede Erfindung = ein Balken. Höhe = Score. Farbe = Kulturkreis. Alle Erfindungen ohne Scrollen sichtbar.',
+  revolution: 'Score B: Wie revolutionär war eine Erfindung relativ zu ihrer Zeit? Antike Erfindungen ohne Vorläufer (Landwirtschaft B=98, Schrift B=94) dominieren. Internet B=56 – einflussreich, aber aufbauend auf bekannter Infrastruktur.',
+};
+
+// ══════════════════════════════════════
+// EVENTS
+// ══════════════════════════════════════
+document.getElementById('vtabs').addEventListener('click',e=>{
+  const t=e.target.closest('.vt'); if(!t) return;
+  VIEW=t.dataset.v;
+  document.querySelectorAll('.vt').forEach(v=>v.classList.toggle('on',v===t));
+  document.getElementById('sortSec').style.display=VIEW==='timeline'?'none':'';
+  document.getElementById('vtDesc').textContent=DESCS[VIEW];
+  render();
+});
+
+document.getElementById('chips').addEventListener('click',e=>{
+  const b=e.target.closest('.ch'); if(!b) return;
+  const cat=b.dataset.c;
+  if(cat==='all'){ CATS=new Set(['all']); }
+  else { CATS.delete('all'); CATS.has(cat)?CATS.delete(cat):CATS.add(cat); if(!CATS.size) CATS.add('all'); }
+  document.querySelectorAll('#chips .ch').forEach(c=>c.classList.toggle('on',CATS.has(c.dataset.c)));
+  render();
+});
+
+document.getElementById('sortSel').addEventListener('change',e=>{SORT=e.target.value;render();});
+document.getElementById('minSel').addEventListener('change', e=>{MINSC=+e.target.value;render();});
+
+document.getElementById('methHdr').addEventListener('click',function(){
+  this.classList.toggle('on');
+  document.getElementById('methBody').classList.toggle('on');
+});
+
+// ══════════════════════════════════════
+// RESIZE → RE-RENDER
+// ══════════════════════════════════════
+let resizeTimer=null;
+new ResizeObserver(()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(render, 80);
+}).observe(document.getElementById('shell'));
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+document.getElementById('vtDesc').textContent=DESCS['grouped'];
+render();
+</script>
+</body>
+</html>
