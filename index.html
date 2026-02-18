@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ethic Progress Bar</title>
+  <title>Ethnic Progress Bar</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
@@ -308,6 +308,27 @@
       color: var(--gold);
       font-size: 0.6rem;
       pointer-events: none;
+    }
+
+    /* ── Context Box ── */
+    .m-ctx {
+      margin-bottom: 1.4rem;
+      padding: 1rem 1.2rem;
+      background: rgba(200, 150, 42, 0.05);
+      border-left: 4px solid var(--muted);
+      font-style: italic;
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .m-ctx-t {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      font-style: normal;
     }
 
     /* ── Legend ── */
@@ -987,7 +1008,7 @@
   <nav class="nav">
     <a class="nav-logo" href="index.html">EPB</a>
     <div class="nav-div"></div>
-    <span class="nav-hint">Ethic Progress Bar · Visualisierung</span>
+    <span class="nav-hint">Ethnic Progress Bar · Visualisierung</span>
     <a class="nav-back" href="index.html">← Zurück</a>
   </nav>
 
@@ -998,7 +1019,7 @@
     <aside class="sb">
 
       <div class="sb-brand">
-        <div class="sb-brand-title">Ethic <em>Progress Bar</em></div>
+        <div class="sb-brand-title">Ethnic <em>Progress Bar</em></div>
         <div class="sb-brand-sub">Bedeutende Erfindungen der Menschheit – nach Einfluss &amp; Ursprung visualisiert.
         </div>
       </div>
@@ -1149,6 +1170,10 @@
         <div class="m-imp-t">Gesellschaftliche Wirkung</div>
         <p id="mImp"></p>
       </div>
+      <div class="m-ctx">
+        <div class="m-ctx-t">Historischer Kontext</div>
+        <p id="mCtx"></p>
+      </div>
       <div class="m-body" id="mBody"></div>
       <div class="m-sc">
         <div class="m-sc-t">Score-Aufschlüsselung</div>
@@ -1181,249 +1206,293 @@
       {
         g: 'mesopo', n: 'Landwirtschaft', y: -10000, c: 'Infrastruktur', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 40, imm: 30, shk: 28, inv: 'Frühe Bauern', org: 'Naher Osten',
         dsc: 'Domestizierung von Pflanzen und Tieren im Fruchtbaren Halbmond – fundamentalste Wende der Menschheitsgeschichte.',
-        imp: 'Ermöglichte sesshaftes Leben, Bevölkerungswachstum, Arbeitsteilung und alle späteren Zivilisationen. Ohne sie: keine Städte, kein Staat.'
+        imp: 'Ermöglichte sesshaftes Leben, Bevölkerungswachstum, Arbeitsteilung und alle späteren Zivilisationen. Ohne sie: keine Städte, kein Staat.',
+        ctx: 'Vor etwa 12.000 Jahren begannen Jäger und Sammler im Fruchtbaren Halbmond, Wildgräser wie Emmer und Einkorn gezielt anzubauen. Dieser langsame Übergang, oft als Neolithische Revolution bezeichnet, wurde durch das Ende der letzten Eiszeit begünstigt und führte zur ersten dauerhaften Sesshaftigkeit.'
       },
       {
         g: 'mesopo', n: 'Bewässerung / Kanalbau', y: -6000, c: 'Infrastruktur', reach: 19, dur: 20, mult: 18, qual: 16, cbrk: 28, imm: 26, shk: 18, inv: 'Sumerer', org: 'Irak',
         dsc: 'Ausgedehnte Bewässerungssysteme legten die Grundlage für städtische Zivilisation.',
-        imp: 'Ermöglichte Überschussproduktion, Städtewachstum und Arbeitsteilung.'
+        imp: 'Ermöglichte Überschussproduktion, Städtewachstum und Arbeitsteilung.',
+        ctx: 'Im trockenen Südmessopotamien war Ackerbau ohne künstliche Bewässerung unmöglich. Die Sumerer gruben komplexe Kanalsysteme, um das Wasser von Euphrat und Tigris auf die Felder zu leiten. Dies erforderte zentrale Planung und Verwaltung, was die Entstehung erster früher Staatsstrukturen förderte.'
       },
       {
         g: 'mesopo', n: 'Rad', y: -3500, c: 'Infrastruktur', reach: 23, dur: 25, mult: 26, qual: 18, cbrk: 36, imm: 28, shk: 22, inv: 'Unbekannt', org: 'Mesopotamien / Sumer',
         dsc: 'Das Rad (~3500 v. Chr.) – erst Töpferscheibe, dann Fahrzeugrad.',
-        imp: 'Grundlage aller Fahrzeuge und rotierenden Mechanismen. Revolutionierte Transport und Kriegsführung.'
+        imp: 'Grundlage aller Fahrzeuge und rotierenden Mechanismen. Revolutionierte Transport und Kriegsführung.',
+        ctx: 'Das Rad wurde zunächst nicht für den Transport, sondern als Töpferscheibe erfunden. Erst Jahrhunderte später montierten Menschen Räder an Achsen für Karren. Diese Innovation revolutionierte den Transport von Gütern und später, mit dem Streitwagen, auch die Kriegsführung.'
       },
       {
         g: 'mesopo', n: 'Schrift (Keilschrift)', y: -3200, c: 'Kommunikation', reach: 23, dur: 25, mult: 29, qual: 18, cbrk: 40, imm: 24, shk: 30, inv: 'Sumerer', org: 'Irak (Uruk)',
         dsc: 'Sumerische Keilschrift (~3200 v. Chr.) – älteste bekannte Schrift.',
-        imp: 'Ohne Schrift keine Wissenschaft, kein Recht, keine Geschichte. Grundlage aller Zivilisationen.'
+        imp: 'Ohne Schrift keine Wissenschaft, kein Recht, keine Geschichte. Grundlage aller Zivilisationen.',
+        ctx: 'In den wachsenden Tempelstädten wie Uruk wurde die Verwaltung von Gütern zu komplex für das Gedächtnis. Priester entwickelten ein System aus Bildzeichen, die später abstrahiert und mit einem Griffel in feuchten Ton gedrückt wurden – die Geburtsstunde der Informationsspeicherung.'
       },
       {
         g: 'mesopo', n: 'Kalender', y: -3000, c: 'Mathematik', reach: 22, dur: 25, mult: 16, qual: 15, cbrk: 30, imm: 22, shk: 20, inv: 'Babylonische Astronomen', org: 'Irak',
         dsc: 'Mesopotamische Astronomen entwickelten präzise Lunisolarkalender.',
-        imp: 'Ermöglichte Landwirtschaftsplanung und koordiniertes gesellschaftliches Leben.'
+        imp: 'Ermöglichte Landwirtschaftsplanung und koordiniertes gesellschaftliches Leben.',
+        ctx: 'Um Aussaat und Ernte sowie religiöse Feste zu koordinieren, beobachteten babylonische Priester systematisch den Nachthimmel. Sie unterteilten das Jahr in 12 Mondmonate und fügten Schaltmonate ein, um mit dem Sonnenjahr synchron zu bleiben – eine Leistung, die tiefe mathematische Kenntnisse voraussetzte.'
       },
       {
         g: 'mesopo', n: 'Rechtssystem (Hammurabi)', y: -1754, c: 'Wirtschaft', reach: 18, dur: 24, mult: 20, qual: 16, cbrk: 32, imm: 22, shk: 26, inv: 'König Hammurabi', org: 'Babylonien',
         dsc: 'Codex Hammurabi (~1754 v. Chr.) – 282 Gesetze, erste kodifizierte Normen.',
-        imp: 'Grundlage aller modernen Rechtssysteme. Prinzipien wie Verhältnismäßigkeit.'
+        imp: 'Grundlage aller modernen Rechtssysteme. Prinzipien wie Verhältnismäßigkeit.',
+        ctx: 'König Hammurabi ließ seine Gesetze in eine massive Diorit-Stele meißeln und öffentlich aufstellen. Damit etablierte er das Prinzip, dass Recht nicht willkürlich, sondern festgeschrieben und für alle (theoretisch) einsehbar sein sollte. Es regelte alles von Handelsverträgen bis zum Familienrecht.'
       },
-
       // AFRIKA
       {
         g: 'afrika', n: 'Ackerbau (Afrika)', y: -5000, c: 'Infrastruktur', reach: 14, dur: 22, mult: 12, qual: 13, cbrk: 28, imm: 22, shk: 16, inv: 'Sahelzonen-Kulturen', org: 'Mali / Niger',
         dsc: 'Westafrikanische Kulturen domestizierten Hirse und Sorghum unabhängig.',
-        imp: 'Ernährungsgrundlage für West- und Zentralafrika über Jahrtausende.'
+        imp: 'Ernährungsgrundlage für West- und Zentralafrika über Jahrtausende.',
+        ctx: 'Unabhängig vom Vorderen Orient domestizierten Menschen in der Sahelzone Wildgräser wie Perlhirse und Sorghum. Diese Pflanzen waren perfekt an das trockene Klima angepasst und ermöglichten das Erblühen späterer westafrikanischer Großreiche wie Mali und Songhai.'
       },
       {
         g: 'afrika', n: 'Mathematik (Ägypten)', y: -3000, c: 'Mathematik', reach: 18, dur: 20, mult: 18, qual: 13, cbrk: 28, imm: 18, shk: 18, inv: 'Ägyptische Schreiber', org: 'Ägypten',
         dsc: 'Ägyptische Geometrie und Bruchrechnung für Bau und Verwaltung.',
-        imp: 'Grundlage des Pyramidenbaus. Beeinflusste griechische Mathematik maßgeblich.'
+        imp: 'Grundlage des Pyramidenbaus. Beeinflusste griechische Mathematik maßgeblich.',
+        ctx: 'Für die Verwaltung des Staates und monumentale Bauprojekte wie die Pyramiden benötigten die Ägypter praktische Mathematik. Sie entwickelten komplexe Methoden zur Flächenberechnung (Geometrie) und ein dezimales Zahlensystem, das später von griechischen Gelehrten wie Thales und Pythagoras studiert wurde.'
       },
       {
         g: 'afrika', n: 'Medizin (Ägypten)', y: -2700, c: 'Medizin', reach: 15, dur: 18, mult: 14, qual: 14, cbrk: 26, imm: 20, shk: 18, inv: 'Imhotep u.a.', org: 'Ägypten',
         dsc: 'Papyri belegen chirurgische Eingriffe und Diagnosen (~2700 v. Chr.).',
-        imp: 'Erste dokumentierte medizinische Texte. Beeinflusste griechische und islamische Medizin.'
+        imp: 'Erste dokumentierte medizinische Texte. Beeinflusste griechische und islamische Medizin.',
+        ctx: 'Ägyptische Ärzte waren im ganzen Mittelmeerraum berühmt. Der Papyrus Edwin Smith beschreibt rationale, fast moderne Diagnosen und Behandlungen von Kopfverletzungen und Knochenbrüchen, weitgehend frei von Magie – ein früher Triumph der Beobachtung und Erfahrung.'
       },
       {
         g: 'afrika', n: 'Metallurgie (Eisen)', y: -1400, c: 'Physik & Technik', reach: 20, dur: 22, mult: 18, qual: 15, cbrk: 30, imm: 24, shk: 20, inv: 'Verschiedene Kulturen', org: 'Tansania, Nigeria',
         dsc: 'Subsaharisches Afrika entwickelte Eisenverhüttung unabhängig.',
-        imp: 'Revolutionierte Werkzeuge, Waffen und Landwirtschaft weltweit.'
+        imp: 'Revolutionierte Werkzeuge, Waffen und Landwirtschaft weltweit.',
+        ctx: 'In der Nok-Kultur (Nigeria) und im Gebiet der Großen Seen entwickelten Schmiede hochentwickelte Hochöfen, um Eisen zu gewinnen – möglicherweise früher oder unabhängig von Europa und dem Nahen Osten. Eisenwerkzeuge revolutionierten die Landwirtschaft und ermöglichten die Besiedlung dichter Regenwälder.'
       },
 
       // OSTASIEN
       {
         g: 'ostasien', n: 'Seide', y: -3000, c: 'Wirtschaft', reach: 17, dur: 20, mult: 14, qual: 11, cbrk: 24, imm: 16, shk: 14, inv: 'Leizu (legendär)', org: 'China',
         dsc: 'China entwickelte Seidenherstellung und begründete die Seidenstraße.',
-        imp: 'Globales Handelsnetz, Kulturaustausch zwischen Asien und Europa.'
+        imp: 'Globales Handelsnetz, Kulturaustausch zwischen Asien und Europa.',
+        ctx: 'Die Legende besagt, dass Kaiserin Leizu die Seidengewinnung entdeckte, als ein Kokon in ihren Tee fiel. Jahrtausendelang hütete China das Geheimnis der Seidenraupenzucht unter Todesstrafe, was Seide zum kostbarsten Handelsgut der Antike machte und die ersten globalen Handelsrouten schuf.'
       },
       {
         g: 'ostasien', n: 'Papier', y: -105, c: 'Kommunikation', reach: 25, dur: 25, mult: 27, qual: 17, cbrk: 36, imm: 20, shk: 22, inv: 'Cai Lun', org: 'China',
         dsc: 'Cai Lun entwickelte Papier aus Pflanzenfasern (105 n. Chr.).',
-        imp: 'Ermöglichte massenhafte Wissensverbreitung via Seidenstraße.'
+        imp: 'Ermöglichte massenhafte Wissensverbreitung via Seidenstraße.',
+        ctx: 'Vor dem Papier schrieb man auf teure Seide oder schwere Bambusstreifen. Der Hofbeamte Cai Lun standardisierte 105 n. Chr. ein Verfahren, aus Maulbeerbast, Fischernetzen und Lumpen einen leichten, billigen Schreibstoff zu schöpfen. Dies revolutionierte die Verwaltung des riesigen Reiches.'
       },
       {
         g: 'ostasien', n: 'Porzellan', y: 620, c: 'Wirtschaft', reach: 15, dur: 17, mult: 10, qual: 9, cbrk: 18, imm: 14, shk: 12, inv: 'Unbekannt', org: 'China (Tang-Ära)',
         dsc: 'Tang-Ära China perfektionierte Porzellan als wichtigstes Exportgut.',
-        imp: 'Weltweit begehrtes Handelsgut, beeinflusste europäische Keramik.'
+        imp: 'Weltweit begehrtes Handelsgut, beeinflusste europäische Keramik.',
+        ctx: 'Durch die Verfeinerung von Kaolin-Ton und extrem hohe Brenntemperaturen gelang chinesischen Töpfern die Herstellung von "weißem Gold" – hartem, transluzentem Porzellan. Es war so begehrt, dass es in Europa noch Jahrhunderte später als magisch galt, bis Böttger das Geheimnis 1708 "nacherfand".'
       },
       {
         g: 'ostasien', n: 'Schießpulver', y: 850, c: 'Physik & Technik', reach: 22, dur: 18, mult: 16, qual: 10, cbrk: 36, imm: 26, shk: 28, inv: 'Taoistische Alchemisten', org: 'China',
         dsc: 'Schießpulver entdeckt im 9. Jh.',
-        imp: 'Veränderte Kriegsführung weltweit. Auch für Bergbau und Sprengstoff.'
+        imp: 'Veränderte Kriegsführung weltweit. Auch für Bergbau und Sprengstoff.',
+        ctx: 'Taoistische Mönche suchten eigentlich nach einem Elixier der Unsterblichkeit, als sie Salpeter, Schwefel und Holzkohle mischten. Statt ewigem Leben fanden sie eine explosive Substanz, die zunächst für Feuerwerk, bald aber für "Feuerlanzen" und primitive Bomben gegen die Mongolen eingesetzt wurde.'
       },
       {
         g: 'ostasien', n: 'Buchdruck (Holzblock)', y: 868, c: 'Kommunikation', reach: 17, dur: 20, mult: 20, qual: 14, cbrk: 30, imm: 18, shk: 16, inv: 'Bi Sheng u.a.', org: 'China',
         dsc: 'Holzblockdruck und bewegliche Letter Jahrhunderte vor Gutenberg.',
-        imp: 'Verbreitete Wissen in China. Vorläufer des europäischen Buchdrucks.'
+        imp: 'Verbreitete Wissen in China. Vorläufer des europäischen Buchdrucks.',
+        ctx: 'Lange vor Gutenberg schnitzten chinesische Handwerker ganze Buchseiten in Holzblöcke. Das Diamant-Sutra (868 n. Chr.) ist das älteste gedruckte Buch der Welt. Später entwickelte Bi Sheng bewegliche Lettern aus Keramik, die sich jedoch aufgrund der tausenden chinesischen Schriftzeichen zunächst nicht durchsetzten.'
       },
       {
         g: 'ostasien', n: 'Kompass', y: 1044, c: 'Physik & Technik', reach: 22, dur: 18, mult: 20, qual: 13, cbrk: 32, imm: 22, shk: 20, inv: 'Unbekannt', org: 'China',
         dsc: 'Magnetischer Kompass – via arabische Händler nach Europa.',
-        imp: 'Ermöglichte Hochseeschifffahrt, Entdeckungszeitalter und globalen Seehandel.'
+        imp: 'Ermöglichte Hochseeschifffahrt, Entdeckungszeitalter und globalen Seehandel.',
+        ctx: 'Chinesische Wahrsager nutzten "Löffel" aus Magneteisenstein zunächst für Feng Shui, nicht zur Navigation. Erst zur Song-Dynastie erkannte man den Nutzen für die Schifffahrt. Nadeln wurden magnetisiert und schwimmend gelagert – der Schlüssel zur offenen See.'
       },
-
       // NAHER OSTEN
       {
         g: 'nahost', n: 'Destillation', y: 800, c: 'Physik & Technik', reach: 18, dur: 20, mult: 16, qual: 12, cbrk: 28, imm: 18, shk: 16, inv: 'Jabir ibn Hayyan', org: 'Irak',
         dsc: 'Arabische Alchemisten perfektionierten die Destillation.',
-        imp: 'Grundlage für Alkohol, Parfüm, Medikamente und organische Chemie.'
+        imp: 'Grundlage für Alkohol, Parfüm, Medikamente und organische Chemie.',
+        ctx: 'Der Alchemist Jabir ibn Hayyan (Geber) verbesserte den Destillierkolben (Alembic), um Stoffe zu reinigen. Er suchte nach der Umwandlung von Metallen, legte aber die Basis für die moderne Chemie (Alkohol, Säuren), die Parfümherstellung und die Pharmazie.'
       },
       {
         g: 'nahost', n: 'Algebra', y: 820, c: 'Mathematik', reach: 24, dur: 25, mult: 28, qual: 17, cbrk: 36, imm: 16, shk: 22, inv: 'Al-Khwarizmi', org: 'Irak/Bagdad',
         dsc: 'Al-Khwarizmi begründete die Algebra als eigenständige Disziplin.',
-        imp: 'Ohne Algebra keine Physik, Ingenieurwesen oder Computerwissenschaft.'
+        imp: 'Ohne Algebra keine Physik, Ingenieurwesen oder Computerwissenschaft.',
+        ctx: 'Im Haus der Weisheit in Bagdad schrieb Al-Khwarizmi sein Buch "al-Jabr". Er löste quadratische Gleichungen nicht nur geometrisch, sondern abstrakt. Sein Name (Latinisiert: Algoritmi) ist der Ursprung des Wortes "Algorithmus" – die Basis der heutigen digitalen Welt.'
       },
       {
         g: 'nahost', n: 'Chirurgie (al-Zahrawi)', y: 1000, c: 'Medizin', reach: 19, dur: 22, mult: 18, qual: 18, cbrk: 28, imm: 24, shk: 18, inv: 'Al-Zahrawi', org: 'Spanien/Córdoba',
         dsc: 'Al-Zahrawis illustriertes Chirurgiewerk – das erste seiner Art.',
-        imp: 'Viele Instrumente noch heute in Gebrauch. Grundlage europäischer Chirurgie.'
+        imp: 'Viele Instrumente noch heute in Gebrauch. Grundlage europäischer Chirurgie.',
+        ctx: 'Al-Zahrawi (Abulcasis) war der Hofarzt im Kalifat von Córdoba. Er erfand über 200 chirurgische Instrumente, darunter Skalpelle, Knochensägen und Zangen, und beschrieb als Erster die Verwendung von resorbierbarem Catgut (Darmfäden) für innere Nähte – eine Technik, die heute noch verwendet wird.'
       },
       {
         g: 'nahost', n: 'Kaffee', y: 1000, c: 'Wirtschaft', reach: 18, dur: 18, mult: 10, qual: 11, cbrk: 14, imm: 16, shk: 12, inv: 'Unbekannt', org: 'Äthiopien/Jemen',
         dsc: 'Arabische Kultur entdeckte und verbreitete Kaffee ab dem 10. Jh.',
-        imp: 'Globale Industrie, Kaffeehäuser als intellektuelle Zentren.'
+        imp: 'Globale Industrie, Kaffeehäuser als intellektuelle Zentren.',
+        ctx: 'Sufi-Mönche im Jemen nutzten den Sud aus Kaffeekirschen, um bei nächtlichen Gebeten wach zu bleiben. Von dort verbreitete sich das Getränk über Mekka und Kairo in die Welt. Kaffeehäuser wurden zu Orten des intellektuellen Austauschs, die später auch die europäische Aufklärung befeuerten.'
       },
       {
         g: 'nahost', n: 'Optik (Ibn al-Haytham)', y: 1011, c: 'Physik & Technik', reach: 21, dur: 24, mult: 24, qual: 14, cbrk: 34, imm: 14, shk: 22, inv: 'Ibn al-Haytham', org: 'Ägypten/Irak',
         dsc: 'Ibn al-Haythams "Buch der Optik" begründete die experimentelle Methode.',
-        imp: 'Grundlage für Brillen, Teleskope, Mikroskope, Kameras.'
+        imp: 'Grundlage für Brillen, Teleskope, Mikroskope, Kameras.',
+        ctx: 'Während seines Hausarrests in Kairo bewies Ibn al-Haytham experimentell, dass Licht nicht vom Auge ausgeht (wie die Griechen dachten), sondern in das Auge fällt. Er erforschte Linsen, Spiegel und die Camera Obscura und gilt durch seinen systematischen Ansatz als einer der ersten echten Wissenschaftler.'
       },
 
       // SÜDASIEN
       {
         g: 'suedasien', n: 'Baumwolle (Textil)', y: -3000, c: 'Wirtschaft', reach: 20, dur: 22, mult: 12, qual: 14, cbrk: 20, imm: 18, shk: 12, inv: 'Indus-Zivilisation', org: 'Pakistan/Indien',
         dsc: 'Industal-Zivilisation kultivierte Baumwolle vor 5000 Jahren.',
-        imp: 'Grundlage globaler Textilindustrie. Prägend für frühe Industrialisierung.'
+        imp: 'Grundlage globaler Textilindustrie. Prägend für frühe Industrialisierung.',
+        ctx: 'Während man anderswo Felle, Leinen oder Wolle trug, domestizierten Bauern im Industal die Baumwollpflanze. Sie entwickelten Spinn- und Webtechniken, die Stoffe hervorbrachten, welche die Griechen später staunend als "Wolle, die auf Bäumen wächst" beschrieben.'
       },
       {
         g: 'suedasien', n: 'Medizin (Ayurveda)', y: -1500, c: 'Medizin', reach: 14, dur: 18, mult: 10, qual: 12, cbrk: 22, imm: 18, shk: 14, inv: 'Vedische Autoren', org: 'Indien',
         dsc: 'Vedische Texte beschreiben Ayurveda als umfassendes Medizinsystem.',
-        imp: 'Beeinflusste frühislamische Medizin; Yoga heute globale Gesundheitspraxis.'
+        imp: 'Beeinflusste frühislamische Medizin; Yoga heute globale Gesundheitspraxis.',
+        ctx: 'Ayurveda ("Wissen vom Leben") ist eines der ältesten ganzheitlichen Medizinsysteme. Die Texte Charaka Samhita und Sushruta Samhita beschreiben schon früh komplexe chirurgische Eingriffe (wie Nasenrekonstruktionen) und eine Lehre von den drei Doshas, die Prävention über Heilung stellt.'
       },
       {
         g: 'suedasien', n: 'Dezimalsystem', y: 500, c: 'Mathematik', reach: 25, dur: 25, mult: 28, qual: 17, cbrk: 38, imm: 14, shk: 20, inv: 'Aryabhata u.a.', org: 'Indien',
         dsc: 'Indische Mathematiker entwickelten das Dezimalsystem mit Stellenwert.',
-        imp: 'Ohne Dezimalsystem keine moderne Wissenschaft, Technik oder Wirtschaft.'
+        imp: 'Ohne Dezimalsystem keine moderne Wissenschaft, Technik oder Wirtschaft.',
+        ctx: 'Das geniale Konzept, dass der Wert einer Ziffer von ihrer Position abhängt (Einer, Zehner, Hunderter), entstand in Indien. Es vereinfachte Berechnungen dramatisch gegenüber dem römischen System und gelangte über arabische Gelehrte nach Europa.'
       },
       {
         g: 'suedasien', n: 'Null', y: 628, c: 'Mathematik', reach: 25, dur: 25, mult: 30, qual: 18, cbrk: 40, imm: 12, shk: 24, inv: 'Brahmagupta', org: 'Indien',
         dsc: 'Brahmagupta definierte 628 n. Chr. die Null als vollwertige Zahl.',
-        imp: 'Grundlage aller modernen Mathematik und des Binärcodes.'
+        imp: 'Grundlage aller modernen Mathematik und des Binärcodes.',
+        ctx: 'Was für die Griechen ein "Nichts" und philosophisch undenkbar war, definierten indische Denker (Shunya) als mathematische Größe. Brahmagupta formulierte Rechenregeln für die Null ("Null minus Null ist Null"), was die abstrakte Mathematik und später die binäre Logik von Computern ermöglichte.'
       },
-
       // EUROPA
       {
         g: 'europa', n: 'Druckerpresse', y: 1440, c: 'Kommunikation', reach: 22, dur: 24, mult: 28, qual: 16, cbrk: 34, imm: 20, shk: 28, inv: 'Johannes Gutenberg', org: 'Deutschland',
         dsc: 'Gutenbergs Druckerpresse (1440) ermöglichte Massenreproduktion von Texten.',
-        imp: 'Ermöglichte Reformation, Aufklärung und wissenschaftliche Revolution.'
+        imp: 'Ermöglichte Reformation, Aufklärung und wissenschaftliche Revolution.',
+        ctx: 'Gutenberg kombinierte die Weinpresse mit beweglichen Metalllettern und einer neuen, ölhaltigen Tinte. Sein System machte Bücher von Luxusobjekten zu Massenware. Dies brach das Informationsmonopol der Kirche und ermöglichte die schnelle Verbreitung von Luther, Kopernikus und Galileo.'
       },
       {
         g: 'europa', n: 'Dampfmaschine', y: 1769, c: 'Physik & Technik', reach: 24, dur: 22, mult: 28, qual: 18, cbrk: 30, imm: 28, shk: 22, inv: 'James Watt', org: 'Schottland',
         dsc: 'Watts Dampfmaschine (1769) trieb die Industrielle Revolution an.',
-        imp: 'Fabrikproduktion, Eisenbahn, Dampfschiff. Veränderte Arbeit und globale Wirtschaft.'
+        imp: 'Fabrikproduktion, Eisenbahn, Dampfschiff. Veränderte Arbeit und globale Wirtschaft.',
+        ctx: 'Newcomens Dampfmaschine war ineffizient. James Watt fügte ihr einen separaten Kondensator hinzu, was den Kohleverbrauch massiv senkte. Damit konnte Dampfkraft nicht nur Pumpen in Minen antreiben, sondern Mühlen, Webstühle und später Lokomotiven – der Motor der Industrialisierung.'
       },
       {
         g: 'europa', n: 'Eisenbahn', y: 1804, c: 'Infrastruktur', reach: 23, dur: 21, mult: 24, qual: 17, cbrk: 26, imm: 28, shk: 20, inv: 'Stephenson / Trevithick', org: 'England',
         dsc: 'Dampfeisenbahn verband Kontinente und ermöglichte Massentransport.',
-        imp: 'Trieb Industrialisierung und globalen Handel voran. Verdichtete Raum und Zeit.'
+        imp: 'Trieb Industrialisierung und globalen Handel voran. Verdichtete Raum und Zeit.',
+        ctx: 'Richard Trevithick baute die erste Lokomotive, doch erst George Stephensons "Rocket" bewies die Wirtschaftlichkeit. Die Eisenbahn schuf Zeitzonen, nationalen Zusammenhalt und den modernen Tourismus. Sie machte Landtransport erstmals schneller als ein galoppierendes Pferd.'
       },
       {
         g: 'europa', n: 'Impfung', y: 1796, c: 'Medizin', reach: 25, dur: 25, mult: 22, qual: 20, cbrk: 36, imm: 26, shk: 28, inv: 'Edward Jenner', org: 'England',
         dsc: 'Jenners Kuhpockenimpfstoff (1796) begründete die Immunologie.',
-        imp: 'Rettete Hunderte Millionen Leben. Pocken ausgerottet. Grundlage aller Impfstoffe.'
+        imp: 'Rettete Hunderte Millionen Leben. Pocken ausgerottet. Grundlage aller Impfstoffe.',
+        ctx: 'Das landläufige Wissen, dass Melkerinnen nicht an Pocken erkrankten, inspirierte Jenner. Er infizierte einen Jungen mit harmlosen Kuhpocken und bewies später dessen Immunität gegen die tödlichen Menschenpocken. Der Begriff "Vakzination" (von vacca: Kuh) erinnert an diesen Ursprung.'
       },
       {
         g: 'europa', n: 'Telefon', y: 1876, c: 'Kommunikation', reach: 23, dur: 18, mult: 20, qual: 16, cbrk: 28, imm: 24, shk: 22, inv: 'Alexander Graham Bell', org: 'USA/Schottland',
         dsc: 'Bell erfand 1876 das Telefon – instantane Sprachkommunikation.',
-        imp: 'Grundlage des modernen Telekommunikationsnetzes.'
+        imp: 'Grundlage des modernen Telekommunikationsnetzes.',
+        ctx: 'Bell, eigentlich Taubstummenlehrer, wollte Sprache sichtbar machen. Dabei entdeckte er, dass Stromschwankungen Schall übertragen können. Sein berühmter erster Satz "Mr. Watson, come here, I want to see you" begründete das Zeitalter der Echtzeit-Kommunikation über Distanz.'
       },
       {
         g: 'europa', n: 'Automobil', y: 1885, c: 'Physik & Technik', reach: 23, dur: 20, mult: 18, qual: 17, cbrk: 22, imm: 20, shk: 16, inv: 'Karl Benz', org: 'Deutschland',
         dsc: 'Benz\'s Patent-Motorwagen (1885) war das erste praxistaugliche Benzinfahrzeug.',
-        imp: 'Schuf globale Mobilitätswirtschaft. Veränderte Stadtplanung und Gesellschaft.'
+        imp: 'Schuf globale Mobilitätswirtschaft. Veränderte Stadtplanung und Gesellschaft.',
+        ctx: 'Während Daimler den Motor baute, konstruierte Karl Benz das erste integrierte Fahrzeug. Seine Frau Bertha bewies auf der ersten Fernfahrt (ohne sein Wissen), dass das "Ding" funktionierte – inklusive Reparatur der Benzinleitung mit einer Hutnadel.'
       },
       {
         g: 'europa', n: 'Röntgenstrahlen', y: 1895, c: 'Medizin', reach: 22, dur: 23, mult: 18, qual: 18, cbrk: 32, imm: 26, shk: 22, inv: 'Wilhelm Röntgen', org: 'Deutschland',
         dsc: 'Röntgen entdeckte 1895 die nach ihm benannten Strahlen.',
-        imp: 'Revolutionierte Diagnostik. Grundlage für CT, MRT und bildgebende Medizin.'
+        imp: 'Revolutionierte Diagnostik. Grundlage für CT, MRT und bildgebende Medizin.',
+        ctx: 'Beim Experimentieren mit Kathodenstrahlröhren bemerkte Röntgen ein mysteriöses Leuchten auf einem entfernten Schirm. Er nannte die unbekannte Strahlung "X-Strahlen". Das erste Röntgenbild zeigte die Hand seiner Frau – der erste schmerzfreie Blick in das Innere eines lebenden Menschen.'
       },
       {
         g: 'europa', n: 'Relativitätstheorie', y: 1905, c: 'Physik & Technik', reach: 20, dur: 25, mult: 26, qual: 14, cbrk: 40, imm: 8, shk: 30, inv: 'Albert Einstein', org: 'Deutschland',
         dsc: 'Einstein vereinte Raum und Zeit, formulierte E=mc².',
-        imp: 'Grundlage für GPS, Kernenergie, Lasertechnologie und moderne Kosmologie.'
+        imp: 'Grundlage für GPS, Kernenergie, Lasertechnologie und moderne Kosmologie.',
+        ctx: 'Als Patentamt-Angestellter dachte Einstein darüber nach, was passiert, wenn man neben einem Lichtstrahl herfliegt. Seine Theorie stürzte das newtonsche Weltbild: Zeit ist nicht absolut, Masse ist Energie. Ohne die Berücksichtigung der Zeitdilatation würde heutiges GPS pro Tag um 10 km falsch liegen.'
       },
       {
         g: 'europa', n: 'Fotografie', y: 1839, c: 'Kommunikation', reach: 23, dur: 22, mult: 25, qual: 16, cbrk: 30, imm: 20, shk: 18, inv: 'Daguerre / Talbot', org: 'Frankreich/UK',
         dsc: 'Daguerreotypie (1839) machte die Welt visuell konservierbar.',
-        imp: 'Revolutionierte Kunst, Wissenschaft, Journalismus und das menschliche Erinnern.'
+        imp: 'Revolutionierte Kunst, Wissenschaft, Journalismus und das menschliche Erinnern.',
+        ctx: 'Nach Niépces ersten Versuchen perfektionierte Daguerre das Verfahren mit versilberten Kupferplatten. Fast gleichzeitig entwickelte Talbot das Negativ-Positiv-Verfahren, das Vervielfältigung ermöglichte. Plötzlich konnte die Realität eingefroren und über Generationen bewahrt werden.'
       },
       {
         g: 'europa', n: 'Anästhesie', y: 1846, c: 'Medizin', reach: 25, dur: 25, mult: 18, qual: 20, cbrk: 34, imm: 30, shk: 24, inv: 'Morton / Wells', org: 'USA',
         dsc: 'Erste öffentliche Äther-Narkose (1846).',
-        imp: 'Ermöglichte schmerzfreie Operationen und damit moderne Chirurgie. Einer der größten humanitären Fortschritte.'
+        imp: 'Ermöglichte schmerzfreie Operationen und damit moderne Chirurgie. Einer der größten humanitären Fortschritte.',
+        ctx: 'Vor 1846 bedeutete Chirurgie Qual und Schock. Der Zahnarzt William Morton demonstrierte im "Ether Dome" in Boston öffentlich die Wirkung von Diethylether. Der Patient erwachte und sagte: "Gentlemen, this is no humbug." Damit endete das Zeitalter der Schmerzen im OP.'
       },
       {
         g: 'europa', n: 'Stromnetz / Glühbirne', y: 1879, c: 'Infrastruktur', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 32, imm: 28, shk: 26, inv: 'Edison u.a.', org: 'USA (System)',
         dsc: 'Edison entwickelte 1879 die kommerzielle Glühbirne und Verteilungssysteme.',
-        imp: 'Verlängerte den Arbeitstag, Grundlage aller elektrischen Geräte und modernen Industrie.'
+        imp: 'Verlängerte den Arbeitstag, Grundlage aller elektrischen Geräte und modernen Industrie.',
+        ctx: 'Die Glühbirne allein reichte nicht. Edisons eigentliche Leistung war das System: Kraftwerke, Kabel, Schalter und Zähler. Mit der Eröffnung der Pearl Street Station in New York begann die Elektrifizierung der Welt, die die Nacht zum Tag machte und Arbeit sowie Freizeit völlig veränderte.'
       },
       {
         g: 'europa', n: 'Kernspaltung', y: 1938, c: 'Physik & Technik', reach: 24, dur: 22, mult: 25, qual: 10, cbrk: 40, imm: 14, shk: 30, inv: 'Hahn / Meitner', org: 'Deutschland',
         dsc: 'Hahn und Meitner entdeckten 1938 die Spaltbarkeit von Uranatomen.',
-        imp: 'Führte zur Atombombe (geopolitische Ordnung) und Kernenergie (CO2-arme Energie).'
+        imp: 'Führte zur Atombombe (geopolitische Ordnung) und Kernenergie (CO2-arme Energie).',
+        ctx: 'Otto Hahn bestrahlte Uran mit Neutronen und fand überraschend Barium. Lise Meitner, im schwedischen Exil, lieferte die physikalische Erklärung: Der Atomkern war zerplatzt und hatte gewaltige Energie freigesetzt (E=mc²). Eine Entdeckung an der Schwelle zum Zweiten Weltkrieg, die die Geopolitik für immer veränderte.'
       },
       {
         g: 'europa', n: 'Penicillin', y: 1928, c: 'Medizin', reach: 24, dur: 23, mult: 20, qual: 20, cbrk: 28, imm: 26, shk: 20, inv: 'Alexander Fleming', org: 'Schottland',
         dsc: 'Flemings Penicillin-Entdeckung (1928) begründete die Antibiotika-Ära.',
-        imp: 'Machte tödliche Infektionen heilbar. Rettete über 200 Mio. Menschen.'
+        imp: 'Machte tödliche Infektionen heilbar. Rettete über 200 Mio. Menschen.',
+        ctx: 'Ein glücklicher Zufall: Fleming vergaß eine Petrischale mit Bakterien, auf der ein Schimmelpilz wuchs, der die Bakterien tötete. Es dauerte Jahre, bis Florey und Chain den Wirkstoff isolieren und massenhaft produzieren konnten – gerade rechtzeitig, um im Zweiten Weltkrieg Millionen Soldaten das Leben zu retten.'
       },
       {
         g: 'europa', n: 'World Wide Web', y: 1991, c: 'Kommunikation', reach: 25, dur: 22, mult: 29, qual: 20, cbrk: 22, imm: 24, shk: 18, inv: 'Tim Berners-Lee', org: 'CERN, Schweiz',
         dsc: 'Berners-Lee erfand 1991 das Web als universelles Informationssystem.',
-        imp: 'Veränderte Kommunikation, Wirtschaft, Wissenschaft und Kultur weltweit.'
+        imp: 'Veränderte Kommunikation, Wirtschaft, Wissenschaft und Kultur weltweit.',
+        ctx: 'Berners-Lee wollte eigentlich nur das Informationschaos am CERN ordnen. Er kombinierte Hypertext mit dem Internet. Seine wichtigste Entscheidung: Er patentierte das WWW nicht, sondern schenkte es der Welt, was dessen explosionsartige Verbreitung und die Demokratisierung von Wissen erst ermöglichte.'
       },
 
       // AMERIKA
       {
         g: 'amerika', n: 'Mais (Domestikation)', y: -7000, c: 'Wirtschaft', reach: 22, dur: 25, mult: 14, qual: 16, cbrk: 26, imm: 22, shk: 14, inv: 'Mesoamerikanische Bauern', org: 'Mexiko',
         dsc: 'Mesoamerikanische Kulturen domestizierten Mais (~7000 v. Chr.).',
-        imp: 'Nach 1492 globale Verbreitung. Eine der drei meistproduzierten Kulturpflanzen.'
+        imp: 'Nach 1492 globale Verbreitung. Eine der drei meistproduzierten Kulturpflanzen.',
+        ctx: 'Aus dem unscheinbaren Wildgras Teosinte züchteten Bauern in Mexiko über Jahrtausende den Mais. Diese genetische Meisterleistung bildete die Ernährungsgrundlage der Maya und Azteken und ist heute, ob als Nahrung oder Biosprit, die meistangebaute Pflanze der Welt.'
       },
       {
         g: 'amerika', n: 'Flugzeug', y: 1903, c: 'Infrastruktur', reach: 24, dur: 22, mult: 20, qual: 18, cbrk: 30, imm: 22, shk: 26, inv: 'Wright Brothers', org: 'USA',
         dsc: 'Die Wright-Brüder realisierten 1903 den ersten kontrollierten Motorflug.',
-        imp: 'Schuf globalen Luftverkehr, veränderte Krieg, Handel und Tourismus.'
+        imp: 'Schuf globalen Luftverkehr, veränderte Krieg, Handel und Tourismus.',
+        ctx: 'Orville und Wilbur Wright, Fahrradmechaniker aus Ohio, lösten das Problem des kontrollierten Fluges nicht mit stärkeren Motoren, sondern durch Aerodynamik (Flügelverwindung). Ihr erster Flug in Kitty Hawk dauerte nur 12 Sekunden, befreite den Menschen aber von der Erdgebundenheit.'
       },
       {
         g: 'amerika', n: 'Mikrochip / Computer', y: 1947, c: 'Physik & Technik', reach: 25, dur: 23, mult: 30, qual: 20, cbrk: 26, imm: 16, shk: 20, inv: 'Bell Labs / Von Neumann', org: 'USA',
         dsc: 'Transistor (1947) und Mikroprozessor – Grundlage der digitalen Revolution.',
-        imp: 'Ohne Computer kein Internet, keine Raumfahrt, keine moderne Medizin.'
+        imp: 'Ohne Computer kein Internet, keine Raumfahrt, keine moderne Medizin.',
+        ctx: 'Der Ersatz von glühenden Vakuumröhren durch winzige Halbleiter (Transistoren) in den Bell Labs markierte den Wendepunkt. Später gelang es, Tausende, dann Milliarden dieser Schalter auf einem Siliziumplättchen zu integrieren – die Geburt des Mikrochips, der heute in jedem Toaster steckt.'
       },
       {
         g: 'amerika', n: 'DNA-Struktur', y: 1953, c: 'Medizin', reach: 22, dur: 25, mult: 26, qual: 19, cbrk: 38, imm: 10, shk: 28, inv: 'Watson, Crick, Franklin', org: 'UK/USA',
         dsc: 'Entdeckung der Doppelhelix (1953) revolutionierte Biologie und Medizin.',
-        imp: 'Grundlage für Genetik, Gentherapie, Forensik, Biotechnologie und mRNA-Impfstoffe.'
+        imp: 'Grundlage für Genetik, Gentherapie, Forensik, Biotechnologie und mRNA-Impfstoffe.',
+        ctx: 'Basierend auf den entscheidenden Röntgenbildern von Rosalind Franklin entschlüsselten Watson und Crick die Struktur des Lebens. Die Erkenntnis, dass DNA Informationen in einem 4-Buchstaben-Code speichert, machte Biologie zu einer Informationswissenschaft.'
       },
       {
         g: 'amerika', n: 'Internet (ARPANET)', y: 1969, c: 'Kommunikation', reach: 25, dur: 23, mult: 30, qual: 20, cbrk: 24, imm: 14, shk: 18, inv: 'DARPA / UCLA', org: 'USA',
         dsc: 'ARPANET (1969) – technische Grundlage der digitalen Vernetzung.',
-        imp: 'Grundlage des Internets. Veränderte Kommunikation und Wirtschaft global.'
+        imp: 'Grundlage des Internets. Veränderte Kommunikation und Wirtschaft global.',
+        ctx: 'Mitten im Kalten Krieg suchte das US-Militär nach einem dezentralen Netzwerk, das auch bei Ausfall einzelner Knoten funktioniert. Die erste Nachricht "LO" (eigentlich "LOGIN", aber das System stürzte ab) zwischen zwei Unis in Kalifornien war der unauffällige Startschuss für das globale Netz.'
       },
       {
         g: 'amerika', n: 'Raumfahrt / GPS', y: 1969, c: 'Physik & Technik', reach: 21, dur: 20, mult: 20, qual: 16, cbrk: 28, imm: 22, shk: 24, inv: 'NASA', org: 'USA',
         dsc: 'Apollo-Programm (1969) – Menschen auf dem Mond.',
-        imp: 'GPS, Kommunikationssatelliten, neue Materialien aus der Raumfahrtforschung.'
+        imp: 'GPS, Kommunikationssatelliten, neue Materialien aus der Raumfahrtforschung.',
+        ctx: 'Der "Sputnik-Schock" löste ein technologisches Wettrüsten aus, das 1969 in der Mondlandung gipfelte. Neben dem Prestige brachte die Raumfahrt praktische Nebenprodukte: Satellitennavigation (GPS), Wettersatelliten und weltweite TV-Übertragungen.'
       },
       {
         g: 'amerika', n: 'Smartphone', y: 2007, c: 'Kommunikation', reach: 25, dur: 20, mult: 28, qual: 19, cbrk: 18, imm: 28, shk: 22, inv: 'Apple (Jobs) u.a.', org: 'USA',
         dsc: 'iPhone (2007) vereinte Telefon, Computer und Internet in der Hosentasche.',
-        imp: 'Veränderte sozialen Umgang, Wirtschaft und Informationszugang für Milliarden Menschen.'
+        imp: 'Veränderte sozialen Umgang, Wirtschaft und Informationszugang für Milliarden Menschen.',
+        ctx: 'Steve Jobs präsentierte 2007 drei Geräte in einem: "A widescreen iPod, a revolutionary mobile phone, and a breakthrough internet communicator." Durch die Einführung des App Stores wurde das Smartphone zum universellen Werkzeug für fast jede menschliche Tätigkeit.'
       },
       {
         g: 'amerika', n: 'Künstliche Intelligenz', y: 2022, c: 'Physik & Technik', reach: 25, dur: 25, mult: 30, qual: 15, cbrk: 30, imm: 30, shk: 28, inv: 'OpenAI / Google u.a.', org: 'USA/Global',
         dsc: 'Durchbruch generativer KI (ChatGPT u.a.) markiert Beginn des KI-Zeitalters.',
-        imp: 'Potenzial, jede Wissensarbeit, Forschung und Kreativität fundamental zu verändern. Auswirkungen noch offen.'
+        imp: 'Potenzial, jede Wissensarbeit, Forschung und Kreativität fundamental zu verändern. Auswirkungen noch offen.',
+        ctx: 'Jahrzehntelang war KI ein akademisches Nischenfeld. Durch die Kombination von riesigen Datenmengen und massiver Rechenkraft lernten neuronale Netze (Transformer-Modelle) plötzlich, menschliche Sprache zu verstehen und zu generieren. Dies markiert den Übergang von Werkzeugen, die Befehle ausführen, zu Werkzeugen, die mitdenken.'
       },
     ];
 
@@ -1521,6 +1590,7 @@
       document.getElementById('mMeta').innerHTML =
         `<span>📅 ${fmtY(inv.y)}</span><span>👤 ${inv.inv}</span><span>📍 ${inv.org}</span><span style="color:${g.col}">● ${g.name}</span>`;
       document.getElementById('mImp').textContent = inv.imp;
+      document.getElementById('mCtx').textContent = inv.ctx || 'Kontext wird geladen...';
       document.getElementById('mBody').textContent = inv.dsc;
       let dims, lbl;
       if (VIEW === 'revolution') {
