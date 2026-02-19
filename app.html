@@ -21,12 +21,12 @@
     }
 
     :root {
-      --bg: #07090e;
-      --s1: #0d1219;
-      --s2: #111827;
-      --s3: #161f2e;
+      --bg: #121212;
+      --s1: #1e1e1e;
+      --s2: #252525;
+      --s3: #303030;
       --gold: #c8962a;
-      --goldl: #e4b048;
+      --goldl: #e0c080;
       --cream: #ede6d8;
       --text: #bab5ab;
       --muted: #525c6e;
@@ -311,6 +311,32 @@
       color: var(--gold);
       font-size: 0.6rem;
       pointer-events: none;
+    }
+
+    /* ── Score inputs ── */
+    .sc-in {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--gold);
+      border-radius: 4px;
+      padding: 0.5rem;
+      width: 60px;
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .sc-in:focus {
+      border-color: var(--gold);
+      outline: none;
+      background: rgba(200, 150, 42, 0.08);
+    }
+
+    .sc-in::-webkit-inner-spin-button,
+    .sc-in::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
     /* ── Context Box ── */
