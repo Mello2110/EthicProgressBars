@@ -1192,6 +1192,7 @@
     </div>
   </div>
 
+  <script src="nobel_data.js"></script>
   <script>
     // ══════════════════════════════════════
     // DATA
@@ -1204,6 +1205,7 @@
       { id: 'mesopo', name: 'Mesopotamien / Antike', col: '#c9853a' },
       { id: 'afrika', name: 'Afrika', col: '#4aab9a' },
       { id: 'amerika', name: 'Amerika', col: '#7a5ab5' },
+      { id: 'ozeanien', name: 'Ozeanien', col: '#008080' },
     ];
     const GM = Object.fromEntries(GRP.map(g => [g.id, g]));
 
@@ -1505,131 +1507,7 @@
       },
     ];
 
-    const NOBEL = [
-      // PHYSIK
-      {
-        g: 'europa', n: 'Röntgenstrahlung', y: 1901, c: 'Physik', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 40, imm: 28, shk: 25, inv: 'Wilhelm Röntgen', org: 'Deutschland',
-        dsc: 'Entdeckung der X-Strahlen revolutionierte die medizinische Diagnostik.',
-        imp: 'Ermöglichte den ersten schmerzfreien Blick in den Körper. Grundlage für CT, Materialprüfung und DNA-Analyse.',
-        ctx: 'Der allererste Nobelpreis für Physik. Röntgen verzichtete bewusst auf ein Patent, damit die Menschheit maximalen Nutzen daraus ziehen konnte.'
-      },
-      {
-        g: 'europa', n: 'Radioaktivität', y: 1903, c: 'Physik', reach: 22, dur: 25, mult: 30, qual: 10, cbrk: 40, imm: 15, shk: 28, inv: 'Becquerel, P. & M. Curie', org: 'Frankreich/Polen',
-        dsc: 'Entdeckung der spontanen Radioaktivität und neuer Elemente.',
-        imp: 'Grundlage der Kernphysik, Krebstherapie und modernen Energieerzeugung.',
-        ctx: 'Marie Curie prägte den Begriff "Radioaktivität". Ihre Arbeit unter primitivsten Bedingungen ohne Schutzmaßnahmen kostete sie letztlich die Gesundheit, öffnete aber das Tor zum Verständnis des Atomkerns.'
-      },
-      {
-        g: 'europa', n: 'Quantentheorie', y: 1918, c: 'Physik', reach: 25, dur: 25, mult: 30, qual: 15, cbrk: 40, imm: 10, shk: 30, inv: 'Max Planck', org: 'Deutschland',
-        dsc: 'Entdeckung der Energiequanten veränderte das physikalische Weltbild fundamental.',
-        imp: 'Grundlage aller modernen Elektronik, Laser, Computerchips und MRT.',
-        ctx: 'Gegen die klassische Physik führte Planck die Idee ein, dass Energie nicht kontinuierlich, sondern in Paketen (Quanten) abgegeben wird – eine Verzweiflungstat, um Messdaten zu erklären, die zur Geburt der modernen Physik führte.'
-      },
-      {
-        g: 'europa', n: 'Relativitätstheorie', y: 1921, c: 'Physik', reach: 25, dur: 25, mult: 28, qual: 15, cbrk: 40, imm: 8, shk: 30, inv: 'Albert Einstein', org: 'Deutschland/Schweiz',
-        dsc: 'Für den photoelektrischen Effekt (und implizit Relativität).',
-        imp: 'Grundlage für GPS, Solarzellen, Laser und unser Verständnis von Raum und Zeit.',
-        ctx: 'Obwohl Einstein für den Photoeffekt (Licht als Teilchen) geehrt wurde, ist sein Name untrennbar mit der Relativitätstheorie verbunden, die unser Verständnis des Universums revolutionierte.'
-      },
-      {
-        g: 'amerika', n: 'Transistor', y: 1956, c: 'Physik', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 35, imm: 25, shk: 20, inv: 'Shockley, Bardeen, Brattain', org: 'USA',
-        dsc: 'Erfindung des Transistors, des Bausteins aller modernen Elektronik.',
-        imp: 'Grundlage des Informationszeitalters: Computer, Internet, Smartphones.',
-        ctx: 'Der Ersatz klobiger Vakuumröhren durch winzige Halbleiter ermöglichte die Miniaturisierung der Elektronik. John Bardeen ist der einzige Mensch, der den Physik-Nobelpreis zweimal erhielt (später für Supraleitung).'
-      },
 
-      // CHEMIE
-      {
-        g: 'europa', n: 'Haber-Bosch-Verfahren', y: 1918, c: 'Chemie', reach: 25, dur: 25, mult: 25, qual: 20, cbrk: 30, imm: 25, shk: 25, inv: 'Fritz Haber', org: 'Deutschland',
-        dsc: 'Synthese von Ammoniak aus Luftstickstoff für Düngemittel.',
-        imp: 'Ermährt heute ca. 50% der Weltbevölkerung. Ohne dies gäbe es weltweite Hungersnöte.',
-        ctx: 'Eine janusköpfige Erfindung: Sie ermöglichte Kunstdünger und sattte Milliarden, lieferte aber auch den Sprengstoff für zwei Weltkriege. Haber selbst gilt als Vater des Gaskriegs.'
-      },
-      {
-        g: 'europa', n: 'Penicillin', y: 1945, c: 'Medizin', reach: 25, dur: 25, mult: 25, qual: 25, cbrk: 35, imm: 30, shk: 20, inv: 'Fleming, Chain, Florey', org: 'UK',
-        dsc: 'Entdeckung und Isolierung des ersten Antibiotikums.',
-        imp: 'Kampf gegen bakterielle Infektionen. Erhöhte Lebenserwartung weltweit massiv.',
-        ctx: 'Flemings Zufallsfund 1928 blieb lange unbeachtet, bis Florey und Chain unter dem Druck des 2. Weltkriegs die industrielle Herstellung entwickelten und Millionen Soldaten retteten.'
-      },
-      {
-        g: 'europa', n: 'DNA-Struktur', y: 1962, c: 'Medizin', reach: 22, dur: 25, mult: 30, qual: 20, cbrk: 38, imm: 15, shk: 25, inv: 'Crick, Watson, Wilkins', org: 'UK/USA',
-        dsc: 'Entschlüsselung der Molekularstruktur der Nukleinsäuren.',
-        imp: 'Schlüssel zum Verständnis des Lebens, Vererbung und moderner Biotechnologie.',
-        ctx: 'Die Entdeckung der Doppelhelix basiert maßgeblich auf den Daten von Rosalind Franklin, die vor der Preisverleihung starb und leer ausging.'
-      },
-      {
-        g: 'europa', n: 'CRISPR/Cas9', y: 2020, c: 'Chemie', reach: 20, dur: 25, mult: 30, qual: 20, cbrk: 35, imm: 20, shk: 28, inv: 'Charpentier, Doudna', org: 'Frankreich/USA',
-        dsc: 'Die "Genschere" zur gezielten Veränderung von Erbgut.',
-        imp: 'Revolutioniert Medizin (Gentherapie) und Landwirtschaft. Potenzial zur Heilung von Erbkrankheiten.',
-        ctx: 'Ein bakterieller Abwehrmechanismus gegen Viren wurde zum präzisesten Werkzeug der Gentechnik umgebaut. Erlaubt "Editing" des Codes des Lebens.'
-      },
-
-      // MEDIZIN
-      {
-        g: 'europa', n: 'Insulin', y: 1923, c: 'Medizin', reach: 22, dur: 25, mult: 15, qual: 25, cbrk: 30, imm: 30, shk: 15, inv: 'Banting, Macleod', org: 'Kanada/Schottland',
-        dsc: 'Entdeckung des Insulins zur Behandlung von Diabetes.',
-        imp: 'Rettete Millionen Diabetikern das Leben, die zuvor dem Tod geweiht waren.',
-        ctx: 'Banting verkaufte das Patent für 1 Dollar an die Universität Toronto ("Insulin gehört der Welt, nicht mir"), um die Verfügbarkeit für alle Patienten zu sichern.'
-      },
-      {
-        g: 'ostasien', n: 'Artemisinin', y: 2015, c: 'Medizin', reach: 20, dur: 20, mult: 15, qual: 25, cbrk: 25, imm: 28, shk: 10, inv: 'Tu Youyou', org: 'China',
-        dsc: 'Neuartige Therapie gegen Malaria basierend auf traditioneller chinesischer Medizin.',
-        imp: 'Rettete Millionen Menschenleben in Entwicklungsländern, besonders Kinder.',
-        ctx: 'Tu Youyou durchforstete uralte Texte der TCM und fand in 1600 Jahre alten Schriften Hinweise auf Einjähriger Beifuß (Artemisia annua), extrahierte den Wirkstoff kalt und testete ihn an sich selbst.'
-      },
-      {
-        g: 'europa', n: 'IVF', y: 2010, c: 'Medizin', reach: 18, dur: 25, mult: 20, qual: 25, cbrk: 35, imm: 20, shk: 25, inv: 'Robert G. Edwards', org: 'UK',
-        dsc: 'Entwicklung der In-vitro-Fertilisation (künstliche Befruchtung).',
-        imp: 'Ermöglichte Millionen ungewollt kinderlosen Paaren die Familiengründung.',
-        ctx: 'Louise Brown, das erste "Retortenbaby", wurde 1978 geboren. Was damals als ethisch hochumstritten galt und als "Frankenstein-Forschung" beschimpft wurde, ist heute medizinischer Standard.'
-      },
-
-      // FRIEDEN
-      {
-        g: 'europa', n: 'Rotes Kreuz', y: 1901, c: 'Frieden', reach: 25, dur: 25, mult: 25, qual: 25, cbrk: 35, imm: 25, shk: 20, inv: 'Henry Dunant', org: 'Schweiz',
-        dsc: 'Gründung des Internationalen Komitees vom Roten Kreuz.',
-        imp: 'Etablierte Humanität im Krieg und die Genfer Konventionen.',
-        ctx: 'Nachdem Dunant das Leid der Schlacht von Solferino sah, initiierte er eine neutrale Hilfsorganisation. Er teilte sich den allerersten Friedensnobelpreis mit Frédéric Passy.'
-      },
-      {
-        g: 'amerika', n: 'Grüne Revolution', y: 1970, c: 'Frieden', reach: 25, dur: 22, mult: 25, qual: 25, cbrk: 30, imm: 30, shk: 20, inv: 'Norman Borlaug', org: 'USA',
-        dsc: 'Entwicklung von Hochertragsweizen, der Milliarden vor Hunger bewahrte.',
-        imp: 'Rettete schätzungsweise über eine Milliarde Menschenleben vor dem Hungertod.',
-        ctx: 'Borlaug züchtete in Mexiko krankheitsresistente, kurzhalmige Weizensorten. Seine Arbeit widerlegte die düsteren Prognosen, dass das Bevölkerungswachstum zwangsläufig zu globalen Hungersnöten führen würde.'
-      },
-      {
-        g: 'afrika', n: 'Anti-Apartheid', y: 1993, c: 'Frieden', reach: 18, dur: 20, mult: 25, qual: 20, cbrk: 30, imm: 20, shk: 28, inv: 'Mandela, de Klerk', org: 'Südafrika',
-        dsc: 'Friedlicher Übergang vom Apartheid-Regime zur Demokratie.',
-        imp: 'Verhinderte einen Bürgerkrieg und setzte ein globales Zeichen für Versöhnung.',
-        ctx: 'Mandela, nach 27 Jahren Haft, reichte seinen Unterdrückern die Hand. Ein seltenes Beispiel für einen nahezu gewaltfreien Machtwechsel in einem tief gespaltenen Land.'
-      },
-      {
-        g: 'suedasien', n: 'Mikrokredite', y: 2006, c: 'Frieden', reach: 20, dur: 20, mult: 25, qual: 20, cbrk: 30, imm: 20, shk: 15, inv: 'Muhammad Yunus', org: 'Bangladesch',
-        dsc: 'Grameen Bank und das Konzept der Mikrokredite für Arme.',
-        imp: 'Wirtschaftliche Selbstbestimmung für Millionen, besonders Frauen.',
-        ctx: 'Yunus bewies, dass die Ärmsten der Armen kreditwürdig sind. Mit Kleinstkrediten ohne Sicherheiten half er Millionen, aus der absoluten Armut zu entfliehen.'
-      },
-      {
-        g: 'nahost', n: 'Menschenrechte Iran', y: 2023, c: 'Frieden', reach: 18, dur: 15, mult: 25, qual: 15, cbrk: 20, imm: 15, shk: 25, inv: 'Narges Mohammadi', org: 'Iran',
-        dsc: 'Kampf gegen die Unterdrückung der Frauen im Iran.',
-        imp: 'Starkes Symbol für die "Frau, Leben, Freiheit"-Bewegung.',
-        ctx: 'Aus dem Gefängnis heraus kämpft Mohammadi weiter für Frauenrechte und gegen die Todesstrafe, stellvertretend für die mutigen Proteste im Iran.'
-      },
-
-      // LITERATUR (mit gesellschaftlichem Impact)
-      {
-        g: 'suedasien', n: 'Brückenbauer', y: 1913, c: 'Literatur', reach: 15, dur: 20, mult: 20, qual: 15, cbrk: 20, imm: 10, shk: 15, inv: 'Rabindranath Tagore', org: 'Indien',
-        dsc: 'Erster nicht-europäischer Literaturnobelpreisträger.',
-        imp: 'Kulturelle Brücke zwischen Ost und West, Stimme des Humanismus.',
-        ctx: 'Tagore war nicht nur Dichter, sondern Sozialreformer, der den Nationalismus ablehnte und Bildung förderte. Seine Lyrik ("Gitanjali") berührte Menschen weltweit.'
-      },
-      {
-        g: 'amerika', n: 'Stimme der Afroamerikaner', y: 1993, c: 'Literatur', reach: 18, dur: 20, mult: 20, qual: 15, cbrk: 25, imm: 15, shk: 20, inv: 'Toni Morrison', org: 'USA',
-        dsc: 'Kraftvolle Romane über die afroamerikanische Erfahrung.',
-        imp: 'Veränderte den literarischen Kanon und das Verständnis von Rassismus und Identität.',
-        ctx: 'Mit Werken wie "Beloved" gab sie den Vergessenen der Geschichte eine Stimme und thematisierte das Trauma der Sklaverei in einer neuen, eindringlichen Sprache.'
-      }
-    ];
 
     // ══════════════════════════════════════
     // STATE
