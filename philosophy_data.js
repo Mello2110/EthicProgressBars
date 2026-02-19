@@ -101,7 +101,7 @@ const PHILO = [
         ctx: 'After the horrors of WWII, the world nations agreed that rights are not granted by states but are inherent to humanity. "All human beings are born free and equal in dignity and rights."'
     },
     {
-        g: 'amerika', n: 'Civil Disobedience', y: 1849, c: 'rights', reach: 22, dur: 22, mult: 24, qual: 20, cbrk: 32, imm: 18, shk: 24, inv: 'Henry David Thoreau', org: 'USA',
+        g: 'amerika', n: 'Civil Disobedience', y: 1849, c: 'Rights', reach: 22, dur: 22, mult: 24, qual: 20, cbrk: 32, imm: 18, shk: 24, inv: 'Henry David Thoreau', org: 'USA',
         dsc: 'Right/Duty to refuse cooperation with an unjust state.',
         imp: 'Inspired Gandhi and Civil Rights Movement. Weapon of the powerless.',
         ctx: 'Jailed for refusing to pay poll taxes supporting the Mexican War and slavery, Thoreau argued that conscience is above law. "Under a government which imprisons any unjustly, the true place for a just man is also a prison."'

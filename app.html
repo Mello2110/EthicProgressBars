@@ -1721,11 +1721,8 @@
     const getFilteredItems = gid => getDatasetData()
       .filter(i => {
         const sc = calcScore(i);
-        // Filter by Group
-        if (i.g !== gid) return false;
-        // Filter by Score Range
+        if (gid && i.g !== gid) return false;
         if (sc < MIN_SCORE_VAL || sc > MAX_SCORE_VAL) return false;
-        // Filter by Category
         if (!CATS.has('all') && !CATS.has(i.c)) return false;
         return true;
       })
@@ -2018,38 +2015,41 @@
     function renderMap() {
       const cont = document.getElementById('mapBody');
       const items = getFilteredItems();
+      if (!items.length) {
+        cont.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);">No map data for current filters.</div>';
+        return;
+      }
 
-      // Simple SVG Map paths (abstracted continents)
       const svgMap = `
-        <svg viewBox="0 0 100 100" style="position:absolute; inset:0; width:100%; height:100%; opacity:0.1; pointer-events:none;">
-          <path d="M10,20 Q20,10 30,25 T40,40 Q30,60 15,55 Z" fill="#fff" /> <!-- N America -->
-          <path d="M15,60 Q25,85 35,75 T30,60 Z" fill="#fff" /> <!-- S America -->
-          <path d="M45,20 Q55,10 65,25 Q60,35 45,35 Z" fill="#fff" /> <!-- Europe -->
-          <path d="M42,40 Q55,40 65,60 Q55,85 40,75 Z" fill="#fff" /> <!-- Africa -->
-          <path d="M66,20 Q90,20 85,55 Q70,65 66,45 Z" fill="#fff" /> <!-- Asia -->
-          <path d="M75,70 Q90,70 85,85 Q75,85 75,70 Z" fill="#fff" /> <!-- Oceania -->
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; opacity:0.12; pointer-events:none;">
+          <path d="M10,20 Q20,10 30,25 T40,40 Q30,60 15,55 Z" fill="#fff" />
+          <path d="M15,60 Q25,85 35,75 T30,60 Z" fill="#fff" />
+          <path d="M45,20 Q55,10 65,25 Q60,35 45,35 Z" fill="#fff" />
+          <path d="M42,40 Q55,40 65,60 Q55,85 40,75 Z" fill="#fff" />
+          <path d="M66,20 Q90,20 85,55 Q70,65 66,45 Z" fill="#fff" />
+          <path d="M75,70 Q90,70 85,85 Q75,85 75,70 Z" fill="#fff" />
         </svg>
       `;
-
       cont.innerHTML = svgMap;
 
       items.forEach(i => {
         const pos = G_POS[i.g] || { x: 50, y: 50 };
         const score = calcScore(i);
-        const size = 6 + (score / 8);
+        const size = 7 + (score / 7);
         const dot = document.createElement('div');
         dot.className = 'map-dot';
         dot.style.cssText = `
           position:absolute;
-          left:${pos.x + (Math.random() - 0.5) * 10}%;
-          top:${pos.y + (Math.random() - 0.5) * 10}%;
+          left: calc(${pos.x}% + ${(Math.random() - 0.5) * 6}%);
+          top: calc(${pos.y}% + ${(Math.random() - 0.5) * 6}%);
           width:${size}px; height:${size}px;
           background:${GM[i.g].col};
           border-radius:50%;
           cursor:pointer;
-          box-shadow: 0 0 15px ${GM[i.g].col};
+          box-shadow: 0 0 20px ${GM[i.g].col}aa;
           transform: translate(-50%, -50%);
           transition: all 0.3s;
+          z-index: 10;
         `;
         dot.addEventListener('mouseenter', e => showTT(e, i, GM[i.g].col));
         dot.addEventListener('mousemove', posTT);
@@ -2064,13 +2064,19 @@
     function renderNetwork() {
       const cont = document.getElementById('netBody');
       const items = getFilteredItems();
-      const W = cont.clientWidth, H = cont.clientHeight;
+      if (!items.length) {
+        cont.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);">No network data available.</div>';
+        return;
+      }
+
+      const W = cont.clientWidth || window.innerWidth - 360, H = cont.clientHeight || 600;
 
       netNodes = items.map(i => ({
         ...i,
-        x: W / 2 + (Math.random() - 0.5) * 100,
-        y: H / 2 + (Math.random() - 0.5) * 100,
-        vx: 0, vy: 0
+        x: W / 2 + (Math.random() - 0.5) * W / 4,
+        y: H / 2 + (Math.random() - 0.5) * H / 4,
+        vx: 0, vy: 0,
+        el: null
       }));
 
       const links = [];
@@ -2083,18 +2089,38 @@
         }
       });
 
-      const svgLinks = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svgLinks.style.cssText = "position:absolute; inset:0; width:100%; height:100%; pointer-events:none;";
       cont.innerHTML = "";
+      const svgLinks = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svgLinks.style.cssText = "position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1;";
       cont.appendChild(svgLinks);
 
       const dotContainer = document.createElement("div");
-      dotContainer.style.cssText = "position:absolute; inset:0; pointer-events:all;";
+      dotContainer.style.cssText = "position:absolute; inset:0; pointer-events:all; z-index:2;";
       cont.appendChild(dotContainer);
+
+      netNodes.forEach(n => {
+        const sc = calcScore(n);
+        const size = Math.max(9, 7 + (sc / 7));
+        const col = GM[n.g].col;
+        const dot = document.createElement('div');
+        dot.className = 'net-dot';
+        dot.style.cssText = `
+          position:absolute; width:${size}px; height:${size}px;
+          background:${col}; border-radius:50%; transform:translate(-50%,-50%);
+          box-shadow: 0 0 15px ${col}88; cursor:pointer; 
+          border: 1.5px solid rgba(255,255,255,0.25);
+        `;
+        dot.addEventListener('mouseenter', e => showTT(e, n, col));
+        dot.addEventListener('mousemove', posTT);
+        dot.addEventListener('mouseleave', hideTT);
+        dot.addEventListener('click', () => { hideTT(); openModal(n, col); });
+        dotContainer.appendChild(dot);
+        n.el = dot;
+      });
 
       let it = 0;
       function tick() {
-        if (it > 150) return;
+        if (it > 200 || VIEW !== 'network') return;
         it++;
 
         for (let i = 0; i < netNodes.length; i++) {
@@ -2102,7 +2128,7 @@
             const n1 = netNodes[i], n2 = netNodes[j];
             const dx = n2.x - n1.x, dy = n2.y - n1.y;
             const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-            const f = 1500 / (dist * dist);
+            const f = 2200 / (dist * dist);
             n1.vx -= f * (dx / dist); n1.vy -= f * (dy / dist);
             n2.vx += f * (dx / dist); n2.vy += f * (dy / dist);
           }
@@ -2111,38 +2137,24 @@
         links.forEach(l => {
           const dx = l.t.x - l.s.x, dy = l.t.y - l.s.y;
           const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-          const f = (dist - 100) * 0.05;
+          const f = (dist - 140) * 0.045;
           l.s.vx += f * (dx / dist); l.s.vy += f * (dy / dist);
           l.t.vx -= f * (dx / dist); l.t.vy -= f * (dy / dist);
         });
 
         netNodes.forEach(n => {
-          n.vx += (W / 2 - n.x) * 0.01;
-          n.vy += (H / 2 - n.y) * 0.01;
-          n.vx *= 0.6; n.vy *= 0.6;
+          n.vx += (W / 2 - n.x) * 0.012;
+          n.vy += (H / 2 - n.y) * 0.012;
+          n.vx *= 0.62; n.vy *= 0.62;
           n.x += n.vx; n.y += n.vy;
+          n.el.style.left = n.x + 'px';
+          n.el.style.top = n.y + 'px';
         });
 
         svgLinks.innerHTML = links.map(l => `
           <line x1="${l.s.x}" y1="${l.s.y}" x2="${l.t.x}" y2="${l.t.y}" 
-                stroke="rgba(200, 150, 42, 0.2)" stroke-width="1.5" />
+                stroke="rgba(200, 150, 42, 0.28)" stroke-width="1.5" />
         `).join("");
-
-        dotContainer.innerHTML = netNodes.map(n => {
-          const size = 10 + (calcScore(n) / 10);
-          return `<div class="net-dot" style="
-            position:absolute; left:${n.x}px; top:${n.y}px;
-            width:${size}px; height:${size}px;
-            background:${GM[n.g].col};
-            border-radius:50%; transform:translate(-50%,-50%);
-            box-shadow: 0 0 10px ${GM[n.g].col}88;
-            cursor:pointer;"
-            onmouseenter="showTT(event, ${JSON.stringify(n).replace(/"/g, '&quot;')}, '${GM[n.g].col}')"
-            onmousemove="posTT(event)" 
-            onmouseleave="hideTT()"
-            onclick="openModal(${JSON.stringify(n).replace(/"/g, '&quot;')}, '${GM[n.g].col}')"
-          ></div>`;
-        }).join("");
 
         requestAnimationFrame(tick);
       }
@@ -2160,15 +2172,7 @@
       if (isMap) renderMap();
       else if (isNet) renderNetwork();
       else if (VIEW === 'timeline') {
-        const allInvs = getDatasetData()
-          .filter(i => {
-            const sc = calcScore(i);
-            if (sc < MIN_SCORE_VAL || sc > MAX_SCORE_VAL) return false;
-            if (!CATS.has('all') && !CATS.has(i.c)) return false;
-            return true;
-          })
-          .sort((a, b) => a.y - b.y);
-        renderTimeline(allInvs);
+        renderTimeline(getFilteredItems());
       } else {
         const sg = sortedGrp();
         renderGrouped(sg);
@@ -2401,11 +2405,11 @@
 
     // ══════════════════════════════════════
     // INIT
-    // ══════════════════════════════════════
-    updateCategoryChips(); // Init chips
-    updateMethodology(); // Init meth
-    document.getElementById('vtDesc').textContent = DESCS['grouped'];
+    updateCategoryChips();
+    updateMethodology();
+    document.getElementById('vtDesc').textContent = DESCS[VIEW];
     render();
+    updateLegend();
   </script>
 </body>
 
