@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -1008,8 +1008,8 @@
   <nav class="nav">
     <a class="nav-logo" href="index.html">EPB</a>
     <div class="nav-div"></div>
-    <span class="nav-hint">Ethnic Progress Bar · Visualisierung</span>
-    <a class="nav-back" href="index.html">← Zurück</a>
+    <span class="nav-hint">Ethnic Progress Bar · Visualization</span>
+    <a class="nav-back" href="index.html">← Back</a>
   </nav>
 
   <!-- APP SHELL -->
@@ -1036,7 +1036,7 @@
       <!-- Controls -->
       <div class="sb-sec">
         <div class="sb-lbl">View</div>
-        <div class="view-toggles" id="viewToggles">
+        <div class="view-toggles" id="vtabs">
           <button class="vt on" data-v="grouped">Groups</button>
           <button class="vt" data-v="timeline">Timeline</button>
           <button class="vt" data-v="revolution">Revolution</button>
@@ -1067,9 +1067,9 @@
           </div>
           <div class="sb-ctl"><span class="sb-ctl-lbl">Impact Score Range</span>
             <div class="range-inputs">
-              <input type="number" id="minInput" placeholder="Min" value="0" min="0" max="100" class="sc-in">
+              <input type="number" id="minScoreInp" placeholder="Min" value="0" min="0" max="100" class="sc-in">
               <span>-</span>
-              <input type="number" id="maxInput" placeholder="Max" value="100" min="0" max="100" class="sc-in">
+              <input type="number" id="maxScoreInp" placeholder="Max" value="100" min="0" max="100" class="sc-in">
             </div>
           </div>
         </div>
@@ -1122,7 +1122,7 @@
       </div>
       <span class="tt-rn" id="ttRn"></span>
     </div>
-    <div class="tt-hint">Klicken für Details ↗</div>
+    <div class="tt-hint">Click for details ↗</div>
   </div>
 
   <!-- MODAL -->
@@ -1133,18 +1133,18 @@
       <h2 class="m-h" id="mH"></h2>
       <div class="m-meta" id="mMeta"></div>
       <div class="m-imp">
-        <div class="m-imp-t">Gesellschaftliche Wirkung</div>
+        <div class="m-imp-t">Societal Impact</div>
         <p id="mImp"></p>
       </div>
       <div class="m-ctx">
-        <div class="m-ctx-t">Historischer Kontext</div>
+        <div class="m-ctx-t">Historical Context</div>
         <p id="mCtx"></p>
       </div>
       <div class="m-body" id="mBody"></div>
       <div class="m-sc">
-        <div class="m-sc-t">Score-Aufschlüsselung</div>
+        <div class="m-sc-t">Score Breakdown</div>
         <div id="mRows"></div>
-        <div class="m-tot"><span class="m-tot-l" id="mTotL">Gesamt</span><span class="m-tot-n" id="mTot"></span></div>
+        <div class="m-tot"><span class="m-tot-l" id="mTotL">Total</span><span class="m-tot-n" id="mTot"></span></div>
       </div>
     </div>
   </div>
@@ -1453,6 +1453,10 @@
       {
         g: 'amerika', n: 'Smartphone', y: 2007, c: 'Communication', reach: 25, dur: 20, mult: 28, qual: 19, cbrk: 18, imm: 28, shk: 22, inv: 'Apple (Jobs) et al.', org: 'USA',
         dsc: 'iPhone (2007) combined phone, computer, and internet in the pocket.',
+        imp: 'Changed social interaction, economy, and information access for billions.',
+        ctx: 'Steve Jobs presented three devices in one in 2007: "A widescreen iPod, a revolutionary mobile phone, and a breakthrough internet communicator." With the introduction of the App Store, the smartphone became the universal tool for almost every human activity.'
+      },
+      {
         g: 'amerika', n: 'Artificial Intelligence', y: 2022, c: 'Physics & Tech', reach: 25, dur: 25, mult: 30, qual: 15, cbrk: 30, imm: 30, shk: 28, inv: 'OpenAI / Google et al.', org: 'USA/Global',
         dsc: 'Breakthrough of generative AI (ChatGPT et al.) marks the beginning of the AI age.',
         imp: 'Potential to fundamentally change all knowledge work, research, and creativity. Effects still open.',
@@ -1463,12 +1467,74 @@
 
 
     // ══════════════════════════════════════
-    // VARS
-    let DATASET = 'inv'; // 'inv' or 'nobel'
-    let VIEW = 'impact'; // 'impact', 'revolution', 'timeline'
-    let SORT = 'score';  // 'score', 'count', 'alpha', 'oldest' (affects Grouped View)
-    let CATS = new Set(['all']); // 'all' or specific IDs
-    // Range Filter
+    // DATASETS CONFIG
+    // ══════════════════════════════════════
+    const DATASETS = {
+      inv: {
+        data: INV,
+        lbl: 'Inventions',
+        cats: ['Medicine', 'Physics & Tech', 'Math', 'Communication', 'Economy', 'Infrastructure'],
+        chips: [
+          { id: 'Medicine', l: '🏥 Medicine' },
+          { id: 'Physics & Tech', l: '⚙️ Physics & Tech' },
+          { id: 'Math', l: '🔢 Math' },
+          { id: 'Communication', l: '📡 Communication' },
+          { id: 'Economy', l: '💰 Economy' },
+          { id: 'Infrastructure', l: '🏗️ Infrastructure' }
+        ],
+        scoreA_lbl: 'Societal Impact',
+        scoreB_lbl: 'Revolutionary',
+        meth: {
+          A: [
+            { t: '🌍 Reach', d: 'Local to Global', max: 25 },
+            { t: '⏳ Durability', d: 'Decades to Millennia', max: 25 },
+            { t: '🔗 Multiplier', d: 'Follow-up Innovations', max: 30 },
+            { t: '🏥 Quality of Life', d: 'Daily Life Improvement', max: 20 }
+          ],
+          B: [
+            { t: '🧠 Concept Break', d: 'Surprise Effect', max: 40 },
+            { t: '⚡ Instant Impact', d: 'Speed of Adoption', max: 30 },
+            { t: '🌐 Societal Shock', d: 'Change of Order', max: 30 }
+          ]
+        }
+      },
+      nobel: {
+        data: typeof NOBEL !== 'undefined' ? NOBEL : [],
+        lbl: 'Nobel Prizes',
+        cats: ['Physics', 'Chemistry', 'Medicine', 'Peace', 'Literature', 'Economics'],
+        chips: [
+          { id: 'Physics', l: '⚛️ Physics' },
+          { id: 'Chemistry', l: '🧪 Chemistry' },
+          { id: 'Medicine', l: '⚕️ Medicine' },
+          { id: 'Peace', l: '🕊️ Peace' },
+          { id: 'Literature', l: '📖 Literature' },
+          { id: 'Economics', l: '📈 Economics' }
+        ],
+        scoreA_lbl: 'Positive Impact',
+        scoreB_lbl: 'Disruption Factor',
+        meth: {
+          A: [
+            { t: '🌍 Global Reach', d: 'International Recognition', max: 25 },
+            { t: '⏳ Lasting Legacy', d: 'Enduring Relevance', max: 25 },
+            { t: '🔗 Scientific Multiplier', d: 'Basis for new fields', max: 30 },
+            { t: '🏥 Human Benefit', d: 'Saving lives / Peace', max: 20 }
+          ],
+          B: [
+            { t: '🧠 Paradigm Shift', d: 'Changing how we think', max: 40 },
+            { t: '⚡ Immediate Effect', d: 'Rapid implementation', max: 30 },
+            { t: '🌐 Cultural Impact', d: 'Global Awareness', max: 30 }
+          ]
+        }
+      }
+    };
+
+    // ══════════════════════════════════════
+    // STATE
+    // ══════════════════════════════════════
+    let DATASET = 'inv';
+    let VIEW = 'grouped';
+    let SORT = 'score';
+    let CATS = new Set(['all']);
     let MIN_SCORE_VAL = 0;
     let MAX_SCORE_VAL = 100;
 
@@ -1477,9 +1543,44 @@
     const scoreB = i => i.cbrk + i.imm + i.shk;
     const calcScore = i => VIEW === 'revolution' ? scoreB(i) : scoreA(i);
     const maxSc = 100;
+    const fmtY = y => y < 0 ? `${Math.abs(y)} BC` : `${y} AD`;
 
     // DATA HELPERS
     const getDatasetData = () => DATASETS[DATASET].data;
+
+    // UPDATE CHIPS
+    function updateCategoryChips() {
+      const cCont = document.getElementById('chips');
+      const conf = DATASETS[DATASET];
+      cCont.innerHTML = `<button class="ch ${CATS.has('all') ? 'on' : ''}" data-c="all">All</button>` +
+        conf.chips.map(c => `<button class="ch ${CATS.has(c.id) ? 'on' : ''}" data-c="${c.id}">${c.l}</button>`).join('');
+    }
+
+    // UPDATE METHODOLOGY
+    function updateMethodology() {
+      const d = DATASETS[DATASET].meth;
+      const mA = d.A.map(m => `
+        <div class="meth-dim">
+          <div class="meth-dim-t">${m.t} (max ${m.max})</div>
+          <p>${m.d}</p>
+        </div>
+      `).join('');
+      const mB = d.B.map(m => `
+        <div class="meth-dim">
+          <div class="meth-dim-t">${m.t} (max ${m.max})</div>
+          <p>${m.d}</p>
+        </div>
+      `).join('');
+
+      const inner = `
+        <div class="meth-group-title">Score A – ${DATASETS[DATASET].scoreA_lbl}</div>
+        ${mA}
+        <div class="meth-group-title">Score B – ${DATASETS[DATASET].scoreB_lbl}</div>
+        ${mB}
+        <div class="meth-note">Methodology adapted for ${DATASETS[DATASET].lbl}.</div>
+      `;
+      document.querySelector('.meth-inner').innerHTML = inner;
+    }
 
     // Filtering Logic: group + range + category
     const getFilteredItems = gid => getDatasetData()
@@ -1578,7 +1679,7 @@
       document.getElementById('mMeta').innerHTML =
         `<span>📅 ${fmtY(inv.y)}</span><span>👤 ${inv.inv}</span><span>📍 ${inv.org}</span><span style="color:${g.col}">● ${g.name}</span>`;
       document.getElementById('mImp').textContent = inv.imp;
-      document.getElementById('mCtx').textContent = inv.ctx || 'Kontext wird geladen...';
+      document.getElementById('mCtx').textContent = inv.ctx || 'Context loading...';
       document.getElementById('mBody').textContent = inv.dsc;
       let dims, lbl;
       const conf = DATASETS[DATASET];
@@ -1644,7 +1745,7 @@
       cBody.innerHTML = ''; xStrip.innerHTML = '';
 
       document.getElementById('yLbl').textContent =
-        VIEW === 'revolution' ? `${DATASETS[DATASET].scoreB_lbl} (kumuliert)` : `${DATASETS[DATASET].scoreA_lbl} (kumuliert)`;
+        VIEW === 'revolution' ? `${DATASETS[DATASET].scoreB_lbl} (cumulative)` : `${DATASETS[DATASET].scoreA_lbl} (cumulative)`;
 
       // C-layout
       const layout = document.createElement('div');
@@ -1695,7 +1796,7 @@
         const invs = getFilteredItems(g.id);
         const tot = invs.reduce((s, i) => s + calcScore(i), 0);
         const lc = document.createElement('div'); lc.className = 'glbl';
-        lc.innerHTML = `<div class="glbl-n">${g.name}</div><div class="glbl-m">${invs.length} Erf. · ${tot}</div>`;
+        lc.innerHTML = `<div class="glbl-n">${g.name}</div><div class="glbl-m">${invs.length} items · ${tot} pts</div>`;
         gl.appendChild(lc);
       });
       xStrip.appendChild(gl);
@@ -1708,10 +1809,10 @@
       const cBody = document.getElementById('cBody');
       const xStrip = document.getElementById('xStrip');
       cBody.innerHTML = ''; xStrip.innerHTML = '';
-      document.getElementById('yLbl').textContent = 'Score der Erfindung';
+      document.getElementById('yLbl').textContent = 'Item Score';
 
       if (!allInvs.length) {
-        cBody.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted);">Keine Erfindungen für diese Filter.</div>';
+        cBody.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted);">No items match the current filters.</div>';
         return;
       }
 
@@ -1770,8 +1871,8 @@
 
       // x-strip info
       const inf = document.createElement('div'); inf.className = 'tlinfo';
-      const term = DATASET === 'nobel' ? 'Preise' : 'Erfindungen';
-      inf.innerHTML = `← ${fmtY(allInvs[0].y)} &ensp;·&ensp; ${fmtY(allInvs[N - 1].y)} →&ensp;&ensp;Farbe = Kulturkreis &ensp;·&ensp; Höhe = Score &ensp;·&ensp; ${N} ${term} dargestellt`;
+      const term = DATASET === 'nobel' ? 'Prizes' : 'Inventions';
+      inf.innerHTML = `← ${fmtY(allInvs[0].y)} &ensp;·&ensp; ${fmtY(allInvs[N - 1].y)} →&ensp;&ensp;Color = Culture Group &ensp;·&ensp; Height = Score &ensp;·&ensp; ${N} ${term} displayed`;
       xStrip.appendChild(inf);
     }
 
@@ -1779,38 +1880,31 @@
     // RENDER MAIN
     // ══════════════════════════════════════
     function render() {
-      const cont = document.getElementById('chart');
-      cont.innerHTML = '';
-
       // Timeline Logic Update: also respect min/max
       if (VIEW === 'timeline') {
         const allInvs = getDatasetData()
           .filter(i => {
             const sc = calcScore(i);
-            // Filter range
             if (sc < MIN_SCORE_VAL || sc > MAX_SCORE_VAL) return false;
-            // Filter category
             if (!CATS.has('all') && !CATS.has(i.c)) return false;
             return true;
           })
           .sort((a, b) => a.y - b.y);
-
         renderTimeline(allInvs);
       } else {
         const sg = sortedGrp();
         renderGrouped(sg);
-        // Important: Update Legend dynamically based on current view content
-        updateLegend();
       }
+      updateLegend();
     }
 
     // ══════════════════════════════════════
     // VIEW DESCRIPTIONS
     // ══════════════════════════════════════
     const DESCS = {
-      grouped: 'Balken = Kulturkreise. Höhe = kumulierter Score. Hover = Info, Klick = Details.',
-      timeline: 'Chronologischer Zeitstrahl. Jede Entität = ein Balken. Höhe = Score. Farbe = Kulturkreis.',
-      revolution: 'Score B bewertet den Bruch mit dem Bestehenden und die unmittelbare Erschütterung des Status Quo.',
+      grouped: 'Bars = Culture Groups. Height = cumulative score. Hover = Info, Click = Details.',
+      timeline: 'Chronological timeline. Each entity = one bar. Height = Score. Color = Culture Group.',
+      revolution: 'Score B evaluates the break with existing paradigms and the immediate disruption of the status quo.',
     };
 
     // ══════════════════════════════════════
@@ -1818,94 +1912,69 @@
     // ══════════════════════════════════════
     // DYNAMIC LEGEND UPDATE
     function updateLegend() {
-      const legContainer = document.querySelector('.leg');
-      // Calculate total score for each group based on current filters logic
-      // We can use gTot(gid) which already respects range & cats
+      const legGrid = document.getElementById('legGrid');
+      const maxT = maxTot();
 
-      // Get all groups, attach their current total score
+      // Get all groups with scores, sorted by total descending
       const groupsWithScore = GRP.map(g => ({
         ...g,
         totalScore: gTot(g.id)
       }));
-
-      // Sort by total score descending
       groupsWithScore.sort((a, b) => b.totalScore - a.totalScore);
 
-      // Re-render legend items
-      // <div class="leg-title">Inventions by Region:</div>
-      // <div class="leg-item"><div class="leg-c" style="background:#c9853a"></div>Mesopotamia</div>
-      // ...
-
-      let html = `<div class="leg-title">Sorted by Points:</div>`;
-      groupsWithScore.forEach(g => {
-        // Optional: Maybe hide groups with 0 score? 
-        // For now, we show all, just sorted.
-        html += `
-          <div class="leg-item">
-            <div class="leg-c" style="background:${g.col}"></div>
-            ${g.name} <span style="opacity:0.5; font-size:0.8em; margin-left:4px">(${g.totalScore})</span>
-          </div>
-        `;
-      });
-      legContainer.innerHTML = html;
+      legGrid.innerHTML = groupsWithScore.map(g => {
+        const pct = maxT > 0 ? (g.totalScore / maxT) * 100 : 0;
+        return `<div class="leg-row">
+          <div class="leg-dot" style="background:${g.col}"></div>
+          <span class="leg-name">${g.name}</span>
+          <div class="leg-bar"><div class="leg-bar-f" style="width:${pct}%;background:${g.col}"></div></div>
+          <span class="leg-pts">${g.totalScore}</span>
+        </div>`;
+      }).join('');
     }
 
     // EVENT LISTENERS
+    // Dataset switcher
     document.getElementById('dtabs').addEventListener('click', e => {
       const t = e.target.closest('.vt'); if (!t) return;
       if (t.dataset.d === DATASET) return;
-
       DATASET = t.dataset.d;
       document.querySelectorAll('#dtabs .vt').forEach(v => v.classList.toggle('on', v === t));
-
-      CATS = new Set(['all']); // Reset Categories
-
+      CATS = new Set(['all']);
       updateCategoryChips();
       updateMethodology();
       render();
     });
 
+    // View switcher
     document.getElementById('vtabs').addEventListener('click', e => {
       const t = e.target.closest('.vt'); if (!t) return;
       if (t.dataset.v === VIEW) return;
-
       VIEW = t.dataset.v;
       document.querySelectorAll('#vtabs .vt').forEach(v => v.classList.toggle('on', v === t));
-
-      updateMethodology(); // Score labels change
+      document.getElementById('sortSec').style.display = VIEW === 'timeline' ? 'none' : '';
+      document.getElementById('vtDesc').textContent = DESCS[VIEW];
+      updateMethodology();
       render();
     });
 
     // Score Range Inputs
     const minInp = document.getElementById('minScoreInp');
     const maxInp = document.getElementById('maxScoreInp');
-
     function updateRange() {
       let min = parseInt(minInp.value) || 0;
       let max = parseInt(maxInp.value) || 100;
-
-      // Validate
       if (min < 0) min = 0;
       if (max > 100) max = 100;
-      // We allow min > max momentarily while typing, or clamp it?
-      // Let's just clamp min to max if needed for logic, but maybe not inputs to avoid fighting user
-
       MIN_SCORE_VAL = min;
       MAX_SCORE_VAL = max;
-
       render();
     }
-
     minInp.addEventListener('input', updateRange);
     maxInp.addEventListener('input', updateRange);
 
-    // Sort Buttons
-    document.getElementById('sorts').addEventListener('click', e => {
-      const b = e.target.closest('button'); if (!b) return;
-      SORT = b.dataset.s;
-      document.querySelectorAll('#sorts button').forEach(btn => btn.classList.toggle('on', btn === b));
-      render();
-    });
+    // Sort dropdown
+    document.getElementById('sortSel').addEventListener('change', e => { SORT = e.target.value; render(); });
 
     document.getElementById('chips').addEventListener('click', e => {
       const b = e.target.closest('.ch'); if (!b) return;
@@ -1934,6 +2003,7 @@
     // ══════════════════════════════════════
     // INIT
     // ══════════════════════════════════════
+    updateCategoryChips(); // Init chips
     updateMethodology(); // Init meth
     document.getElementById('vtDesc').textContent = DESCS['grouped'];
     render();
