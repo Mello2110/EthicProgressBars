@@ -1105,10 +1105,9 @@
         <div class="sb-lbl">View</div>
         <div class="view-toggles" id="vtabs">
           <button class="vt on" data-v="grouped">Groups</button>
-          <button class="vt" data-v="timeline">Timeline</button>
           <button class="vt" data-v="revolution">Revolution</button>
+          <button class="vt" data-v="timeline">Timeline</button>
           <button class="vt" data-v="map">Map</button>
-          <button class="vt" data-v="network">Network</button>
         </div>
         <div class="vt-desc" id="vtDesc">Compare contributions by culture group.</div>
       </div>
@@ -1183,7 +1182,6 @@
         <!-- chart body injected here by JS -->
         <div id="cBody" style="flex:1;min-height:0;display:flex;flex-direction:column;"></div>
         <div id="mapBody" style="display:none; flex:1; position:relative; overflow:hidden; background:#181818;"></div>
-        <div id="netBody" style="display:none; flex:1; position:relative; overflow:hidden; background:#121212;"></div>
         <div class="x-strip" id="xStrip"></div>
       </div>
     </main>
@@ -2011,167 +2009,99 @@
     // ══════════════════════════════════════
     // RENDER MAIN
     // ══════════════════════════════════════
+
     // ── MAP RENDER ──
     function renderMap() {
       const cont = document.getElementById('mapBody');
       const items = getFilteredItems();
-      if (!items.length) {
-        cont.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);">No map data for current filters.</div>';
-        return;
-      }
+      
+      const regions = [
+        { id: 'na', name: 'North America', p: 'M10,25 L25,18 L35,22 L38,42 L25,50 L12,42 Z' },
+        { id: 'ca', name: 'Central America & Caribbean', p: 'M18,48 L25,52 L28,48 L22,45 Z' },
+        { id: 'sa', name: 'South America', p: 'M25,52 L38,55 L35,85 L25,80 Z' },
+        { id: 'eu', name: 'Europe', p: 'M44,18 L58,18 L62,35 L44,35 Z' },
+        { id: 'af', name: 'Africa', p: 'M42,40 L62,38 L68,65 L52,85 L40,65 Z' },
+        { id: 'me', name: 'Middle East', p: 'M58,38 L68,38 L72,50 L58,52 Z' },
+        { id: 'as', name: 'Asia / East Asia', p: 'M62,15 L92,15 L95,45 L72,55 L65,40 Z' },
+        { id: 'in', name: 'South Asia / India', p: 'M68,52 L78,52 L75,70 L68,68 Z' },
+        { id: 'oc', name: 'Oceania', p: 'M80,70 L95,70 L92,90 L80,90 Z' }
+      ];
 
-      const svgMap = `
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; opacity:0.12; pointer-events:none;">
-          <path d="M10,20 Q20,10 30,25 T40,40 Q30,60 15,55 Z" fill="#fff" />
-          <path d="M15,60 Q25,85 35,75 T30,60 Z" fill="#fff" />
-          <path d="M45,20 Q55,10 65,25 Q60,35 45,35 Z" fill="#fff" />
-          <path d="M42,40 Q55,40 65,60 Q55,85 40,75 Z" fill="#fff" />
-          <path d="M66,20 Q90,20 85,55 Q70,65 66,45 Z" fill="#fff" />
-          <path d="M75,70 Q90,70 85,85 Q75,85 75,70 Z" fill="#fff" />
+      const getRegionId = item => {
+        const g = item.g;
+        if (g === 'europa') return 'eu';
+        if (g === 'ostasien') return 'as';
+        if (g === 'nahost' || g === 'mesopo') return 'me';
+        if (g === 'suedasien') return 'in';
+        if (g === 'afrika') return 'af';
+        if (g === 'amerika') return (item.org === 'Mexico' || item.org === 'Central America') ? 'ca' : 'na';
+        if (g === 'ozeanien') return 'oc';
+        return 'eu';
+      };
+
+      const regionData = {};
+      regions.forEach(r => regionData[r.id] = { ...r, items: [] });
+      items.forEach(i => {
+        const rid = getRegionId(i);
+        if (regionData[rid]) regionData[rid].items.push(i);
+      });
+
+      cont.innerHTML = `
+        <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%;">
+          <style>
+            .map-reg { transition: all 0.4s ease; cursor: pointer; pointer-events: all; }
+            .map-reg:hover { filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); stroke-width: 0.6px; stroke: rgba(255,255,255,0.6); }
+          </style>
+          <rect width="100" height="100" fill="transparent" />
+          ${regions.map(r => {
+            const rd = regionData[r.id];
+            const hasData = rd.items.length > 0;
+            const pts = rd.items.reduce((s, i) => s + calcScore(i), 0);
+            const fill = hasData ? (GM[rd.items[0].g]?.col || '#c8962a') : '#222';
+            const opacity = hasData ? 0.18 + (pts / 850) : 0.06;
+            
+            return `
+              <path d="${r.p}" id="region-${r.id}" class="map-reg"
+                fill="${fill}" fill-opacity="${opacity}"
+                stroke="rgba(200, 150, 42, ${hasData ? 0.35 : 0.1})" stroke-width="0.35"
+                onmouseenter="window.mapHover(event, '${r.id}')"
+                onmousemove="window.posTT(event)"
+                onmouseleave="window.hideTT()"
+              />
+            `;
+          }).join('')}
         </svg>
       `;
-      cont.innerHTML = svgMap;
 
-      items.forEach(i => {
-        const pos = G_POS[i.g] || { x: 50, y: 50 };
-        const score = calcScore(i);
-        const size = 7 + (score / 7);
-        const dot = document.createElement('div');
-        dot.className = 'map-dot';
-        dot.style.cssText = `
-          position:absolute;
-          left: calc(${pos.x}% + ${(Math.random() - 0.5) * 6}%);
-          top: calc(${pos.y}% + ${(Math.random() - 0.5) * 6}%);
-          width:${size}px; height:${size}px;
-          background:${GM[i.g].col};
-          border-radius:50%;
-          cursor:pointer;
-          box-shadow: 0 0 20px ${GM[i.g].col}aa;
-          transform: translate(-50%, -50%);
-          transition: all 0.3s;
-          z-index: 10;
-        `;
-        dot.addEventListener('mouseenter', e => showTT(e, i, GM[i.g].col));
-        dot.addEventListener('mousemove', posTT);
-        dot.addEventListener('mouseleave', hideTT);
-        dot.addEventListener('click', () => { hideTT(); openModal(i, GM[i.g].col); });
-        cont.appendChild(dot);
-      });
-    }
+      window.mapHover = (e, rid) => {
+        const rd = regionData[rid];
+        const pts = rd.items.reduce((s, i) => s + calcScore(i), 0);
+        document.getElementById('ttYr').textContent = rd.name;
+        document.getElementById('ttNm').textContent = `${rd.items.length} Significant Milestones`;
+        document.getElementById('ttGrp').innerHTML = `<span style="color:var(--gold)">Engagement Score: ${pts} pts</span>`;
+        document.getElementById('ttCat').textContent = '📁 Region Overview';
+        document.getElementById('ttDsc').textContent = rd.items.length ? 
+          rd.items.slice(0, 5).map(i => i.n).join(', ') + (rd.items.length > 5 ? '...' : '') : 
+          'No historical data available for this region within the selected parameters.';
+        
+        const bar = document.getElementById('ttRf');
+        bar.style.transition = 'none'; bar.style.width = '0%';
+        setTimeout(() => { bar.style.transition = 'width 0.45s cubic-bezier(0.16, 1, 0.3, 1)'; bar.style.width = Math.min(100, (pts / 6)) + '%'; }, 10);
 
-    // ── NETWORK RENDER (Force Simulation) ──
-    let netNodes = [];
-    function renderNetwork() {
-      const cont = document.getElementById('netBody');
-      const items = getFilteredItems();
-      if (!items.length) {
-        cont.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);">No network data available.</div>';
-        return;
-      }
-
-      const W = cont.clientWidth || window.innerWidth - 360, H = cont.clientHeight || 600;
-
-      netNodes = items.map(i => ({
-        ...i,
-        x: W / 2 + (Math.random() - 0.5) * W / 4,
-        y: H / 2 + (Math.random() - 0.5) * H / 4,
-        vx: 0, vy: 0,
-        el: null
-      }));
-
-      const links = [];
-      netNodes.forEach(node => {
-        if (node.parents) {
-          node.parents.forEach(pName => {
-            const parent = netNodes.find(n => n.n === pName);
-            if (parent) links.push({ s: parent, t: node });
-          });
-        }
-      });
-
-      cont.innerHTML = "";
-      const svgLinks = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svgLinks.style.cssText = "position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1;";
-      cont.appendChild(svgLinks);
-
-      const dotContainer = document.createElement("div");
-      dotContainer.style.cssText = "position:absolute; inset:0; pointer-events:all; z-index:2;";
-      cont.appendChild(dotContainer);
-
-      netNodes.forEach(n => {
-        const sc = calcScore(n);
-        const size = Math.max(9, 7 + (sc / 7));
-        const col = GM[n.g].col;
-        const dot = document.createElement('div');
-        dot.className = 'net-dot';
-        dot.style.cssText = `
-          position:absolute; width:${size}px; height:${size}px;
-          background:${col}; border-radius:50%; transform:translate(-50%,-50%);
-          box-shadow: 0 0 15px ${col}88; cursor:pointer; 
-          border: 1.5px solid rgba(255,255,255,0.25);
-        `;
-        dot.addEventListener('mouseenter', e => showTT(e, n, col));
-        dot.addEventListener('mousemove', posTT);
-        dot.addEventListener('mouseleave', hideTT);
-        dot.addEventListener('click', () => { hideTT(); openModal(n, col); });
-        dotContainer.appendChild(dot);
-        n.el = dot;
-      });
-
-      let it = 0;
-      function tick() {
-        if (it > 200 || VIEW !== 'network') return;
-        it++;
-
-        for (let i = 0; i < netNodes.length; i++) {
-          for (let j = i + 1; j < netNodes.length; j++) {
-            const n1 = netNodes[i], n2 = netNodes[j];
-            const dx = n2.x - n1.x, dy = n2.y - n1.y;
-            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-            const f = 2200 / (dist * dist);
-            n1.vx -= f * (dx / dist); n1.vy -= f * (dy / dist);
-            n2.vx += f * (dx / dist); n2.vy += f * (dy / dist);
-          }
-        }
-
-        links.forEach(l => {
-          const dx = l.t.x - l.s.x, dy = l.t.y - l.s.y;
-          const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-          const f = (dist - 140) * 0.045;
-          l.s.vx += f * (dx / dist); l.s.vy += f * (dy / dist);
-          l.t.vx -= f * (dx / dist); l.t.vy -= f * (dy / dist);
-        });
-
-        netNodes.forEach(n => {
-          n.vx += (W / 2 - n.x) * 0.012;
-          n.vy += (H / 2 - n.y) * 0.012;
-          n.vx *= 0.62; n.vy *= 0.62;
-          n.x += n.vx; n.y += n.vy;
-          n.el.style.left = n.x + 'px';
-          n.el.style.top = n.y + 'px';
-        });
-
-        svgLinks.innerHTML = links.map(l => `
-          <line x1="${l.s.x}" y1="${l.s.y}" x2="${l.t.x}" y2="${l.t.y}" 
-                stroke="rgba(200, 150, 42, 0.28)" stroke-width="1.5" />
-        `).join("");
-
-        requestAnimationFrame(tick);
-      }
-      tick();
+        document.getElementById('ttRn').textContent = pts;
+        TT.classList.add('on');
+        posTT(e);
+      };
     }
 
     function render() {
       const isMap = VIEW === 'map';
-      const isNet = VIEW === 'network';
-      document.getElementById('cBody').style.display = (isMap || isNet) ? 'none' : 'flex';
+      document.getElementById('cBody').style.display = isMap ? 'none' : 'flex';
       document.getElementById('mapBody').style.display = isMap ? 'flex' : 'none';
-      document.getElementById('netBody').style.display = isNet ? 'flex' : 'none';
-      document.getElementById('yLbl').style.opacity = (isMap || isNet) ? '0' : '1';
+      document.getElementById('yLbl').style.opacity = isMap ? '0' : '1';
 
       if (isMap) renderMap();
-      else if (isNet) renderNetwork();
-      else if (VIEW === 'timeline') {
+      else if (VIEW === 'timeline' || VIEW === 'revolution') {
         renderTimeline(getFilteredItems());
       } else {
         const sg = sortedGrp();
@@ -2188,7 +2118,6 @@
       timeline: 'Chronological timeline. Each entity = one bar. Height = Score. Color = Culture Group.',
       revolution: 'Score B evaluates the break with existing paradigms and the immediate disruption of the status quo.',
       map: 'Geospatial distribution. Origins of innovations and milestones across eras.',
-      network: 'Interconnectedness. How innovations and thoughts built upon each other over time.',
     };
 
     // ══════════════════════════════════════
