@@ -1020,7 +1020,16 @@
 
       <div class="sb-brand">
         <div class="sb-brand-title">Ethnic <em>Progress Bar</em></div>
-        <div class="sb-brand-sub">Bedeutende Erfindungen der Menschheit – nach Einfluss &amp; Ursprung visualisiert.
+        <div class="sb-brand-sub">Bedeutende Beiträge zur Menschheit – nach Einfluss &amp; Ursprung visualisiert.
+        </div>
+      </div>
+
+      <!-- Thema / Dataset Switch -->
+      <div class="sb-sec">
+        <div class="sb-lbl">Thema</div>
+        <div class="vtabs" id="dtabs">
+          <button class="vt on" data-d="inv"><span class="vt-icon">🛠</span> Erfindungen</button>
+          <button class="vt" data-d="nobel"><span class="vt-icon">🏅</span> Nobelpreise</button>
         </div>
       </div>
 
@@ -1496,33 +1505,257 @@
       },
     ];
 
+    const NOBEL = [
+      // PHYSIK
+      {
+        g: 'europa', n: 'Röntgenstrahlung', y: 1901, c: 'Physik', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 40, imm: 28, shk: 25, inv: 'Wilhelm Röntgen', org: 'Deutschland',
+        dsc: 'Entdeckung der X-Strahlen revolutionierte die medizinische Diagnostik.',
+        imp: 'Ermöglichte den ersten schmerzfreien Blick in den Körper. Grundlage für CT, Materialprüfung und DNA-Analyse.',
+        ctx: 'Der allererste Nobelpreis für Physik. Röntgen verzichtete bewusst auf ein Patent, damit die Menschheit maximalen Nutzen daraus ziehen konnte.'
+      },
+      {
+        g: 'europa', n: 'Radioaktivität', y: 1903, c: 'Physik', reach: 22, dur: 25, mult: 30, qual: 10, cbrk: 40, imm: 15, shk: 28, inv: 'Becquerel, P. & M. Curie', org: 'Frankreich/Polen',
+        dsc: 'Entdeckung der spontanen Radioaktivität und neuer Elemente.',
+        imp: 'Grundlage der Kernphysik, Krebstherapie und modernen Energieerzeugung.',
+        ctx: 'Marie Curie prägte den Begriff "Radioaktivität". Ihre Arbeit unter primitivsten Bedingungen ohne Schutzmaßnahmen kostete sie letztlich die Gesundheit, öffnete aber das Tor zum Verständnis des Atomkerns.'
+      },
+      {
+        g: 'europa', n: 'Quantentheorie', y: 1918, c: 'Physik', reach: 25, dur: 25, mult: 30, qual: 15, cbrk: 40, imm: 10, shk: 30, inv: 'Max Planck', org: 'Deutschland',
+        dsc: 'Entdeckung der Energiequanten veränderte das physikalische Weltbild fundamental.',
+        imp: 'Grundlage aller modernen Elektronik, Laser, Computerchips und MRT.',
+        ctx: 'Gegen die klassische Physik führte Planck die Idee ein, dass Energie nicht kontinuierlich, sondern in Paketen (Quanten) abgegeben wird – eine Verzweiflungstat, um Messdaten zu erklären, die zur Geburt der modernen Physik führte.'
+      },
+      {
+        g: 'europa', n: 'Relativitätstheorie', y: 1921, c: 'Physik', reach: 25, dur: 25, mult: 28, qual: 15, cbrk: 40, imm: 8, shk: 30, inv: 'Albert Einstein', org: 'Deutschland/Schweiz',
+        dsc: 'Für den photoelektrischen Effekt (und implizit Relativität).',
+        imp: 'Grundlage für GPS, Solarzellen, Laser und unser Verständnis von Raum und Zeit.',
+        ctx: 'Obwohl Einstein für den Photoeffekt (Licht als Teilchen) geehrt wurde, ist sein Name untrennbar mit der Relativitätstheorie verbunden, die unser Verständnis des Universums revolutionierte.'
+      },
+      {
+        g: 'amerika', n: 'Transistor', y: 1956, c: 'Physik', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 35, imm: 25, shk: 20, inv: 'Shockley, Bardeen, Brattain', org: 'USA',
+        dsc: 'Erfindung des Transistors, des Bausteins aller modernen Elektronik.',
+        imp: 'Grundlage des Informationszeitalters: Computer, Internet, Smartphones.',
+        ctx: 'Der Ersatz klobiger Vakuumröhren durch winzige Halbleiter ermöglichte die Miniaturisierung der Elektronik. John Bardeen ist der einzige Mensch, der den Physik-Nobelpreis zweimal erhielt (später für Supraleitung).'
+      },
+
+      // CHEMIE
+      {
+        g: 'europa', n: 'Haber-Bosch-Verfahren', y: 1918, c: 'Chemie', reach: 25, dur: 25, mult: 25, qual: 20, cbrk: 30, imm: 25, shk: 25, inv: 'Fritz Haber', org: 'Deutschland',
+        dsc: 'Synthese von Ammoniak aus Luftstickstoff für Düngemittel.',
+        imp: 'Ermährt heute ca. 50% der Weltbevölkerung. Ohne dies gäbe es weltweite Hungersnöte.',
+        ctx: 'Eine janusköpfige Erfindung: Sie ermöglichte Kunstdünger und sattte Milliarden, lieferte aber auch den Sprengstoff für zwei Weltkriege. Haber selbst gilt als Vater des Gaskriegs.'
+      },
+      {
+        g: 'europa', n: 'Penicillin', y: 1945, c: 'Medizin', reach: 25, dur: 25, mult: 25, qual: 25, cbrk: 35, imm: 30, shk: 20, inv: 'Fleming, Chain, Florey', org: 'UK',
+        dsc: 'Entdeckung und Isolierung des ersten Antibiotikums.',
+        imp: 'Kampf gegen bakterielle Infektionen. Erhöhte Lebenserwartung weltweit massiv.',
+        ctx: 'Flemings Zufallsfund 1928 blieb lange unbeachtet, bis Florey und Chain unter dem Druck des 2. Weltkriegs die industrielle Herstellung entwickelten und Millionen Soldaten retteten.'
+      },
+      {
+        g: 'europa', n: 'DNA-Struktur', y: 1962, c: 'Medizin', reach: 22, dur: 25, mult: 30, qual: 20, cbrk: 38, imm: 15, shk: 25, inv: 'Crick, Watson, Wilkins', org: 'UK/USA',
+        dsc: 'Entschlüsselung der Molekularstruktur der Nukleinsäuren.',
+        imp: 'Schlüssel zum Verständnis des Lebens, Vererbung und moderner Biotechnologie.',
+        ctx: 'Die Entdeckung der Doppelhelix basiert maßgeblich auf den Daten von Rosalind Franklin, die vor der Preisverleihung starb und leer ausging.'
+      },
+      {
+        g: 'europa', n: 'CRISPR/Cas9', y: 2020, c: 'Chemie', reach: 20, dur: 25, mult: 30, qual: 20, cbrk: 35, imm: 20, shk: 28, inv: 'Charpentier, Doudna', org: 'Frankreich/USA',
+        dsc: 'Die "Genschere" zur gezielten Veränderung von Erbgut.',
+        imp: 'Revolutioniert Medizin (Gentherapie) und Landwirtschaft. Potenzial zur Heilung von Erbkrankheiten.',
+        ctx: 'Ein bakterieller Abwehrmechanismus gegen Viren wurde zum präzisesten Werkzeug der Gentechnik umgebaut. Erlaubt "Editing" des Codes des Lebens.'
+      },
+
+      // MEDIZIN
+      {
+        g: 'europa', n: 'Insulin', y: 1923, c: 'Medizin', reach: 22, dur: 25, mult: 15, qual: 25, cbrk: 30, imm: 30, shk: 15, inv: 'Banting, Macleod', org: 'Kanada/Schottland',
+        dsc: 'Entdeckung des Insulins zur Behandlung von Diabetes.',
+        imp: 'Rettete Millionen Diabetikern das Leben, die zuvor dem Tod geweiht waren.',
+        ctx: 'Banting verkaufte das Patent für 1 Dollar an die Universität Toronto ("Insulin gehört der Welt, nicht mir"), um die Verfügbarkeit für alle Patienten zu sichern.'
+      },
+      {
+        g: 'ostasien', n: 'Artemisinin', y: 2015, c: 'Medizin', reach: 20, dur: 20, mult: 15, qual: 25, cbrk: 25, imm: 28, shk: 10, inv: 'Tu Youyou', org: 'China',
+        dsc: 'Neuartige Therapie gegen Malaria basierend auf traditioneller chinesischer Medizin.',
+        imp: 'Rettete Millionen Menschenleben in Entwicklungsländern, besonders Kinder.',
+        ctx: 'Tu Youyou durchforstete uralte Texte der TCM und fand in 1600 Jahre alten Schriften Hinweise auf Einjähriger Beifuß (Artemisia annua), extrahierte den Wirkstoff kalt und testete ihn an sich selbst.'
+      },
+      {
+        g: 'europa', n: 'IVF', y: 2010, c: 'Medizin', reach: 18, dur: 25, mult: 20, qual: 25, cbrk: 35, imm: 20, shk: 25, inv: 'Robert G. Edwards', org: 'UK',
+        dsc: 'Entwicklung der In-vitro-Fertilisation (künstliche Befruchtung).',
+        imp: 'Ermöglichte Millionen ungewollt kinderlosen Paaren die Familiengründung.',
+        ctx: 'Louise Brown, das erste "Retortenbaby", wurde 1978 geboren. Was damals als ethisch hochumstritten galt und als "Frankenstein-Forschung" beschimpft wurde, ist heute medizinischer Standard.'
+      },
+
+      // FRIEDEN
+      {
+        g: 'europa', n: 'Rotes Kreuz', y: 1901, c: 'Frieden', reach: 25, dur: 25, mult: 25, qual: 25, cbrk: 35, imm: 25, shk: 20, inv: 'Henry Dunant', org: 'Schweiz',
+        dsc: 'Gründung des Internationalen Komitees vom Roten Kreuz.',
+        imp: 'Etablierte Humanität im Krieg und die Genfer Konventionen.',
+        ctx: 'Nachdem Dunant das Leid der Schlacht von Solferino sah, initiierte er eine neutrale Hilfsorganisation. Er teilte sich den allerersten Friedensnobelpreis mit Frédéric Passy.'
+      },
+      {
+        g: 'amerika', n: 'Grüne Revolution', y: 1970, c: 'Frieden', reach: 25, dur: 22, mult: 25, qual: 25, cbrk: 30, imm: 30, shk: 20, inv: 'Norman Borlaug', org: 'USA',
+        dsc: 'Entwicklung von Hochertragsweizen, der Milliarden vor Hunger bewahrte.',
+        imp: 'Rettete schätzungsweise über eine Milliarde Menschenleben vor dem Hungertod.',
+        ctx: 'Borlaug züchtete in Mexiko krankheitsresistente, kurzhalmige Weizensorten. Seine Arbeit widerlegte die düsteren Prognosen, dass das Bevölkerungswachstum zwangsläufig zu globalen Hungersnöten führen würde.'
+      },
+      {
+        g: 'afrika', n: 'Anti-Apartheid', y: 1993, c: 'Frieden', reach: 18, dur: 20, mult: 25, qual: 20, cbrk: 30, imm: 20, shk: 28, inv: 'Mandela, de Klerk', org: 'Südafrika',
+        dsc: 'Friedlicher Übergang vom Apartheid-Regime zur Demokratie.',
+        imp: 'Verhinderte einen Bürgerkrieg und setzte ein globales Zeichen für Versöhnung.',
+        ctx: 'Mandela, nach 27 Jahren Haft, reichte seinen Unterdrückern die Hand. Ein seltenes Beispiel für einen nahezu gewaltfreien Machtwechsel in einem tief gespaltenen Land.'
+      },
+      {
+        g: 'suedasien', n: 'Mikrokredite', y: 2006, c: 'Frieden', reach: 20, dur: 20, mult: 25, qual: 20, cbrk: 30, imm: 20, shk: 15, inv: 'Muhammad Yunus', org: 'Bangladesch',
+        dsc: 'Grameen Bank und das Konzept der Mikrokredite für Arme.',
+        imp: 'Wirtschaftliche Selbstbestimmung für Millionen, besonders Frauen.',
+        ctx: 'Yunus bewies, dass die Ärmsten der Armen kreditwürdig sind. Mit Kleinstkrediten ohne Sicherheiten half er Millionen, aus der absoluten Armut zu entfliehen.'
+      },
+      {
+        g: 'nahost', n: 'Menschenrechte Iran', y: 2023, c: 'Frieden', reach: 18, dur: 15, mult: 25, qual: 15, cbrk: 20, imm: 15, shk: 25, inv: 'Narges Mohammadi', org: 'Iran',
+        dsc: 'Kampf gegen die Unterdrückung der Frauen im Iran.',
+        imp: 'Starkes Symbol für die "Frau, Leben, Freiheit"-Bewegung.',
+        ctx: 'Aus dem Gefängnis heraus kämpft Mohammadi weiter für Frauenrechte und gegen die Todesstrafe, stellvertretend für die mutigen Proteste im Iran.'
+      },
+
+      // LITERATUR (mit gesellschaftlichem Impact)
+      {
+        g: 'suedasien', n: 'Brückenbauer', y: 1913, c: 'Literatur', reach: 15, dur: 20, mult: 20, qual: 15, cbrk: 20, imm: 10, shk: 15, inv: 'Rabindranath Tagore', org: 'Indien',
+        dsc: 'Erster nicht-europäischer Literaturnobelpreisträger.',
+        imp: 'Kulturelle Brücke zwischen Ost und West, Stimme des Humanismus.',
+        ctx: 'Tagore war nicht nur Dichter, sondern Sozialreformer, der den Nationalismus ablehnte und Bildung förderte. Seine Lyrik ("Gitanjali") berührte Menschen weltweit.'
+      },
+      {
+        g: 'amerika', n: 'Stimme der Afroamerikaner', y: 1993, c: 'Literatur', reach: 18, dur: 20, mult: 20, qual: 15, cbrk: 25, imm: 15, shk: 20, inv: 'Toni Morrison', org: 'USA',
+        dsc: 'Kraftvolle Romane über die afroamerikanische Erfahrung.',
+        imp: 'Veränderte den literarischen Kanon und das Verständnis von Rassismus und Identität.',
+        ctx: 'Mit Werken wie "Beloved" gab sie den Vergessenen der Geschichte eine Stimme und thematisierte das Trauma der Sklaverei in einer neuen, eindringlichen Sprache.'
+      }
+    ];
+
     // ══════════════════════════════════════
     // STATE
     // ══════════════════════════════════════
+    let DATASET = 'inv'; // 'inv' or 'nobel'
     let VIEW = 'grouped';
     let CATS = new Set(['all']);
     let SORT = 'score';
     let MINSC = 0;
 
-    const sA = i => i.reach + i.dur + i.mult + i.qual;
-    const sB = i => i.cbrk + i.imm + i.shk;
-    const SC = i => VIEW === 'revolution' ? sB(i) : sA(i);
+    const DATASETS = {
+      inv: {
+        data: INV,
+        lbl: 'Erfindungen',
+        cats: ['Medizin', 'Physik & Technik', 'Mathematik', 'Kommunikation', 'Wirtschaft', 'Infrastruktur'],
+        chips: [
+          { id: 'Medizin', l: '🏥 Medizin' },
+          { id: 'Physik & Technik', l: '⚙️ Physik & Technik' },
+          { id: 'Mathematik', l: '🔢 Mathematik' },
+          { id: 'Kommunikation', l: '📡 Kommunikation' },
+          { id: 'Wirtschaft', l: '💰 Wirtschaft' },
+          { id: 'Infrastruktur', l: '🏗️ Infrastruktur' }
+        ],
+        scoreA_lbl: 'Gesellschaftlicher Nutzen',
+        scoreB_lbl: 'Revolutionär',
+        meth: {
+          A: [
+            { t: '🌍 Reichweite', d: 'Lokal bis Global', max: 25 },
+            { t: '⏳ Dauerhaftigkeit', d: 'Jahrzehnte bis Jahrtausende', max: 25 },
+            { t: '🔗 Multiplikator', d: 'Folgeinnovationen', max: 30 },
+            { t: '🏥 Lebensqualität', d: 'Verbesserung des Alltags', max: 20 }
+          ],
+          B: [
+            { t: '🧠 Konzeptbruch', d: 'Überraschungseffekt', max: 40 },
+            { t: '⚡ Sofortwirkung', d: 'Schnelligkeit der Adaption', max: 30 },
+            { t: '🌐 Gesellschafts-Schock', d: 'Veränderung der Ordnung', max: 30 }
+          ]
+        }
+      },
+      nobel: {
+        data: NOBEL,
+        lbl: 'Nobelpreise',
+        cats: ['Physik', 'Chemie', 'Medizin', 'Frieden', 'Literatur', 'Wirtschaft'],
+        chips: [
+          { id: 'Physik', l: '⚛️ Physik' },
+          { id: 'Chemie', l: '🧪 Chemie' },
+          { id: 'Medizin', l: '⚕️ Medizin' },
+          { id: 'Frieden', l: '🕊️ Frieden' },
+          { id: 'Literatur', l: '📖 Literatur' },
+          { id: 'Wirtschaft', l: '📈 Wirtschaft' }
+        ],
+        scoreA_lbl: 'Positiver Impact',
+        scoreB_lbl: 'Disruptions-Faktor',
+        meth: {
+          A: [
+            { t: '🌍 Reichweite', d: 'Millionen bis Milliarden Menschen', max: 25 },
+            { t: '⏳ Nachhaltigkeit', d: 'Kurzfristig bis Dauerhaft', max: 25 },
+            { t: '🔗 Wissenssprung', d: 'Fundament neuer Forschung', max: 30 },
+            { t: '❤️ Humanitärer Wert', d: 'Leidminderung / Wohlstand', max: 20 }
+          ],
+          B: [
+            { t: '🧠 Paradigmenwechsel', d: 'Neues Denken etabliert', max: 40 },
+            { t: '⚡ Dringlichkeit', d: 'Löste akutes Problem', max: 30 },
+            { t: '🌐 Politischer Einfluss', d: 'Veränderte Gesellschaft', max: 30 }
+          ]
+        }
+      }
+    };
 
-    const filt = gid => INV
-      .filter(i => i.g === gid && SC(i) >= MINSC && (CATS.has('all') || CATS.has(i.c)))
+    const scoreA = i => i.reach + i.dur + i.mult + i.qual;
+    const scoreB = i => i.cbrk + i.imm + i.shk;
+    const calcScore = i => VIEW === 'revolution' ? scoreB(i) : scoreA(i);
+
+    // Dynamic Filter based on Current Dataset
+    const getDatasetData = () => DATASETS[DATASET].data;
+
+    const getFilteredItems = gid => getDatasetData()
+      .filter(i => i.g === gid && calcScore(i) >= MINSC && (CATS.has('all') || CATS.has(i.c)))
       .sort((a, b) => a.y - b.y);
 
-    const gTot = gid => filt(gid).reduce((s, i) => s + SC(i), 0);
-    const maxTot = () => Math.max(...GRP.map(g => gTot(g.id)), 1);
+    const gTot = gid => getFilteredItems(gid).reduce((s, i) => s + calcScore(i), 0);
+    const maxTot = () => Math.max(1, Math.max(...GRP.map(g => gTot(g.id))));
     const fmtY = y => y < 0 ? `${Math.abs(y)} v. Chr.` : `${y} n. Chr.`;
+
+    function updateCategoryChips() {
+      const cCont = document.getElementById('chips');
+      const conf = DATASETS[DATASET];
+      cCont.innerHTML = `<button class="ch ${CATS.has('all') ? 'on' : ''}" data-c="all">Alle</button>` +
+        conf.chips.map(c => `<button class="ch ${CATS.has(c.id) ? 'on' : ''}" data-c="${c.id}">${c.l}</button>`).join('');
+    }
+
+    function updateMethodology() {
+      const d = DATASETS[DATASET].meth;
+      const mA = d.A.map(m => `
+        <div class="meth-dim">
+          <div class="meth-dim-t">${m.t} (max ${m.max})</div>
+          <p>${m.d}</p>
+        </div>
+      `).join('');
+      const mB = d.B.map(m => `
+        <div class="meth-dim">
+          <div class="meth-dim-t">${m.t} (max ${m.max})</div>
+          <p>${m.d}</p>
+        </div>
+      `).join('');
+
+      const inner = `
+        <div class="meth-group-title">Score A – ${DATASETS[DATASET].scoreA_lbl}</div>
+        ${mA}
+        <div class="meth-group-title">Score B – ${DATASETS[DATASET].scoreB_lbl}</div>
+        ${mB}
+        <div class="meth-note">Methodik angepasst für ${DATASETS[DATASET].lbl}.</div>
+      `;
+      document.querySelector('.meth-inner').innerHTML = inner;
+    }
 
     function sortedGrp() {
       return [...GRP].sort((a, b) => {
         if (SORT === 'score') return gTot(b.id) - gTot(a.id);
-        if (SORT === 'count') return filt(b.id).length - filt(a.id).length;
+        if (SORT === 'count') return getFilteredItems(b.id).length - getFilteredItems(a.id).length;
         if (SORT === 'alpha') return a.name.localeCompare(b.name);
         if (SORT === 'oldest') {
-          const f = id => Math.min(...filt(id).map(i => i.y).concat([9999]));
+          const f = id => {
+            const arr = getFilteredItems(id);
+            return arr.length ? Math.min(...arr.map(i => i.y)) : 9999;
+          };
           return f(a.id) - f(b.id);
         }
         return 0;
@@ -1559,7 +1792,8 @@
     // ══════════════════════════════════════
     const TT = document.getElementById('tt');
     function showTT(e, inv, col) {
-      const sc = SC(inv), g = GM[inv.g];
+      const g = GM[inv.g];
+      const sc = calcScore(inv);
       document.getElementById('ttYr').textContent = fmtY(inv.y);
       document.getElementById('ttNm').textContent = inv.n;
       document.getElementById('ttGrp').innerHTML = `<span style="color:${g.col}">● ${g.name}</span>`;
@@ -1593,15 +1827,28 @@
       document.getElementById('mCtx').textContent = inv.ctx || 'Kontext wird geladen...';
       document.getElementById('mBody').textContent = inv.dsc;
       let dims, lbl;
+      const conf = DATASETS[DATASET];
+      const meth = conf.meth;
+
       if (VIEW === 'revolution') {
-        dims = [{ l: '🧠 Konzeptbruch (max 40)', v: inv.cbrk, m: 40 }, { l: '⚡ Sofortwirkung (max 30)', v: inv.imm, m: 30 }, { l: '🌐 Gesellschafts-Schock (max 30)', v: inv.shk, m: 30 }];
-        lbl = 'Score B – Revolutionär';
+        lbl = `Score B – ${conf.scoreB_lbl}`;
+        dims = meth.B.map((m, i) => {
+          // Mapping values to dims based on index is brittle, but efficient for this 1-file setup
+          // Order: cbrk, imm, shk
+          const val = i === 0 ? inv.cbrk : i === 1 ? inv.imm : inv.shk;
+          return { l: `${m.t} (max ${m.max})`, v: val, m: m.max };
+        });
       } else {
-        dims = [{ l: '🌍 Reichweite (max 25)', v: inv.reach, m: 25 }, { l: '⏳ Dauerhaftigkeit (max 25)', v: inv.dur, m: 25 }, { l: '🔗 Multiplikator (max 30)', v: inv.mult, m: 30 }, { l: '🏥 Lebensqualität (max 20)', v: inv.qual, m: 20 }];
-        lbl = 'Score A – Gesellschaftlicher Einfluss';
+        lbl = `Score A – ${conf.scoreA_lbl}`;
+        dims = meth.A.map((m, i) => {
+          // Order: reach, dur, mult, qual
+          const val = i === 0 ? inv.reach : i === 1 ? inv.dur : i === 2 ? inv.mult : inv.qual;
+          return { l: `${m.t} (max ${m.max})`, v: val, m: m.max };
+        });
       }
+
       document.getElementById('mTotL').textContent = lbl;
-      document.getElementById('mTot').textContent = SC(inv) + ' / 100';
+      document.getElementById('mTot').textContent = calcScore(inv) + ' / 100';
       document.getElementById('mRows').innerHTML = dims.map(d => `
     <div class="m-row">
       <span class="m-rl">${d.l}</span>
@@ -1660,7 +1907,7 @@
       cBody.innerHTML = ''; xStrip.innerHTML = '';
 
       document.getElementById('yLbl').textContent =
-        VIEW === 'revolution' ? 'Revolutionärer Einfluss (kumuliert)' : 'Gesellschaftlicher Einfluss (kumuliert)';
+        VIEW === 'revolution' ? `${DATASETS[DATASET].scoreB_lbl} (kumuliert)` : `${DATASETS[DATASET].scoreA_lbl} (kumuliert)`;
 
       // C-layout
       const layout = document.createElement('div');
@@ -1680,14 +1927,14 @@
       const barsWrap = document.createElement('div'); barsWrap.className = 'bars';
       const sg = sortedGrp();
       sg.forEach(g => {
-        const invs = filt(g.id);
-        const tot = invs.reduce((s, i) => s + SC(i), 0);
+        const invs = getFilteredItems(g.id);
+        const tot = invs.reduce((s, i) => s + calcScore(i), 0);
         const stackPx = tot > 0 ? Math.round((tot / maxTot()) * chartH) : 0;
 
         const bg = document.createElement('div'); bg.className = 'bgrp';
         const st = document.createElement('div'); st.className = 'bstk'; st.style.height = stackPx + 'px';
         invs.forEach((inv, idx) => {
-          const sc = SC(inv);
+          const sc = calcScore(inv);
           const segPx = tot > 0 ? Math.max(2, Math.round((sc / tot) * stackPx)) : 0;
           const seg = document.createElement('div'); seg.className = 'bseg';
           seg.style.height = segPx + 'px';
@@ -1709,8 +1956,8 @@
       // labels strip
       const gl = document.createElement('div'); gl.className = 'glabels';
       sg.forEach(g => {
-        const invs = filt(g.id);
-        const tot = invs.reduce((s, i) => s + SC(i), 0);
+        const invs = getFilteredItems(g.id);
+        const tot = invs.reduce((s, i) => s + calcScore(i), 0);
         const lc = document.createElement('div'); lc.className = 'glbl';
         lc.innerHTML = `<div class="glbl-n">${g.name}</div><div class="glbl-m">${invs.length} Erf. · ${tot}</div>`;
         gl.appendChild(lc);
@@ -1727,8 +1974,10 @@
       cBody.innerHTML = ''; xStrip.innerHTML = '';
       document.getElementById('yLbl').textContent = 'Score der Erfindung';
 
-      const allInvs = INV
-        .filter(i => SC(i) >= MINSC && (CATS.has('all') || CATS.has(i.c)))
+      document.getElementById('yLbl').textContent = 'Score der Erfindung';
+
+      const allInvs = getDatasetData()
+        .filter(i => calcScore(i) >= MINSC && (CATS.has('all') || CATS.has(i.c)))
         .sort((a, b) => a.y - b.y);
 
       if (!allInvs.length) {
@@ -1750,7 +1999,7 @@
       // Size everything now that we know plotW
       const N = allInvs.length, GAP = 3;
       const BAR_W = Math.max(5, Math.floor((plotW - (N - 1) * GAP) / N));
-      const maxSc = Math.max(...allInvs.map(i => SC(i)), 1);
+      const maxSc = Math.max(...allInvs.map(i => calcScore(i)), 1);
 
       buildYcol(yCol, maxSc, chartH);
       plot.style.height = chartH + 'px';
@@ -1775,8 +2024,9 @@
       });
 
       // Bars
+      // Bars
       allInvs.forEach((inv, idx) => {
-        const sc = SC(inv), bh = Math.max(4, Math.round((sc / maxSc) * chartH));
+        const sc = calcScore(inv), bh = Math.max(4, Math.round((sc / maxSc) * chartH));
         const g = GM[inv.g];
         const bar = document.createElement('div'); bar.className = 'tl-bar';
         bar.style.cssText = `left:${idx * (BAR_W + GAP)}px;width:${BAR_W}px;height:${bh}px;background:${g.col};opacity:0.86;`;
@@ -1791,7 +2041,8 @@
 
       // x-strip info
       const inf = document.createElement('div'); inf.className = 'tlinfo';
-      inf.innerHTML = `← ${fmtY(allInvs[0].y)} &ensp;·&ensp; ${fmtY(allInvs[N - 1].y)} →&ensp;&ensp;Farbe = Kulturkreis &ensp;·&ensp; Höhe = Score &ensp;·&ensp; ${N} Erfindungen dargestellt`;
+      const term = DATASET === 'nobel' ? 'Preise' : 'Erfindungen';
+      inf.innerHTML = `← ${fmtY(allInvs[0].y)} &ensp;·&ensp; ${fmtY(allInvs[N - 1].y)} →&ensp;&ensp;Farbe = Kulturkreis &ensp;·&ensp; Höhe = Score &ensp;·&ensp; ${N} ${term} dargestellt`;
       xStrip.appendChild(inf);
     }
 
@@ -1808,9 +2059,9 @@
     // VIEW DESCRIPTIONS
     // ══════════════════════════════════════
     const DESCS = {
-      grouped: 'Balken = Kulturkreise. Höhe = kumulierter Einfluss (Score A). Schichten = einzelne Erfindungen, von unten (älteste) nach oben (neueste). Hover = Info, Klick = Details.',
-      timeline: 'Chronologischer Zeitstrahl. Jede Erfindung = ein Balken. Höhe = Score. Farbe = Kulturkreis. Alle Erfindungen ohne Scrollen sichtbar.',
-      revolution: 'Score B: Wie revolutionär war eine Erfindung relativ zu ihrer Zeit? Antike Erfindungen ohne Vorläufer (Landwirtschaft B=98, Schrift B=94) dominieren. Internet B=56 – einflussreich, aber aufbauend auf bekannter Infrastruktur.',
+      grouped: 'Balken = Kulturkreise. Höhe = kumulierter Score. Hover = Info, Klick = Details.',
+      timeline: 'Chronologischer Zeitstrahl. Jede Entität = ein Balken. Höhe = Score. Farbe = Kulturkreis.',
+      revolution: 'Score B bewertet den Bruch mit dem Bestehenden und die unmittelbare Erschütterung des Status Quo.',
     };
 
     // ══════════════════════════════════════
@@ -1822,6 +2073,22 @@
       document.querySelectorAll('.vt').forEach(v => v.classList.toggle('on', v === t));
       document.getElementById('sortSec').style.display = VIEW === 'timeline' ? 'none' : '';
       document.getElementById('vtDesc').textContent = DESCS[VIEW];
+      render();
+    });
+
+    // DATASET SWITCHER
+    document.getElementById('dtabs').addEventListener('click', e => {
+      const t = e.target.closest('.vt'); if (!t) return;
+      if (t.dataset.d === DATASET) return;
+
+      DATASET = t.dataset.d;
+      document.querySelectorAll('#dtabs .vt').forEach(v => v.classList.toggle('on', v === t));
+
+      // Reset Categories to All when switching dataset
+      CATS = new Set(['all']);
+
+      updateCategoryChips();
+      updateMethodology();
       render();
     });
 
@@ -1854,6 +2121,7 @@
     // ══════════════════════════════════════
     // INIT
     // ══════════════════════════════════════
+    updateMethodology(); // Init meth
     document.getElementById('vtDesc').textContent = DESCS['grouped'];
     render();
   </script>
