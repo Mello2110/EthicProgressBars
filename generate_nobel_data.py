@@ -37,16 +37,16 @@ COUNTRY_TO_GROUP = {
 }
 
 CAT_MAP = {
-    'physics': 'Physik',
-    'chemistry': 'Chemie',
-    'medicine': 'Medizin',
-    'peace': 'Frieden',
-    'literature': 'Literatur',
-    'economics': 'Wirtschaft'
+    'physics': 'Physics',
+    'chemistry': 'Chemistry',
+    'medicine': 'Medicine',
+    'peace': 'Peace',
+    'literature': 'Literature',
+    'economics': 'Economics'
 }
 
 def get_group(cc):
-    return COUNTRY_TO_GROUP.get(cc, 'europa') # Default to europa if unknown, or handle otherwise
+    return COUNTRY_TO_GROUP.get(cc, 'europa') # Default to europa if unknown
 
 def fetch_data():
     url = "http://api.nobelprize.org/v1/laureate.json"
@@ -71,31 +71,22 @@ def generate_js(data):
         surname = person.get('surname', '')
         fullname = f"{firstname} {surname}".strip()
         
-        born_cc = person.get('bornCountryCode', 'SE') # Default to Sweden if unknown (rare)
-        # Fix some historical codes or edge cases manually if preferred, but dict handles most.
-        # Note: bornCountryCode can be 'US', 'DE', etc.
-        # Some are empty or non-standard? API is usually good.
+        born_cc = person.get('bornCountryCode', 'SE') 
         if not born_cc: born_cc = 'SE' 
 
         group = get_group(born_cc)
         
-        # Gender context if needed, mostly formatting prizes
-        
         for prize in person.get('prizes', []):
             year = int(prize.get('year', 0))
             category = prize.get('category', 'physics')
-            cat_de = CAT_MAP.get(category, 'Physik')
+            cat_en = CAT_MAP.get(category, 'Physics')
             
             motivation = prize.get('motivation', '').replace('"', "'")
             
             # Heuristic Scoring (Randomized for variety but bounded)
-            # Reach: Nobel prizes are usually global (22-25)
             reach = random.randint(18, 25) 
-            # Durability: Most are lasting (20-25)
             dur = random.randint(15, 25)
-            # Multiplier: Varies
             mult = random.randint(10, 30)
-            # Quality of Life: Varies greatly by category
             qual = random.randint(10, 20)
             
             # Score B (Revolutionary)
@@ -106,15 +97,15 @@ def generate_js(data):
             # Construct Entry
             entry = {
                 'g': group,
-                'n': fullname, # Using Name as Title for now, maybe short description? No, Name is cleaner.
+                'n': fullname, 
                 'y': year,
-                'c': cat_de,
+                'c': cat_en,
                 'reach': reach, 'dur': dur, 'mult': mult, 'qual': qual,
                 'cbrk': cbrk, 'imm': imm, 'shk': shk,
-                'inv': fullname, # Inventor name is same as Laureate
-                'org': person.get('bornCountry', ''), # Origin text
-                'dsc': f"Nobelpreis für {cat_de}",
-                'imp': "Anerkennung herausragender Leistungen für die Menschheit.",
+                'inv': fullname, 
+                'org': person.get('bornCountry', ''), 
+                'dsc': f"Nobel Prize in {cat_en}",
+                'imp': "Recognition of outstanding achievements for humanity.",
                 'ctx': motivation
             }
             js_entries.append(entry)
@@ -122,7 +113,7 @@ def generate_js(data):
     # Sort by year
     js_entries.sort(key=lambda x: x['y'])
     
-    print(f"Generated {len(js_entries)} entries.")
+    print(f"Generated {len(js_entries)} entries in English.")
     
     # Write to JS file
     with open('nobel_data.js', 'w', encoding='utf-8') as f:

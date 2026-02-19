@@ -1020,119 +1020,76 @@
 
       <div class="sb-brand">
         <div class="sb-brand-title">Ethnic <em>Progress Bar</em></div>
-        <div class="sb-brand-sub">Bedeutende Beiträge zur Menschheit – nach Einfluss &amp; Ursprung visualisiert.
+        <div class="sb-brand-sub">Significant contributions to humanity – visualized by impact &amp; origin.
         </div>
       </div>
 
-      <!-- Thema / Dataset Switch -->
-      <div class="sb-sec">
-        <div class="sb-lbl">Thema</div>
-        <div class="vtabs" id="dtabs">
-          <button class="vt on" data-d="inv"><span class="vt-icon">🛠</span> Erfindungen</button>
-          <button class="vt" data-d="nobel"><span class="vt-icon">🏅</span> Nobelpreise</button>
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <h1 class="logo">Ethnic Progress Bar</h1>
+        <div class="d-tabs" id="dtabs">
+          <button class="vt on" data-d="inv">Inventions</button>
+          <button class="vt" data-d="nobel">Nobel Prizes</button>
         </div>
       </div>
 
-      <!-- Ansicht -->
+      <!-- Controls -->
       <div class="sb-sec">
-        <div class="sb-lbl">Ansicht</div>
-        <div class="vtabs" id="vtabs">
-          <button class="vt on" data-v="grouped"><span class="vt-icon">📊</span> Nach Kulturkreis</button>
-          <button class="vt" data-v="timeline"><span class="vt-icon">📅</span> Zeitstrahl</button>
-          <button class="vt" data-v="revolution"><span class="vt-icon">⚡</span> Revolutionär für ihre Zeit</button>
+        <div class="sb-lbl">View</div>
+        <div class="view-toggles" id="viewToggles">
+          <button class="vt on" data-v="grouped">Groups</button>
+          <button class="vt" data-v="timeline">Timeline</button>
+          <button class="vt" data-v="revolution">Revolution</button>
         </div>
-        <div class="vt-desc" id="vtDesc"></div>
+        <div class="vt-desc" id="vtDesc">Compare contributions by culture group.</div>
       </div>
 
-      <!-- Kategorie -->
       <div class="sb-sec">
-        <div class="sb-lbl">Kategorie</div>
+        <div class="sb-lbl">Categories</div>
         <div class="chips" id="chips">
-          <button class="ch on" data-c="all">Alle</button>
-          <button class="ch" data-c="Medizin">🏥 Medizin</button>
-          <button class="ch" data-c="Physik & Technik">⚙️ Physik &amp; Technik</button>
-          <button class="ch" data-c="Mathematik">🔢 Mathematik</button>
-          <button class="ch" data-c="Kommunikation">📡 Kommunikation</button>
-          <button class="ch" data-c="Wirtschaft">💰 Wirtschaft</button>
-          <button class="ch" data-c="Infrastruktur">🏗️ Infrastruktur</button>
+          <button class="ch on" data-c="all">All</button>
+          <!-- Chips will be injected by JS -->
         </div>
       </div>
 
-      <!-- Sortierung (hidden in timeline) -->
+      <!-- Sort & Filter -->
       <div class="sb-sec" id="sortSec">
-        <div class="sb-lbl">Optionen</div>
+        <div class="sb-lbl">Options</div>
         <div class="sb-ctls">
-          <div class="sb-ctl"><span class="sb-ctl-lbl">Sortierung</span>
+          <div class="sb-ctl"><span class="sb-ctl-lbl">Sort By</span>
             <div class="sw"><select id="sortSel">
-                <option value="score">Nach Gesamteinfluss</option>
-                <option value="count">Nach Anzahl Erfindungen</option>
-                <option value="alpha">Alphabetisch</option>
-                <option value="oldest">Nach ältester Erfindung</option>
+                <option value="score">Total Impact</option>
+                <option value="count">Count (Low -> High)</option>
+                <option value="count_desc">Count (High -> Low)</option>
+                <option value="alpha">Alphabetical</option>
+                <option value="oldest">Oldest Item</option>
               </select></div>
           </div>
-          <div class="sb-ctl"><span class="sb-ctl-lbl">Mindest-Score</span>
-            <div class="sw"><select id="minSel">
-                <option value="0">Alle zeigen</option>
-                <option value="40">≥ 40 Punkte</option>
-                <option value="60">≥ 60 Punkte</option>
-                <option value="75">≥ 75 Punkte</option>
-              </select></div>
+          <div class="sb-ctl"><span class="sb-ctl-lbl">Impact Score Range</span>
+            <div class="range-inputs">
+              <input type="number" id="minInput" placeholder="Min" value="0" min="0" max="100" class="sc-in">
+              <span>-</span>
+              <input type="number" id="maxInput" placeholder="Max" value="100" min="0" max="100" class="sc-in">
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Legende -->
+      <!-- Legend -->
       <div class="sb-sec">
-        <div class="sb-lbl">Kulturkreise</div>
+        <div class="sb-lbl">Culture Groups <small>(Sorted by Points)</small></div>
         <div class="leg-grid" id="legGrid"></div>
       </div>
 
-      <!-- Methodik -->
+      <!-- Methodology -->
       <div class="sb-sec">
         <button class="meth-hdr" id="methHdr">
-          <span>ℹ️ Score-Methodik</span>
+          <span>ℹ️ Methodology</span>
           <span class="meth-arr">▶</span>
         </button>
         <div class="meth-body" id="methBody">
           <div class="meth-inner">
-
-            <div class="meth-group-title">Score A – Gesellschaftlicher Nutzen heute (max. 100)</div>
-            <div class="meth-dim">
-              <div class="meth-dim-t">🌍 Reichweite (0–25)</div>
-              <p>Lokal (≤8) · Regional (9–15) · Kontinental (16–21) · Global (22–25)</p>
-            </div>
-            <div class="meth-dim">
-              <div class="meth-dim-t">⏳ Dauerhaftigkeit (0–25)</div>
-              <p>Jahrzehnte (≤10) · Jahrhunderte (11–18) · Dauerhaft/Jahrtausende (19–25)</p>
-            </div>
-            <div class="meth-dim">
-              <div class="meth-dim-t">🔗 Multiplikator (0–30)</div>
-              <p>Gering (≤10) · Mittel (11–20) · Transformativ, viele Folgeerfindungen (21–30)</p>
-            </div>
-            <div class="meth-dim">
-              <div class="meth-dim-t">🏥 Lebensqualität (0–20)</div>
-              <p>Minimal (≤6) · Spürbar (7–13) · Fundamental (14–20)</p>
-            </div>
-            <div class="meth-eq"><strong>Score A = Reichweite + Dauerhaftigkeit + Multiplikator +
-                Lebensqualität</strong></div>
-
-            <div class="meth-group-title">Score B – Revolutionär für ihre Zeit (max. 100)</div>
-            <div class="meth-dim">
-              <div class="meth-dim-t">🧠 Konzeptbruch (0–40)</div>
-              <p>Logische Weiterentwicklung (≤10) · Überraschend (11–25) · Vollständig ohne Vorläufer (26–40)</p>
-            </div>
-            <div class="meth-dim">
-              <div class="meth-dim-t">⚡ Sofortwirkung (0–30)</div>
-              <p>Langsam (≤10) · Innerhalb einer Generation (11–20) · Sofort &amp; massiv (21–30)</p>
-            </div>
-            <div class="meth-dim">
-              <div class="meth-dim-t">🌐 Gesellschafts-Schock (0–30)</div>
-              <p>Kaum (≤8) · Merklich (9–18) · Erschütterte Weltbild &amp; Ordnung (19–30)</p>
-            </div>
-            <div class="meth-eq"><strong>Score B = Konzeptbruch + Sofortwirkung + Gesellschafts-Schock</strong></div>
-            <div class="meth-note">Antike Erfindungen ohne Vorläufer (Landwirtschaft B=98, Schrift B=94) dominieren
-              Score B. Das Internet (B=56) war einflussreich, aber in einer Welt, die bereits Computer kannte.</div>
-
+            <!-- Content injected by JS -->
           </div>
         </div>
       </div>
@@ -1142,7 +1099,7 @@
     <!-- MAIN CHART AREA -->
     <main class="main" id="mainEl">
       <div class="chart-shell" id="shell">
-        <div class="y-vert" id="yLbl">Gesellschaftlicher Einfluss</div>
+        <div class="y-vert" id="yLbl">Societal Impact</div>
         <!-- chart body injected here by JS -->
         <div id="cBody" style="flex:1;min-height:0;display:flex;flex-direction:column;"></div>
         <div class="x-strip" id="xStrip"></div>
@@ -1198,14 +1155,14 @@
     // DATA
     // ══════════════════════════════════════
     const GRP = [
-      { id: 'europa', name: 'Europa', col: '#c8962a' },
-      { id: 'ostasien', name: 'Ostasien', col: '#4a7fb5' },
-      { id: 'nahost', name: 'Naher Osten / MENA', col: '#6faa55' },
-      { id: 'suedasien', name: 'Südasien', col: '#c05a4a' },
-      { id: 'mesopo', name: 'Mesopotamien / Antike', col: '#c9853a' },
-      { id: 'afrika', name: 'Afrika', col: '#4aab9a' },
-      { id: 'amerika', name: 'Amerika', col: '#7a5ab5' },
-      { id: 'ozeanien', name: 'Ozeanien', col: '#008080' },
+      { id: 'europa', name: 'Europe', col: '#c8962a' },
+      { id: 'ostasien', name: 'East Asia', col: '#4a7fb5' },
+      { id: 'nahost', name: 'Middle East / MENA', col: '#6faa55' },
+      { id: 'suedasien', name: 'South Asia', col: '#c05a4a' },
+      { id: 'mesopo', name: 'Mesopotamia / Antiquity', col: '#c9853a' },
+      { id: 'afrika', name: 'Africa', col: '#4aab9a' },
+      { id: 'amerika', name: 'Americas', col: '#7a5ab5' },
+      { id: 'ozeanien', name: 'Oceania', col: '#008080' },
     ];
     const GM = Object.fromEntries(GRP.map(g => [g.id, g]));
 
@@ -1215,416 +1172,335 @@
     const INV = [
       // MESOPOTAMIEN
       {
-        g: 'mesopo', n: 'Landwirtschaft', y: -10000, c: 'Infrastruktur', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 40, imm: 30, shk: 28, inv: 'Frühe Bauern', org: 'Naher Osten',
-        dsc: 'Domestizierung von Pflanzen und Tieren im Fruchtbaren Halbmond – fundamentalste Wende der Menschheitsgeschichte.',
-        imp: 'Ermöglichte sesshaftes Leben, Bevölkerungswachstum, Arbeitsteilung und alle späteren Zivilisationen. Ohne sie: keine Städte, kein Staat.',
-        ctx: 'Vor etwa 12.000 Jahren begannen Jäger und Sammler im Fruchtbaren Halbmond, Wildgräser wie Emmer und Einkorn gezielt anzubauen. Dieser langsame Übergang, oft als Neolithische Revolution bezeichnet, wurde durch das Ende der letzten Eiszeit begünstigt und führte zur ersten dauerhaften Sesshaftigkeit.'
+        g: 'mesopo', n: 'Agriculture', y: -10000, c: 'Infrastructure', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 40, imm: 30, shk: 28, inv: 'Early Farmers', org: 'Middle East',
+        dsc: 'Transition from hunter-gatherers to sedentary agriculture.',
+        imp: 'Basis of all civilization. Enabled surplus, cities, and specialization.',
+        ctx: 'In the fertile crescent, people began cultivating wild grasses (emmer, einkorn). This ended 200,000 years of nomadism. For the first time, humans could store food, which led to population explosion but also to property, war, and hierarchies.'
       },
       {
-        g: 'mesopo', n: 'Bewässerung / Kanalbau', y: -6000, c: 'Infrastruktur', reach: 19, dur: 20, mult: 18, qual: 16, cbrk: 28, imm: 26, shk: 18, inv: 'Sumerer', org: 'Irak',
-        dsc: 'Ausgedehnte Bewässerungssysteme legten die Grundlage für städtische Zivilisation.',
-        imp: 'Ermöglichte Überschussproduktion, Städtewachstum und Arbeitsteilung.',
-        ctx: 'Im trockenen Südmessopotamien war Ackerbau ohne künstliche Bewässerung unmöglich. Die Sumerer gruben komplexe Kanalsysteme, um das Wasser von Euphrat und Tigris auf die Felder zu leiten. Dies erforderte zentrale Planung und Verwaltung, was die Entstehung erster früher Staatsstrukturen förderte.'
+        g: 'mesopo', n: 'Irrigation / Canal Construction', y: -6000, c: 'Infrastructure', reach: 19, dur: 20, mult: 18, qual: 16, cbrk: 28, imm: 26, shk: 18, inv: 'Sumerians', org: 'Iraq',
+        dsc: 'Extensive irrigation systems laid the foundation for urban civilization.',
+        imp: 'Enabled surplus production, city growth, and division of labor.',
+        ctx: 'In dry southern Mesopotamia, agriculture was impossible without artificial irrigation. The Sumerians dug complex canal systems to divert water from the Euphrates and Tigris to the fields. This required central planning and administration, fostering the emergence of the first early state structures.'
       },
       {
-        g: 'mesopo', n: 'Rad', y: -3500, c: 'Infrastruktur', reach: 23, dur: 25, mult: 26, qual: 18, cbrk: 36, imm: 28, shk: 22, inv: 'Unbekannt', org: 'Mesopotamien / Sumer',
-        dsc: 'Das Rad (~3500 v. Chr.) – erst Töpferscheibe, dann Fahrzeugrad.',
-        imp: 'Grundlage aller Fahrzeuge und rotierenden Mechanismen. Revolutionierte Transport und Kriegsführung.',
-        ctx: 'Das Rad wurde zunächst nicht für den Transport, sondern als Töpferscheibe erfunden. Erst Jahrhunderte später montierten Menschen Räder an Achsen für Karren. Diese Innovation revolutionierte den Transport von Gütern und später, mit dem Streitwagen, auch die Kriegsführung.'
+        g: 'mesopo', n: 'Wheel', y: -3500, c: 'Physics & Tech', reach: 23, dur: 25, mult: 26, qual: 18, cbrk: 36, imm: 28, shk: 22, inv: 'Unknown', org: 'Mesopotamia / Sumer',
+        dsc: 'The wheel (~3500 BC) – first potter\'s wheel, then vehicle wheel.',
+        imp: 'Basis of all vehicles and rotating mechanisms. Revolutionized transport and warfare.',
+        ctx: 'The wheel was initially invented not for transport, but as a potter\'s wheel. Centuries later, people mounted wheels on axles for carts. This innovation revolutionized the transport of goods and later, with the chariot, also warfare.'
       },
       {
-        g: 'mesopo', n: 'Schrift (Keilschrift)', y: -3200, c: 'Kommunikation', reach: 23, dur: 25, mult: 29, qual: 18, cbrk: 40, imm: 24, shk: 30, inv: 'Sumerer', org: 'Irak (Uruk)',
-        dsc: 'Sumerische Keilschrift (~3200 v. Chr.) – älteste bekannte Schrift.',
-        imp: 'Ohne Schrift keine Wissenschaft, kein Recht, keine Geschichte. Grundlage aller Zivilisationen.',
-        ctx: 'In den wachsenden Tempelstädten wie Uruk wurde die Verwaltung von Gütern zu komplex für das Gedächtnis. Priester entwickelten ein System aus Bildzeichen, die später abstrahiert und mit einem Griffel in feuchten Ton gedrückt wurden – die Geburtsstunde der Informationsspeicherung.'
+        g: 'mesopo', n: 'Writing (Cuneiform)', y: -3200, c: 'Communication', reach: 23, dur: 25, mult: 29, qual: 18, cbrk: 40, imm: 24, shk: 30, inv: 'Sumerians', org: 'Iraq (Uruk)',
+        dsc: 'Sumerian cuneiform (~3200 BC) – oldest known writing.',
+        imp: 'No science, law, or history without writing. Basis of all civilizations.',
+        ctx: 'In the growing temple cities like Uruk, managing goods became too complex for memory. Priests developed a system of pictographs, later abstracted and pressed into wet clay with a stylus – the birth of information storage.'
       },
       {
-        g: 'mesopo', n: 'Kalender', y: -3000, c: 'Mathematik', reach: 22, dur: 25, mult: 16, qual: 15, cbrk: 30, imm: 22, shk: 20, inv: 'Babylonische Astronomen', org: 'Irak',
-        dsc: 'Mesopotamische Astronomen entwickelten präzise Lunisolarkalender.',
-        imp: 'Ermöglichte Landwirtschaftsplanung und koordiniertes gesellschaftliches Leben.',
-        ctx: 'Um Aussaat und Ernte sowie religiöse Feste zu koordinieren, beobachteten babylonische Priester systematisch den Nachthimmel. Sie unterteilten das Jahr in 12 Mondmonate und fügten Schaltmonate ein, um mit dem Sonnenjahr synchron zu bleiben – eine Leistung, die tiefe mathematische Kenntnisse voraussetzte.'
+        g: 'mesopo', n: 'Calendar', y: -3000, c: 'Math', reach: 22, dur: 25, mult: 16, qual: 15, cbrk: 30, imm: 22, shk: 20, inv: 'Babylonian Astronomers', org: 'Iraq',
+        dsc: 'Mesopotamian astronomers developed precise lunisolar calendars.',
+        imp: 'Enabled agricultural planning and coordinated social life.',
+        ctx: 'To coordinate sowing and harvesting as well as religious festivals, Babylonian priests systematically observed the night sky. They divided the year into 12 lunar months and added leap months to stay in sync with the solar year – a feat requiring deep mathematical knowledge.'
       },
       {
-        g: 'mesopo', n: 'Rechtssystem (Hammurabi)', y: -1754, c: 'Wirtschaft', reach: 18, dur: 24, mult: 20, qual: 16, cbrk: 32, imm: 22, shk: 26, inv: 'König Hammurabi', org: 'Babylonien',
-        dsc: 'Codex Hammurabi (~1754 v. Chr.) – 282 Gesetze, erste kodifizierte Normen.',
-        imp: 'Grundlage aller modernen Rechtssysteme. Prinzipien wie Verhältnismäßigkeit.',
-        ctx: 'König Hammurabi ließ seine Gesetze in eine massive Diorit-Stele meißeln und öffentlich aufstellen. Damit etablierte er das Prinzip, dass Recht nicht willkürlich, sondern festgeschrieben und für alle (theoretisch) einsehbar sein sollte. Es regelte alles von Handelsverträgen bis zum Familienrecht.'
+        g: 'mesopo', n: 'Legal System (Hammurabi)', y: -1754, c: 'Economy', reach: 18, dur: 24, mult: 20, qual: 16, cbrk: 32, imm: 22, shk: 26, inv: 'King Hammurabi', org: 'Babylonia',
+        dsc: 'Code of Hammurabi (~1754 BC) – 282 laws, first codified norms.',
+        imp: 'Basis of all modern legal systems. Principles like proportionality.',
+        ctx: 'King Hammurabi had his laws chiseled into a massive diorite stele and placed publicly. He established the principle that law should not be arbitrary, but written and (theoretically) visible to all. It regulated everything from trade contracts to family law.'
       },
       // AFRIKA
       {
-        g: 'afrika', n: 'Ackerbau (Afrika)', y: -5000, c: 'Infrastruktur', reach: 14, dur: 22, mult: 12, qual: 13, cbrk: 28, imm: 22, shk: 16, inv: 'Sahelzonen-Kulturen', org: 'Mali / Niger',
-        dsc: 'Westafrikanische Kulturen domestizierten Hirse und Sorghum unabhängig.',
-        imp: 'Ernährungsgrundlage für West- und Zentralafrika über Jahrtausende.',
-        ctx: 'Unabhängig vom Vorderen Orient domestizierten Menschen in der Sahelzone Wildgräser wie Perlhirse und Sorghum. Diese Pflanzen waren perfekt an das trockene Klima angepasst und ermöglichten das Erblühen späterer westafrikanischer Großreiche wie Mali und Songhai.'
+        g: 'afrika', n: 'Agriculture (Africa)', y: -5000, c: 'Infrastructure', reach: 14, dur: 22, mult: 12, qual: 13, cbrk: 28, imm: 22, shk: 16, inv: 'Sahel Cultures', org: 'Mali / Niger',
+        dsc: 'West African cultures domesticated millet and sorghum independently.',
+        imp: 'Food basis for West and Central Africa for millennia.',
+        ctx: 'Independently of the Near East, humans in the Sahel zone domesticated wild grasses like pearl millet and sorghum. These plants were perfectly adapted to the dry climate and enabled the flourishing of later West African empires like Mali and Songhai.'
       },
       {
-        g: 'afrika', n: 'Mathematik (Ägypten)', y: -3000, c: 'Mathematik', reach: 18, dur: 20, mult: 18, qual: 13, cbrk: 28, imm: 18, shk: 18, inv: 'Ägyptische Schreiber', org: 'Ägypten',
-        dsc: 'Ägyptische Geometrie und Bruchrechnung für Bau und Verwaltung.',
-        imp: 'Grundlage des Pyramidenbaus. Beeinflusste griechische Mathematik maßgeblich.',
-        ctx: 'Für die Verwaltung des Staates und monumentale Bauprojekte wie die Pyramiden benötigten die Ägypter praktische Mathematik. Sie entwickelten komplexe Methoden zur Flächenberechnung (Geometrie) und ein dezimales Zahlensystem, das später von griechischen Gelehrten wie Thales und Pythagoras studiert wurde.'
+        g: 'afrika', n: 'Math (Egypt)', y: -3000, c: 'Math', reach: 18, dur: 20, mult: 18, qual: 13, cbrk: 28, imm: 18, shk: 18, inv: 'Egyptian Scribes', org: 'Egypt',
+        dsc: 'Egyptian geometry and fractions for construction and administration.',
+        imp: 'Basis of pyramid construction. Heavily influenced Greek mathematics.',
+        ctx: 'For state administration and monumental building projects like the pyramids, Egyptians needed practical mathematics. They developed complex methods for area calculation (geometry) and a decimal number system, later studied by Greek scholars like Thales and Pythagoras.'
       },
       {
-        g: 'afrika', n: 'Medizin (Ägypten)', y: -2700, c: 'Medizin', reach: 15, dur: 18, mult: 14, qual: 14, cbrk: 26, imm: 20, shk: 18, inv: 'Imhotep u.a.', org: 'Ägypten',
-        dsc: 'Papyri belegen chirurgische Eingriffe und Diagnosen (~2700 v. Chr.).',
-        imp: 'Erste dokumentierte medizinische Texte. Beeinflusste griechische und islamische Medizin.',
-        ctx: 'Ägyptische Ärzte waren im ganzen Mittelmeerraum berühmt. Der Papyrus Edwin Smith beschreibt rationale, fast moderne Diagnosen und Behandlungen von Kopfverletzungen und Knochenbrüchen, weitgehend frei von Magie – ein früher Triumph der Beobachtung und Erfahrung.'
+        g: 'afrika', n: 'Medicine (Egypt)', y: -2700, c: 'Medicine', reach: 15, dur: 18, mult: 14, qual: 14, cbrk: 26, imm: 20, shk: 18, inv: 'Imhotep et al.', org: 'Egypt',
+        dsc: 'Papyri document surgical procedures and diagnoses (~2700 BC).',
+        imp: 'First documented medical texts. Influenced Greek and Islamic medicine.',
+        ctx: 'Egyptian doctors were famous throughout the Mediterranean. The Edwin Smith Papyrus describes rational, almost modern diagnoses and treatments of head injuries and fractures, largely free of magic – an early triumph of observation and experience.'
       },
       {
-        g: 'afrika', n: 'Metallurgie (Eisen)', y: -1400, c: 'Physik & Technik', reach: 20, dur: 22, mult: 18, qual: 15, cbrk: 30, imm: 24, shk: 20, inv: 'Verschiedene Kulturen', org: 'Tansania, Nigeria',
-        dsc: 'Subsaharisches Afrika entwickelte Eisenverhüttung unabhängig.',
-        imp: 'Revolutionierte Werkzeuge, Waffen und Landwirtschaft weltweit.',
-        ctx: 'In der Nok-Kultur (Nigeria) und im Gebiet der Großen Seen entwickelten Schmiede hochentwickelte Hochöfen, um Eisen zu gewinnen – möglicherweise früher oder unabhängig von Europa und dem Nahen Osten. Eisenwerkzeuge revolutionierten die Landwirtschaft und ermöglichten die Besiedlung dichter Regenwälder.'
+        g: 'afrika', n: 'Metallurgy (Iron)', y: -1400, c: 'Physics & Tech', reach: 20, dur: 22, mult: 18, qual: 15, cbrk: 30, imm: 24, shk: 20, inv: 'Various Cultures', org: 'Tanzania, Nigeria',
+        dsc: 'Sub-Saharan Africa developed iron smelting independently.',
+        imp: 'Revolutionized tools, weapons, and agriculture worldwide.',
+        ctx: 'In the Nok culture (Nigeria) and the Great Lakes region, smiths developed sophisticated blast furnaces to extract iron – possibly earlier or independently of Europe and the Near East. Iron tools revolutionized agriculture and enabled the settlement of dense rainforests.'
       },
 
       // OSTASIEN
       {
-        g: 'ostasien', n: 'Seide', y: -3000, c: 'Wirtschaft', reach: 17, dur: 20, mult: 14, qual: 11, cbrk: 24, imm: 16, shk: 14, inv: 'Leizu (legendär)', org: 'China',
-        dsc: 'China entwickelte Seidenherstellung und begründete die Seidenstraße.',
-        imp: 'Globales Handelsnetz, Kulturaustausch zwischen Asien und Europa.',
-        ctx: 'Die Legende besagt, dass Kaiserin Leizu die Seidengewinnung entdeckte, als ein Kokon in ihren Tee fiel. Jahrtausendelang hütete China das Geheimnis der Seidenraupenzucht unter Todesstrafe, was Seide zum kostbarsten Handelsgut der Antike machte und die ersten globalen Handelsrouten schuf.'
+        g: 'ostasien', n: 'Silk', y: -3000, c: 'Economy', reach: 17, dur: 20, mult: 14, qual: 11, cbrk: 24, imm: 16, shk: 14, inv: 'Leizu (legendary)', org: 'China',
+        dsc: 'China developed silk production and established the Silk Road.',
+        imp: 'Global trade network, cultural exchange between Asia and Europe.',
+        ctx: 'Legend has it that Empress Leizu discovered silk harvesting when a cocoon fell into her tea. For millennia, China guarded the secret of sericulture under penalty of death, making silk the most precious trade good of antiquity and creating the first global trade routes.'
       },
       {
-        g: 'ostasien', n: 'Papier', y: -105, c: 'Kommunikation', reach: 25, dur: 25, mult: 27, qual: 17, cbrk: 36, imm: 20, shk: 22, inv: 'Cai Lun', org: 'China',
-        dsc: 'Cai Lun entwickelte Papier aus Pflanzenfasern (105 n. Chr.).',
-        imp: 'Ermöglichte massenhafte Wissensverbreitung via Seidenstraße.',
-        ctx: 'Vor dem Papier schrieb man auf teure Seide oder schwere Bambusstreifen. Der Hofbeamte Cai Lun standardisierte 105 n. Chr. ein Verfahren, aus Maulbeerbast, Fischernetzen und Lumpen einen leichten, billigen Schreibstoff zu schöpfen. Dies revolutionierte die Verwaltung des riesigen Reiches.'
+        g: 'ostasien', n: 'Paper', y: -105, c: 'Communication', reach: 25, dur: 25, mult: 27, qual: 17, cbrk: 36, imm: 20, shk: 22, inv: 'Cai Lun', org: 'China',
+        dsc: 'Cai Lun developed paper from plant fibers (105 AD).',
+        imp: 'Enabled mass dissemination of knowledge via Silk Road.',
+        ctx: 'Before paper, people wrote on expensive silk or heavy bamboo strips. Court official Cai Lun standardized a process in 105 AD to scoop a light, cheap writing material from mulberry bark, fishing nets, and rags. This revolutionized the administration of the vast empire.'
       },
       {
-        g: 'ostasien', n: 'Porzellan', y: 620, c: 'Wirtschaft', reach: 15, dur: 17, mult: 10, qual: 9, cbrk: 18, imm: 14, shk: 12, inv: 'Unbekannt', org: 'China (Tang-Ära)',
-        dsc: 'Tang-Ära China perfektionierte Porzellan als wichtigstes Exportgut.',
-        imp: 'Weltweit begehrtes Handelsgut, beeinflusste europäische Keramik.',
-        ctx: 'Durch die Verfeinerung von Kaolin-Ton und extrem hohe Brenntemperaturen gelang chinesischen Töpfern die Herstellung von "weißem Gold" – hartem, transluzentem Porzellan. Es war so begehrt, dass es in Europa noch Jahrhunderte später als magisch galt, bis Böttger das Geheimnis 1708 "nacherfand".'
+        g: 'ostasien', n: 'Porcelain', y: 620, c: 'Economy', reach: 15, dur: 17, mult: 10, qual: 9, cbrk: 18, imm: 14, shk: 12, inv: 'Unknown', org: 'China (Tang Era)',
+        dsc: 'Tang Era China perfected porcelain as a major export.',
+        imp: 'Globally coveted trade good, influenced European ceramics.',
+        ctx: 'By refining kaolin clay and using extremely high firing temperatures, Chinese potters succeeded in producing "white gold" – hard, translucent porcelain. It was so coveted that in Europe it was considered magical for centuries, until Böttger "reinvented" the secret in 1708.'
       },
       {
-        g: 'ostasien', n: 'Schießpulver', y: 850, c: 'Physik & Technik', reach: 22, dur: 18, mult: 16, qual: 10, cbrk: 36, imm: 26, shk: 28, inv: 'Taoistische Alchemisten', org: 'China',
-        dsc: 'Schießpulver entdeckt im 9. Jh.',
-        imp: 'Veränderte Kriegsführung weltweit. Auch für Bergbau und Sprengstoff.',
-        ctx: 'Taoistische Mönche suchten eigentlich nach einem Elixier der Unsterblichkeit, als sie Salpeter, Schwefel und Holzkohle mischten. Statt ewigem Leben fanden sie eine explosive Substanz, die zunächst für Feuerwerk, bald aber für "Feuerlanzen" und primitive Bomben gegen die Mongolen eingesetzt wurde.'
+        g: 'ostasien', n: 'Gunpowder', y: 850, c: 'Physics & Tech', reach: 22, dur: 18, mult: 16, qual: 10, cbrk: 36, imm: 26, shk: 28, inv: 'Taoist Alchemists', org: 'China',
+        dsc: 'Gunpowder discovered in the 9th century.',
+        imp: 'Changed warfare worldwide. Also for mining and explosives.',
+        ctx: 'Taoist monks were actually looking for an elixir of immortality when they mixed saltpeter, sulfur, and charcoal. Instead of eternal life, they found an explosive substance, initially used for fireworks, but soon for "fire lances" and primitive bombs against the Mongols.'
       },
       {
-        g: 'ostasien', n: 'Buchdruck (Holzblock)', y: 868, c: 'Kommunikation', reach: 17, dur: 20, mult: 20, qual: 14, cbrk: 30, imm: 18, shk: 16, inv: 'Bi Sheng u.a.', org: 'China',
-        dsc: 'Holzblockdruck und bewegliche Letter Jahrhunderte vor Gutenberg.',
-        imp: 'Verbreitete Wissen in China. Vorläufer des europäischen Buchdrucks.',
-        ctx: 'Lange vor Gutenberg schnitzten chinesische Handwerker ganze Buchseiten in Holzblöcke. Das Diamant-Sutra (868 n. Chr.) ist das älteste gedruckte Buch der Welt. Später entwickelte Bi Sheng bewegliche Lettern aus Keramik, die sich jedoch aufgrund der tausenden chinesischen Schriftzeichen zunächst nicht durchsetzten.'
+        g: 'ostasien', n: 'Printing (Woodblock)', y: 868, c: 'Communication', reach: 17, dur: 20, mult: 20, qual: 14, cbrk: 30, imm: 18, shk: 16, inv: 'Bi Sheng et al.', org: 'China',
+        dsc: 'Woodblock printing and movable type centuries before Gutenberg.',
+        imp: 'Spread knowledge in China. Precursor to European printing.',
+        ctx: 'Long before Gutenberg, Chinese craftsmen carved entire book pages into wooden blocks. The Diamond Sutra (868 AD) is the world\'s oldest printed book. Later, Bi Sheng developed movable type from ceramics, but due to thousands of Chinese characters, it did not initially catch on.'
       },
       {
-        g: 'ostasien', n: 'Kompass', y: 1044, c: 'Physik & Technik', reach: 22, dur: 18, mult: 20, qual: 13, cbrk: 32, imm: 22, shk: 20, inv: 'Unbekannt', org: 'China',
-        dsc: 'Magnetischer Kompass – via arabische Händler nach Europa.',
-        imp: 'Ermöglichte Hochseeschifffahrt, Entdeckungszeitalter und globalen Seehandel.',
-        ctx: 'Chinesische Wahrsager nutzten "Löffel" aus Magneteisenstein zunächst für Feng Shui, nicht zur Navigation. Erst zur Song-Dynastie erkannte man den Nutzen für die Schifffahrt. Nadeln wurden magnetisiert und schwimmend gelagert – der Schlüssel zur offenen See.'
+        g: 'ostasien', n: 'Compass', y: 1044, c: 'Physics & Tech', reach: 22, dur: 18, mult: 20, qual: 13, cbrk: 32, imm: 22, shk: 20, inv: 'Unknown', org: 'China',
+        dsc: 'Magnetic compass – via Arab traders to Europe.',
+        imp: 'Enabled high-seas navigation, Age of Discovery, and global sea trade.',
+        ctx: 'Chinese diviners initially used "spoons" made of lodestone for Feng Shui, not navigation. Only in the Song Dynasty was the benefit for shipping realized. Needles were magnetized and floated – the key to the open sea.'
       },
       // NAHER OSTEN
       {
-        g: 'nahost', n: 'Destillation', y: 800, c: 'Physik & Technik', reach: 18, dur: 20, mult: 16, qual: 12, cbrk: 28, imm: 18, shk: 16, inv: 'Jabir ibn Hayyan', org: 'Irak',
-        dsc: 'Arabische Alchemisten perfektionierten die Destillation.',
-        imp: 'Grundlage für Alkohol, Parfüm, Medikamente und organische Chemie.',
-        ctx: 'Der Alchemist Jabir ibn Hayyan (Geber) verbesserte den Destillierkolben (Alembic), um Stoffe zu reinigen. Er suchte nach der Umwandlung von Metallen, legte aber die Basis für die moderne Chemie (Alkohol, Säuren), die Parfümherstellung und die Pharmazie.'
+        g: 'nahost', n: 'Distillation', y: 800, c: 'Physics & Tech', reach: 18, dur: 20, mult: 16, qual: 12, cbrk: 28, imm: 18, shk: 16, inv: 'Jabir ibn Hayyan', org: 'Iraq',
+        dsc: 'Arab alchemists perfected distillation.',
+        imp: 'Basis for alcohol, perfume, medicines, and organic chemistry.',
+        ctx: 'Alchemist Jabir ibn Hayyan (Geber) improved the alembic to purify substances. He sought the transmutation of metals but laid the foundation for modern chemistry (alcohol, acids), perfume making, and pharmacy.'
       },
       {
-        g: 'nahost', n: 'Algebra', y: 820, c: 'Mathematik', reach: 24, dur: 25, mult: 28, qual: 17, cbrk: 36, imm: 16, shk: 22, inv: 'Al-Khwarizmi', org: 'Irak/Bagdad',
-        dsc: 'Al-Khwarizmi begründete die Algebra als eigenständige Disziplin.',
-        imp: 'Ohne Algebra keine Physik, Ingenieurwesen oder Computerwissenschaft.',
-        ctx: 'Im Haus der Weisheit in Bagdad schrieb Al-Khwarizmi sein Buch "al-Jabr". Er löste quadratische Gleichungen nicht nur geometrisch, sondern abstrakt. Sein Name (Latinisiert: Algoritmi) ist der Ursprung des Wortes "Algorithmus" – die Basis der heutigen digitalen Welt.'
+        g: 'nahost', n: 'Algebra', y: 820, c: 'Math', reach: 24, dur: 25, mult: 28, qual: 17, cbrk: 36, imm: 16, shk: 22, inv: 'Al-Khwarizmi', org: 'Iraq/Bagdad',
+        dsc: 'Al-Khwarizmi established algebra as a distinct discipline.',
+        imp: 'No physics, engineering, or computer science without algebra.',
+        ctx: 'In the House of Wisdom in Baghdad, Al-Khwarizmi wrote his book "al-Jabr". He solved quadratic equations not just geometrically but abstractly. His name (Latinized: Algoritmi) is the origin of the word "Algorithm" – the basis of today\'s digital world.'
       },
       {
-        g: 'nahost', n: 'Chirurgie (al-Zahrawi)', y: 1000, c: 'Medizin', reach: 19, dur: 22, mult: 18, qual: 18, cbrk: 28, imm: 24, shk: 18, inv: 'Al-Zahrawi', org: 'Spanien/Córdoba',
-        dsc: 'Al-Zahrawis illustriertes Chirurgiewerk – das erste seiner Art.',
-        imp: 'Viele Instrumente noch heute in Gebrauch. Grundlage europäischer Chirurgie.',
-        ctx: 'Al-Zahrawi (Abulcasis) war der Hofarzt im Kalifat von Córdoba. Er erfand über 200 chirurgische Instrumente, darunter Skalpelle, Knochensägen und Zangen, und beschrieb als Erster die Verwendung von resorbierbarem Catgut (Darmfäden) für innere Nähte – eine Technik, die heute noch verwendet wird.'
+        g: 'nahost', n: 'Surgery (al-Zahrawi)', y: 1000, c: 'Medicine', reach: 19, dur: 22, mult: 18, qual: 18, cbrk: 28, imm: 24, shk: 18, inv: 'Al-Zahrawi', org: 'Spain/Córdoba',
+        dsc: 'Al-Zahrawi\'s illustrated surgery book – the first of its kind.',
+        imp: 'Many instruments still in use today. Basis of European surgery.',
+        ctx: 'Al-Zahrawi (Abulcasis) was the court physician in the Caliphate of Córdoba. He invented over 200 surgical instruments, including scalpels, bone saws, and forceps, and was the first to describe using absorbable catgut for internal sutures – a technique still used today.'
       },
       {
-        g: 'nahost', n: 'Kaffee', y: 1000, c: 'Wirtschaft', reach: 18, dur: 18, mult: 10, qual: 11, cbrk: 14, imm: 16, shk: 12, inv: 'Unbekannt', org: 'Äthiopien/Jemen',
-        dsc: 'Arabische Kultur entdeckte und verbreitete Kaffee ab dem 10. Jh.',
-        imp: 'Globale Industrie, Kaffeehäuser als intellektuelle Zentren.',
-        ctx: 'Sufi-Mönche im Jemen nutzten den Sud aus Kaffeekirschen, um bei nächtlichen Gebeten wach zu bleiben. Von dort verbreitete sich das Getränk über Mekka und Kairo in die Welt. Kaffeehäuser wurden zu Orten des intellektuellen Austauschs, die später auch die europäische Aufklärung befeuerten.'
+        g: 'nahost', n: 'Coffee', y: 1000, c: 'Economy', reach: 18, dur: 18, mult: 10, qual: 11, cbrk: 14, imm: 16, shk: 12, inv: 'Unknown', org: 'Ethiopia/Yemen',
+        dsc: 'Arab culture discovered and spread coffee from the 10th century.',
+        imp: 'Global industry, coffee houses as intellectual hubs.',
+        ctx: 'Sufi monks in Yemen used the brew from coffee cherries to stay awake for night prayers. From there, the drink spread via Mecca and Cairo to the world. Coffee houses became places of intellectual exchange, later fueling the European Enlightenment.'
       },
       {
-        g: 'nahost', n: 'Optik (Ibn al-Haytham)', y: 1011, c: 'Physik & Technik', reach: 21, dur: 24, mult: 24, qual: 14, cbrk: 34, imm: 14, shk: 22, inv: 'Ibn al-Haytham', org: 'Ägypten/Irak',
-        dsc: 'Ibn al-Haythams "Buch der Optik" begründete die experimentelle Methode.',
-        imp: 'Grundlage für Brillen, Teleskope, Mikroskope, Kameras.',
-        ctx: 'Während seines Hausarrests in Kairo bewies Ibn al-Haytham experimentell, dass Licht nicht vom Auge ausgeht (wie die Griechen dachten), sondern in das Auge fällt. Er erforschte Linsen, Spiegel und die Camera Obscura und gilt durch seinen systematischen Ansatz als einer der ersten echten Wissenschaftler.'
+        g: 'nahost', n: 'Optics (Ibn al-Haytham)', y: 1011, c: 'Physics & Tech', reach: 21, dur: 24, mult: 24, qual: 14, cbrk: 34, imm: 14, shk: 22, inv: 'Ibn al-Haytham', org: 'Egypt/Iraq',
+        dsc: 'Ibn al-Haytham\'s "Book of Optics" founded the experimental method.',
+        imp: 'Basis for glasses, telescopes, microscopes, cameras.',
+        ctx: 'Under house arrest in Cairo, Ibn al-Haytham proved experimentally that light does not emit from the eye (as Greeks thought) but enters it. He researched lenses, mirrors, and the Camera Obscura and is considered one of the first true scientists due to his systematic approach.'
       },
 
       // SÜDASIEN
       {
-        g: 'suedasien', n: 'Baumwolle (Textil)', y: -3000, c: 'Wirtschaft', reach: 20, dur: 22, mult: 12, qual: 14, cbrk: 20, imm: 18, shk: 12, inv: 'Indus-Zivilisation', org: 'Pakistan/Indien',
-        dsc: 'Industal-Zivilisation kultivierte Baumwolle vor 5000 Jahren.',
-        imp: 'Grundlage globaler Textilindustrie. Prägend für frühe Industrialisierung.',
-        ctx: 'Während man anderswo Felle, Leinen oder Wolle trug, domestizierten Bauern im Industal die Baumwollpflanze. Sie entwickelten Spinn- und Webtechniken, die Stoffe hervorbrachten, welche die Griechen später staunend als "Wolle, die auf Bäumen wächst" beschrieben.'
+        g: 'suedasien', n: 'Cotton (Textile)', y: -3000, c: 'Economy', reach: 20, dur: 22, mult: 12, qual: 14, cbrk: 20, imm: 18, shk: 12, inv: 'Indus Civilization', org: 'Pakistan/India',
+        dsc: 'Indus Valley Civilization cultivated cotton 5000 years ago.',
+        imp: 'Basis of global textile industry. Shaped early industrialization.',
+        ctx: 'While others wore skins, linen, or wool, farmers in the Indus Valley domesticated the cotton plant. They developed spinning and weaving techniques producing fabrics that Greeks later described in amazement as "wool growing on trees".'
       },
       {
-        g: 'suedasien', n: 'Medizin (Ayurveda)', y: -1500, c: 'Medizin', reach: 14, dur: 18, mult: 10, qual: 12, cbrk: 22, imm: 18, shk: 14, inv: 'Vedische Autoren', org: 'Indien',
-        dsc: 'Vedische Texte beschreiben Ayurveda als umfassendes Medizinsystem.',
-        imp: 'Beeinflusste frühislamische Medizin; Yoga heute globale Gesundheitspraxis.',
-        ctx: 'Ayurveda ("Wissen vom Leben") ist eines der ältesten ganzheitlichen Medizinsysteme. Die Texte Charaka Samhita und Sushruta Samhita beschreiben schon früh komplexe chirurgische Eingriffe (wie Nasenrekonstruktionen) und eine Lehre von den drei Doshas, die Prävention über Heilung stellt.'
+        g: 'suedasien', n: 'Medicine (Ayurveda)', y: -1500, c: 'Medicine', reach: 14, dur: 18, mult: 10, qual: 12, cbrk: 22, imm: 18, shk: 14, inv: 'Vedic Authors', org: 'India',
+        dsc: 'Vedic texts describe Ayurveda as a comprehensive medical system.',
+        imp: 'Influenced early Islamic medicine; Yoga now a global health practice.',
+        ctx: 'Ayurveda ("Knowledge of Life") is one of the oldest holistic medical systems. The Charaka Samhita and Sushruta Samhita texts describe complex surgical procedures (like nose reconstruction) early on, and a doctrine of three Doshas prioritizing prevention over cure.'
       },
       {
-        g: 'suedasien', n: 'Dezimalsystem', y: 500, c: 'Mathematik', reach: 25, dur: 25, mult: 28, qual: 17, cbrk: 38, imm: 14, shk: 20, inv: 'Aryabhata u.a.', org: 'Indien',
-        dsc: 'Indische Mathematiker entwickelten das Dezimalsystem mit Stellenwert.',
-        imp: 'Ohne Dezimalsystem keine moderne Wissenschaft, Technik oder Wirtschaft.',
-        ctx: 'Das geniale Konzept, dass der Wert einer Ziffer von ihrer Position abhängt (Einer, Zehner, Hunderter), entstand in Indien. Es vereinfachte Berechnungen dramatisch gegenüber dem römischen System und gelangte über arabische Gelehrte nach Europa.'
+        g: 'suedasien', n: 'Decimal System', y: 500, c: 'Math', reach: 25, dur: 25, mult: 28, qual: 17, cbrk: 38, imm: 14, shk: 20, inv: 'Aryabhata et al.', org: 'India',
+        dsc: 'Indian mathematicians developed the decimal system with place value.',
+        imp: 'No modern science, technology, or economy without the decimal system.',
+        ctx: 'The ingenious concept that the value of a digit depends on its position (ones, tens, hundreds) originated in India. It dramatically simplified calculations compared to the Roman system and reached Europe via Arab scholars.'
       },
       {
-        g: 'suedasien', n: 'Null', y: 628, c: 'Mathematik', reach: 25, dur: 25, mult: 30, qual: 18, cbrk: 40, imm: 12, shk: 24, inv: 'Brahmagupta', org: 'Indien',
-        dsc: 'Brahmagupta definierte 628 n. Chr. die Null als vollwertige Zahl.',
-        imp: 'Grundlage aller modernen Mathematik und des Binärcodes.',
-        ctx: 'Was für die Griechen ein "Nichts" und philosophisch undenkbar war, definierten indische Denker (Shunya) als mathematische Größe. Brahmagupta formulierte Rechenregeln für die Null ("Null minus Null ist Null"), was die abstrakte Mathematik und später die binäre Logik von Computern ermöglichte.'
+        g: 'suedasien', n: 'Zero', y: 628, c: 'Math', reach: 25, dur: 25, mult: 30, qual: 18, cbrk: 40, imm: 12, shk: 24, inv: 'Brahmagupta', org: 'India',
+        dsc: 'Brahmagupta defined zero as a full number in 628 AD.',
+        imp: 'Basis of all modern mathematics and binary code.',
+        ctx: 'What was "nothing" and philosophically unthinkable to the Greeks, Indian thinkers (Shunya) defined as a mathematical quantity. Brahmagupta formulated calculation rules for zero ("zero minus zero is zero"), enabling abstract mathematics and later the binary logic of computers.'
       },
-      // EUROPA
+      // EUROPE
       {
-        g: 'europa', n: 'Druckerpresse', y: 1440, c: 'Kommunikation', reach: 22, dur: 24, mult: 28, qual: 16, cbrk: 34, imm: 20, shk: 28, inv: 'Johannes Gutenberg', org: 'Deutschland',
-        dsc: 'Gutenbergs Druckerpresse (1440) ermöglichte Massenreproduktion von Texten.',
-        imp: 'Ermöglichte Reformation, Aufklärung und wissenschaftliche Revolution.',
-        ctx: 'Gutenberg kombinierte Weinpresse und bewegliche Lettern. Technisch waren ihm Koreaner (Jikji, 1377) und Chinesen voraus, doch Gutenbergs System der Handgießinstrumente für Lettern und die ölhaltige Tinte erlaubten erstmals eine *wirtschaftliche* Massenproduktion, die die Gesellschaftsstruktur Europas umwälzte.'
-      },
-      {
-        g: 'europa', n: 'Dampfmaschine', y: 1769, c: 'Physik & Technik', reach: 24, dur: 22, mult: 28, qual: 18, cbrk: 30, imm: 28, shk: 22, inv: 'James Watt', org: 'Schottland',
-        dsc: 'Watts Dampfmaschine (1769) trieb die Industrielle Revolution an.',
-        imp: 'Fabrikproduktion, Eisenbahn, Dampfschiff. Veränderte Arbeit und globale Wirtschaft.',
-        ctx: 'Thomas Newcomen baute 1712 die erste atmosphärische Dampfmaschine für den Bergbau. Sie war jedoch enorm ineffizient. James Watts entscheidender Beitrag war der separate Kondensator, der den Energieverlust minimierte und die Maschine leistungsfähig genug für den Antrieb von Fabriken machte.'
+        g: 'europa', n: 'Printing Press', y: 1440, c: 'Communication', reach: 22, dur: 24, mult: 28, qual: 16, cbrk: 34, imm: 20, shk: 28, inv: 'Johannes Gutenberg', org: 'Germany',
+        dsc: 'Gutenberg\'s printing press (1440) enabled mass reproduction of texts.',
+        imp: 'Enabled Reformation, Enlightenment, and Scientific Revolution.',
+        ctx: 'Gutenberg combined a wine press with movable type. Technically, Koreans (Jikji, 1377) and Chinese were ahead of him, but Gutenberg\'s system of hand casting instruments for letters and oil-based ink allowed for *economical* mass production for the first time, revolutionizing Europe\'s social structure.'
       },
       {
-        g: 'europa', n: 'Eisenbahn', y: 1804, c: 'Infrastruktur', reach: 23, dur: 21, mult: 24, qual: 17, cbrk: 26, imm: 28, shk: 20, inv: 'Stephenson / Trevithick', org: 'England',
-        dsc: 'Dampfeisenbahn verband Kontinente und ermöglichte Massentransport.',
-        imp: 'Trieb Industrialisierung und globalen Handel voran. Verdichtete Raum und Zeit.',
-        ctx: 'Richard Trevithick baute die erste Lokomotive, doch erst George Stephensons "Rocket" bewies die Wirtschaftlichkeit. Die Eisenbahn schuf Zeitzonen, nationalen Zusammenhalt und den modernen Tourismus. Sie machte Landtransport erstmals schneller als ein galoppierendes Pferd.'
+        g: 'europa', n: 'Steam Engine', y: 1769, c: 'Physics & Tech', reach: 24, dur: 22, mult: 28, qual: 18, cbrk: 30, imm: 28, shk: 22, inv: 'James Watt', org: 'Scotland',
+        dsc: 'Watt\'s steam engine (1769) powered the Industrial Revolution.',
+        imp: 'Factory production, railways, steamships. Transformation of work and global economy.',
+        ctx: 'Thomas Newcomen built the first atmospheric steam engine for mining in 1712. However, it was enormously inefficient. James Watt\'s decisive contribution was the separate condenser, minimizing energy loss and making the engine powerful enough to drive factories.'
       },
       {
-        g: 'europa', n: 'Impfung', y: 1796, c: 'Medizin', reach: 25, dur: 25, mult: 22, qual: 20, cbrk: 36, imm: 26, shk: 28, inv: 'Edward Jenner', org: 'England',
-        dsc: 'Jenners Kuhpockenimpfstoff (1796) begründete die Immunologie.',
-        imp: 'Rettete Hunderte Millionen Leben. Pocken ausgerottet. Grundlage aller Impfstoffe.',
-        ctx: 'Das landläufige Wissen, dass Melkerinnen nicht an Pocken erkrankten, inspirierte Jenner. Er infizierte einen Jungen mit harmlosen Kuhpocken und bewies später dessen Immunität gegen die tödlichen Menschenpocken. Der Begriff "Vakzination" (von vacca: Kuh) erinnert an diesen Ursprung.'
+        g: 'europa', n: 'Railway', y: 1804, c: 'Infrastructure', reach: 23, dur: 21, mult: 24, qual: 17, cbrk: 26, imm: 28, shk: 20, inv: 'Stephenson / Trevithick', org: 'England',
+        dsc: 'Steam railway connected continents and enabled mass transport.',
+        imp: 'Drove industrialization and global trade. Compressed space and time.',
+        ctx: 'Richard Trevithick built the first locomotive, but only George Stephenson\'s "Rocket" proved economic viability. The railway created time zones, national cohesion, and modern tourism. It made land transport faster than a galloping horse for the first time.'
       },
       {
-        g: 'europa', n: 'Telefon', y: 1876, c: 'Kommunikation', reach: 23, dur: 18, mult: 20, qual: 16, cbrk: 28, imm: 24, shk: 22, inv: 'Alexander Graham Bell', org: 'USA/Schottland',
-        dsc: 'Bell erfand 1876 das Telefon – instantane Sprachkommunikation.',
-        imp: 'Grundlage des modernen Telekommunikationsnetzes.',
-        ctx: 'Die Urheberschaft ist hochumstritten. Antonio Meucci entwickelte bereits 1854 ein "Teletrofono", konnte sich das Patent aber nicht leisten. Elisha Gray reichte sein Patent nur 2 Stunden nach Bell ein. Bell gewann den Rechtsstreit und ging als Erfinder in die Geschichte ein, obwohl die Grundidee bereits existierte.'
+        g: 'europa', n: 'Vaccination', y: 1796, c: 'Medicine', reach: 25, dur: 25, mult: 22, qual: 20, cbrk: 36, imm: 26, shk: 28, inv: 'Edward Jenner', org: 'England',
+        dsc: 'Jenner\'s cowpox vaccine (1796) founded immunology.',
+        imp: 'Saved hundreds of millions of lives. Eradicated smallpox. Basis of all vaccines.',
+        ctx: 'The common knowledge that milkmaids did not get smallpox inspired Jenner. He infected a boy with harmless cowpox and later proved his immunity to deadly human smallpox. The term "vaccination" (from vacca: cow) recalls this origin.'
       },
       {
-        g: 'europa', n: 'Automobil', y: 1885, c: 'Physik & Technik', reach: 23, dur: 20, mult: 18, qual: 17, cbrk: 22, imm: 20, shk: 16, inv: 'Karl Benz', org: 'Deutschland',
-        dsc: 'Benz\'s Patent-Motorwagen (1885) war das erste praxistaugliche Benzinfahrzeug.',
-        imp: 'Schuf globale Mobilitätswirtschaft. Veränderte Stadtplanung und Gesellschaft.',
-        ctx: 'Während Daimler den Motor baute, konstruierte Karl Benz das erste integrierte Fahrzeug. Seine Frau Bertha bewies auf der ersten Fernfahrt (ohne sein Wissen), dass das "Ding" funktionierte – inklusive Reparatur der Benzinleitung mit einer Hutnadel.'
+        g: 'europa', n: 'Telephone', y: 1876, c: 'Communication', reach: 23, dur: 18, mult: 20, qual: 16, cbrk: 28, imm: 24, shk: 22, inv: 'Alexander Graham Bell', org: 'USA/Scotland',
+        dsc: 'Bell invented the telephone in 1876 – instantaneous voice communication.',
+        imp: 'Basis of the modern telecommunications network.',
+        ctx: 'The authorship is highly disputed. Antonio Meucci developed a "teletrofono" as early as 1854 but could not afford the patent. Elisha Gray filed his patent just 2 hours after Bell. Bell won the legal battle and went down in history as the inventor, although the basic idea already existed.'
       },
       {
-        g: 'europa', n: 'Röntgenstrahlen', y: 1895, c: 'Medizin', reach: 22, dur: 23, mult: 18, qual: 18, cbrk: 32, imm: 26, shk: 22, inv: 'Wilhelm Röntgen', org: 'Deutschland',
-        dsc: 'Röntgen entdeckte 1895 die nach ihm benannten Strahlen.',
-        imp: 'Revolutionierte Diagnostik. Grundlage für CT, MRT und bildgebende Medizin.',
-        ctx: 'Beim Experimentieren mit Kathodenstrahlröhren bemerkte Röntgen ein mysteriöses Leuchten auf einem entfernten Schirm. Er nannte die unbekannte Strahlung "X-Strahlen". Das erste Röntgenbild zeigte die Hand seiner Frau – der erste schmerzfreie Blick in das Innere eines lebenden Menschen.'
+        g: 'europa', n: 'Automobile', y: 1885, c: 'Physics & Tech', reach: 23, dur: 20, mult: 18, qual: 17, cbrk: 22, imm: 20, shk: 16, inv: 'Karl Benz', org: 'Germany',
+        dsc: 'Benz\'s Patent-Motorwagen (1885) was the first practical gasoline vehicle.',
+        imp: 'Created global mobility economy. Changed urban planning and society.',
+        ctx: 'While Daimler built the engine, Karl Benz constructed the first integrated vehicle. His wife Bertha proved on the first long-distance trip (without his knowledge) that the "thing" worked – including repairing the fuel line with a hatpin.'
       },
       {
-        g: 'europa', n: 'Relativitätstheorie', y: 1905, c: 'Physik & Technik', reach: 20, dur: 25, mult: 26, qual: 14, cbrk: 40, imm: 8, shk: 30, inv: 'Albert Einstein', org: 'Deutschland',
-        dsc: 'Einstein vereinte Raum und Zeit, formulierte E=mc².',
-        imp: 'Grundlage für GPS, Kernenergie, Lasertechnologie und moderne Kosmologie.',
-        ctx: 'Als Patentamt-Angestellter dachte Einstein darüber nach, was passiert, wenn man neben einem Lichtstrahl herfliegt. Seine Theorie stürzte das newtonsche Weltbild: Zeit ist nicht absolut, Masse ist Energie. Ohne die Berücksichtigung der Zeitdilatation würde heutiges GPS pro Tag um 10 km falsch liegen.'
+        g: 'europa', n: 'X-Rays', y: 1895, c: 'Medicine', reach: 22, dur: 23, mult: 18, qual: 18, cbrk: 32, imm: 26, shk: 22, inv: 'Wilhelm Röntgen', org: 'Germany',
+        dsc: 'Röntgen discovered the rays named after him in 1895.',
+        imp: 'Revolutionized diagnostics. Basis for CT, MRI, and medical imaging.',
+        ctx: 'While experimenting with cathode ray tubes, Röntgen noticed a mysterious glow on a distant screen. He called the unknown radiation "X-rays". The first X-ray image showed his wife\'s hand – the first painless glimpse into the interior of a living human.'
       },
       {
-        g: 'europa', n: 'Fotografie', y: 1839, c: 'Kommunikation', reach: 23, dur: 22, mult: 25, qual: 16, cbrk: 30, imm: 20, shk: 18, inv: 'Daguerre / Talbot', org: 'Frankreich/UK',
-        dsc: 'Daguerreotypie (1839) machte die Welt visuell konservierbar.',
-        imp: 'Revolutionierte Kunst, Wissenschaft, Journalismus und das menschliche Erinnern.',
-        ctx: 'Nach Niépces ersten Versuchen perfektionierte Daguerre das Verfahren mit versilberten Kupferplatten. Fast gleichzeitig entwickelte Talbot das Negativ-Positiv-Verfahren, das Vervielfältigung ermöglichte. Plötzlich konnte die Realität eingefroren und über Generationen bewahrt werden.'
+        g: 'europa', n: 'Theory of Relativity', y: 1905, c: 'Physics & Tech', reach: 20, dur: 25, mult: 26, qual: 14, cbrk: 40, imm: 8, shk: 30, inv: 'Albert Einstein', org: 'Germany',
+        dsc: 'Einstein united space and time, formulated E=mc².',
+        imp: 'Basis for GPS, nuclear energy, laser technology, and modern cosmology.',
+        ctx: 'As a patent clerk, Einstein thought about what happens if you fly alongside a beam of light. His theory toppled the Newtonian worldview: time is not absolute, mass is energy. Without considering time dilation, today\'s GPS would be wrong by 10 km per day.'
       },
       {
-        g: 'europa', n: 'Anästhesie', y: 1846, c: 'Medizin', reach: 25, dur: 25, mult: 18, qual: 20, cbrk: 34, imm: 30, shk: 24, inv: 'Morton / Wells', org: 'USA',
-        dsc: 'Erste öffentliche Äther-Narkose (1846).',
-        imp: 'Ermöglichte schmerzfreie Operationen und damit moderne Chirurgie. Einer der größten humanitären Fortschritte.',
-        ctx: 'Vor 1846 bedeutete Chirurgie Qual und Schock. Der Zahnarzt William Morton demonstrierte im "Ether Dome" in Boston öffentlich die Wirkung von Diethylether. Der Patient erwachte und sagte: "Gentlemen, this is no humbug." Damit endete das Zeitalter der Schmerzen im OP.'
+        g: 'europa', n: 'Photography', y: 1839, c: 'Communication', reach: 23, dur: 22, mult: 25, qual: 16, cbrk: 30, imm: 20, shk: 18, inv: 'Daguerre / Talbot', org: 'France/UK',
+        dsc: 'Daguerreotype (1839) made the world visually preservable.',
+        imp: 'Revolutionized art, science, journalism, and human memory.',
+        ctx: 'After Niépce\'s first attempts, Daguerre perfected the process with silver-plated copper plates. Almost simultaneously, Talbot developed the negative-positive process, which enabled reproduction. Suddenly, reality could be frozen and preserved for generations.'
       },
       {
-        g: 'europa', n: 'Stromnetz / Glühbirne', y: 1879, c: 'Infrastruktur', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 32, imm: 28, shk: 26, inv: 'Edison u.a.', org: 'USA (System)',
-        dsc: 'Edison entwickelte 1879 die kommerzielle Glühbirne und Verteilungssysteme.',
-        imp: 'Verlängerte den Arbeitstag, Grundlage aller elektrischen Geräte und modernen Industrie.',
-        ctx: 'Die Glühbirne hatte viele Väter (u.a. Swan, Göbel), doch sie waren kurzlebig. Edison kaufte Patente auf, verbesserte den Glühfaden und – entscheidend – schuf das kommerzielle System aus Stromnetz und Kraftwerken. Er war weniger der alleinige Erfinder als der Unternehmer, der das Licht marktfähig machte.'
+        g: 'europa', n: 'Anesthesia', y: 1846, c: 'Medicine', reach: 25, dur: 25, mult: 18, qual: 20, cbrk: 34, imm: 30, shk: 24, inv: 'Morton / Wells', org: 'USA',
+        dsc: 'First public ether anesthesia (1846).',
+        imp: 'Enabled painless surgeries and thus modern surgery. One of the greatest humanitarian advances.',
+        ctx: 'Before 1846, surgery meant agony and shock. Dentist William Morton publicy demonstrated the effect of diethyl ether in the "Ether Dome" in Boston. The patient woke up and said: "Gentlemen, this is no humbug." This ended the age of pain in the OR.'
       },
       {
-        g: 'europa', n: 'Kernspaltung', y: 1938, c: 'Physik & Technik', reach: 24, dur: 22, mult: 25, qual: 10, cbrk: 40, imm: 14, shk: 30, inv: 'Hahn / Meitner', org: 'Deutschland',
-        dsc: 'Hahn und Meitner entdeckten 1938 die Spaltbarkeit von Uranatomen.',
-        imp: 'Führte zur Atombombe (geopolitische Ordnung) und Kernenergie (CO2-arme Energie).',
-        ctx: 'Otto Hahn bestrahlte Uran mit Neutronen und fand überraschend Barium. Lise Meitner, im schwedischen Exil, lieferte die physikalische Erklärung: Der Atomkern war zerplatzt und hatte gewaltige Energie freigesetzt (E=mc²). Eine Entdeckung an der Schwelle zum Zweiten Weltkrieg, die die Geopolitik für immer veränderte.'
+        g: 'europa', n: 'Power Grid / Light Bulb', y: 1879, c: 'Infrastructure', reach: 25, dur: 25, mult: 30, qual: 20, cbrk: 32, imm: 28, shk: 26, inv: 'Edison et al.', org: 'USA (System)',
+        dsc: 'Edison developed the commercial light bulb and distribution systems in 1879.',
+        imp: 'Extended the working day, basis of all electrical devices and modern industry.',
+        ctx: 'The light bulb had many fathers (including Swan, Göbel), but they were short-lived. Edison bought patents, improved the filament and – crucially – created the commercial system of power grid and power plants. He was less the sole inventor than the entrepreneur who made light marketable.'
       },
       {
-        g: 'europa', n: 'Penicillin', y: 1928, c: 'Medizin', reach: 24, dur: 23, mult: 20, qual: 20, cbrk: 28, imm: 26, shk: 20, inv: 'Alexander Fleming', org: 'Schottland',
-        dsc: 'Flemings Penicillin-Entdeckung (1928) begründete die Antibiotika-Ära.',
-        imp: 'Machte tödliche Infektionen heilbar. Rettete über 200 Mio. Menschen.',
-        ctx: 'Ein glücklicher Zufall: Fleming vergaß eine Petrischale mit Bakterien, auf der ein Schimmelpilz wuchs, der die Bakterien tötete. Es dauerte Jahre, bis Florey und Chain den Wirkstoff isolieren und massenhaft produzieren konnten – gerade rechtzeitig, um im Zweiten Weltkrieg Millionen Soldaten das Leben zu retten.'
+        g: 'europa', n: 'Nuclear Fission', y: 1938, c: 'Physics & Tech', reach: 24, dur: 22, mult: 25, qual: 10, cbrk: 40, imm: 14, shk: 30, inv: 'Hahn / Meitner', org: 'Germany',
+        dsc: 'Hahn and Meitner discovered the fissionability of uranium atoms in 1938.',
+        imp: 'Led to the atomic bomb (geopolitical order) and nuclear energy (low-CO2 energy).',
+        ctx: 'Otto Hahn irradiated uranium with neutrons and surprisingly found barium. Lise Meitner, in Swedish exile, provided the physical explanation: The atomic nucleus had burst and released enormous energy (E=mc²). A discovery on the threshold of World War II that changed geopolitics forever.'
       },
       {
-        g: 'europa', n: 'World Wide Web', y: 1991, c: 'Kommunikation', reach: 25, dur: 22, mult: 29, qual: 20, cbrk: 22, imm: 24, shk: 18, inv: 'Tim Berners-Lee', org: 'CERN, Schweiz',
-        dsc: 'Berners-Lee erfand 1991 das Web als universelles Informationssystem.',
-        imp: 'Veränderte Kommunikation, Wirtschaft, Wissenschaft und Kultur weltweit.',
-        ctx: 'Berners-Lee wollte eigentlich nur das Informationschaos am CERN ordnen. Er kombinierte Hypertext mit dem Internet. Seine wichtigste Entscheidung: Er patentierte das WWW nicht, sondern schenkte es der Welt, was dessen explosionsartige Verbreitung und die Demokratisierung von Wissen erst ermöglichte.'
+        g: 'europa', n: 'Penicillin', y: 1928, c: 'Medicine', reach: 24, dur: 23, mult: 20, qual: 20, cbrk: 28, imm: 26, shk: 20, inv: 'Alexander Fleming', org: 'Scotland',
+        dsc: 'Fleming\'s penicillin discovery (1928) founded the antibiotic era.',
+        imp: 'Made deadly infections curable. Saved over 200 million people.',
+        ctx: 'A lucky coincidence: Fleming forgot a petri dish with bacteria, on which a mold grew that killed the bacteria. It took years for Florey and Chain to isolate the active ingredient and produce it en masse – just in time to save millions of soldiers\' lives in World War II.'
+      },
+      {
+        g: 'europa', n: 'World Wide Web', y: 1991, c: 'Communication', reach: 25, dur: 22, mult: 29, qual: 20, cbrk: 22, imm: 24, shk: 18, inv: 'Tim Berners-Lee', org: 'CERN, Switzerland',
+        dsc: 'Berners-Lee invented the Web in 1991 as a universal information system.',
+        imp: 'Changed communication, economy, science, and culture worldwide.',
+        ctx: 'Berners-Lee actually only wanted to organize the information chaos at CERN. He combined hypertext with the Internet. His most important decision: He did not patent the WWW but gave it to the world, which enabled its explosive spread and the democratization of knowledge.'
       },
 
-      // AMERIKA
+      // AMERICAS
       {
-        g: 'amerika', n: 'Mais (Domestikation)', y: -7000, c: 'Wirtschaft', reach: 22, dur: 25, mult: 14, qual: 16, cbrk: 26, imm: 22, shk: 14, inv: 'Mesoamerikanische Bauern', org: 'Mexiko',
-        dsc: 'Mesoamerikanische Kulturen domestizierten Mais (~7000 v. Chr.).',
-        imp: 'Nach 1492 globale Verbreitung. Eine der drei meistproduzierten Kulturpflanzen.',
-        ctx: 'Aus dem unscheinbaren Wildgras Teosinte züchteten Bauern in Mexiko über Jahrtausende den Mais. Diese genetische Meisterleistung bildete die Ernährungsgrundlage der Maya und Azteken und ist heute, ob als Nahrung oder Biosprit, die meistangebaute Pflanze der Welt.'
+        g: 'amerika', n: 'Corn (Domestication)', y: -7000, c: 'Economy', reach: 22, dur: 25, mult: 14, qual: 16, cbrk: 26, imm: 22, shk: 14, inv: 'Mesoamerican Farmers', org: 'Mexico',
+        dsc: 'Mesoamerican cultures domesticated corn (~7000 BC).',
+        imp: 'Global spread after 1492. One of the three most produced crops.',
+        ctx: 'From the inconspicuous wild grass teosinte, farmers in Mexico bred corn over millennia. This genetic masterpiece formed the nutritional basis of the Maya and Aztecs and is today, whether as food or biofuel, the most grown plant in the world.'
       },
       {
-        g: 'amerika', n: 'Flugzeug', y: 1903, c: 'Infrastruktur', reach: 24, dur: 22, mult: 20, qual: 18, cbrk: 30, imm: 22, shk: 26, inv: 'Wright Brothers', org: 'USA',
-        dsc: 'Die Wright-Brüder realisierten 1903 den ersten kontrollierten Motorflug.',
-        imp: 'Schuf globalen Luftverkehr, veränderte Krieg, Handel und Tourismus.',
-        ctx: 'Orville und Wilbur Wright, Fahrradmechaniker aus Ohio, lösten das Problem des kontrollierten Fluges nicht mit stärkeren Motoren, sondern durch Aerodynamik (Flügelverwindung). Ihr erster Flug in Kitty Hawk dauerte nur 12 Sekunden, befreite den Menschen aber von der Erdgebundenheit.'
+        g: 'amerika', n: 'Airplane', y: 1903, c: 'Infrastructure', reach: 24, dur: 22, mult: 20, qual: 18, cbrk: 30, imm: 22, shk: 26, inv: 'Wright Brothers', org: 'USA',
+        dsc: 'The Wright brothers realized the first controlled powered flight in 1903.',
+        imp: 'Created global air traffic, changed war, trade, and tourism.',
+        ctx: 'Orville and Wilbur Wright, bicycle mechanics from Ohio, solved the problem of controlled flight not with stronger engines, but through aerodynamics (wing warping). Their first flight in Kitty Hawk lasted only 12 seconds but freed humans from earthbound existence.'
       },
       {
-        g: 'amerika', n: 'Mikrochip / Computer', y: 1947, c: 'Physik & Technik', reach: 25, dur: 23, mult: 30, qual: 20, cbrk: 26, imm: 16, shk: 20, inv: 'Bell Labs / Von Neumann', org: 'USA',
-        dsc: 'Transistor (1947) und Mikroprozessor – Grundlage der digitalen Revolution.',
-        imp: 'Ohne Computer kein Internet, keine Raumfahrt, keine moderne Medizin.',
-        ctx: 'Während die USA (ENIAC) und UK (Colossus) oft im Fokus stehen, baute Konrad Zuse in Berlin bereits 1941 den Z3 – den ersten funktionierenden, programmierbaren Computer der Welt. Die spätere Erfindung des Transistors in den Bell Labs und die Von-Neumann-Architektur machten Computer jedoch erst skalierbar.'
+        g: 'amerika', n: 'Microchip / Computer', y: 1947, c: 'Physics & Tech', reach: 25, dur: 23, mult: 30, qual: 20, cbrk: 26, imm: 16, shk: 20, inv: 'Bell Labs / Von Neumann', org: 'USA',
+        dsc: 'Transistor (1947) and microprocessor – basis of the digital revolution.',
+        imp: 'No internet, no space travel, no modern medicine without computers.',
+        ctx: 'While the USA (ENIAC) and UK (Colossus) are often in focus, Konrad Zuse in Berlin already built the Z3 – the world\'s first functional, programmable computer – in 1941. However, the later invention of the transistor at Bell Labs and the Von Neumann architecture made computers scalable.'
       },
       {
-        g: 'amerika', n: 'DNA-Struktur', y: 1953, c: 'Medizin', reach: 22, dur: 25, mult: 26, qual: 19, cbrk: 38, imm: 10, shk: 28, inv: 'Watson, Crick, Franklin', org: 'UK/USA',
-        dsc: 'Entdeckung der Doppelhelix (1953) revolutionierte Biologie und Medizin.',
-        imp: 'Grundlage für Genetik, Gentherapie, Forensik, Biotechnologie und mRNA-Impfstoffe.',
-        ctx: 'Basierend auf den entscheidenden Röntgenbildern von Rosalind Franklin entschlüsselten Watson und Crick die Struktur des Lebens. Die Erkenntnis, dass DNA Informationen in einem 4-Buchstaben-Code speichert, machte Biologie zu einer Informationswissenschaft.'
+        g: 'amerika', n: 'DNA Structure', y: 1953, c: 'Medicine', reach: 22, dur: 25, mult: 26, qual: 19, cbrk: 38, imm: 10, shk: 28, inv: 'Watson, Crick, Franklin', org: 'UK/USA',
+        dsc: 'Discovery of the double helix (1953) revolutionized biology and medicine.',
+        imp: 'Basis for genetics, gene therapy, forensics, biotechnology, and mRNA vaccines.',
+        ctx: 'Based on the crucial X-ray images by Rosalind Franklin, Watson and Crick deciphered the structure of life. The realization that DNA stores information in a 4-letter code made biology an information science.'
       },
       {
-        g: 'amerika', n: 'Internet (ARPANET)', y: 1969, c: 'Kommunikation', reach: 25, dur: 23, mult: 30, qual: 20, cbrk: 24, imm: 14, shk: 18, inv: 'DARPA / UCLA', org: 'USA',
-        dsc: 'ARPANET (1969) – technische Grundlage der digitalen Vernetzung.',
-        imp: 'Grundlage des Internets. Veränderte Kommunikation und Wirtschaft global.',
-        ctx: 'Mitten im Kalten Krieg suchte das US-Militär nach einem dezentralen Netzwerk, das auch bei Ausfall einzelner Knoten funktioniert. Die erste Nachricht "LO" (eigentlich "LOGIN", aber das System stürzte ab) zwischen zwei Unis in Kalifornien war der unauffällige Startschuss für das globale Netz.'
+        g: 'amerika', n: 'Internet (ARPANET)', y: 1969, c: 'Communication', reach: 25, dur: 23, mult: 30, qual: 20, cbrk: 24, imm: 14, shk: 18, inv: 'DARPA / UCLA', org: 'USA',
+        dsc: 'ARPANET (1969) – technical basis of digital networking.',
+        imp: 'Basis of the Internet. Changed communication and economy globally.',
+        ctx: 'Elements of the Cold War, the US military sought a decentralized network that would work even if individual nodes failed. The first message "LO" (actually "LOGIN", but the system crashed) between two universities in California was the inconspicuous starting signal for the global web.'
       },
       {
-        g: 'amerika', n: 'Raumfahrt / GPS', y: 1969, c: 'Physik & Technik', reach: 21, dur: 20, mult: 20, qual: 16, cbrk: 28, imm: 22, shk: 24, inv: 'NASA', org: 'USA',
-        dsc: 'Apollo-Programm (1969) – Menschen auf dem Mond.',
-        imp: 'GPS, Kommunikationssatelliten, neue Materialien aus der Raumfahrtforschung.',
-        ctx: 'Der "Sputnik-Schock" löste ein technologisches Wettrüsten aus, das 1969 in der Mondlandung gipfelte. Neben dem Prestige brachte die Raumfahrt praktische Nebenprodukte: Satellitennavigation (GPS), Wettersatelliten und weltweite TV-Übertragungen.'
+        g: 'amerika', n: 'Spaceflight / GPS', y: 1969, c: 'Physics & Tech', reach: 21, dur: 20, mult: 20, qual: 16, cbrk: 28, imm: 22, shk: 24, inv: 'NASA', org: 'USA',
+        dsc: 'Apollo Program (1969) – Humans on the Moon.',
+        imp: 'GPS, communication satellites, new materials from space research.',
+        ctx: 'The "Sputnik shock" triggered a technological arms race that culminated in the moon landing in 1969. Besides prestige, space travel yielded practical by-products: satellite navigation (GPS), weather satellites, and worldwide TV transmissions.'
       },
       {
-        g: 'amerika', n: 'Smartphone', y: 2007, c: 'Kommunikation', reach: 25, dur: 20, mult: 28, qual: 19, cbrk: 18, imm: 28, shk: 22, inv: 'Apple (Jobs) u.a.', org: 'USA',
-        dsc: 'iPhone (2007) vereinte Telefon, Computer und Internet in der Hosentasche.',
-        imp: 'Veränderte sozialen Umgang, Wirtschaft und Informationszugang für Milliarden Menschen.',
-        ctx: 'Steve Jobs präsentierte 2007 drei Geräte in einem: "A widescreen iPod, a revolutionary mobile phone, and a breakthrough internet communicator." Durch die Einführung des App Stores wurde das Smartphone zum universellen Werkzeug für fast jede menschliche Tätigkeit.'
-      },
-      {
-        g: 'amerika', n: 'Künstliche Intelligenz', y: 2022, c: 'Physik & Technik', reach: 25, dur: 25, mult: 30, qual: 15, cbrk: 30, imm: 30, shk: 28, inv: 'OpenAI / Google u.a.', org: 'USA/Global',
-        dsc: 'Durchbruch generativer KI (ChatGPT u.a.) markiert Beginn des KI-Zeitalters.',
-        imp: 'Potenzial, jede Wissensarbeit, Forschung und Kreativität fundamental zu verändern. Auswirkungen noch offen.',
-        ctx: 'Jahrzehntelang war KI ein akademisches Nischenfeld. Durch die Kombination von riesigen Datenmengen und massiver Rechenkraft lernten neuronale Netze (Transformer-Modelle) plötzlich, menschliche Sprache zu verstehen und zu generieren. Dies markiert den Übergang von Werkzeugen, die Befehle ausführen, zu Werkzeugen, die mitdenken.'
-      },
+        g: 'amerika', n: 'Smartphone', y: 2007, c: 'Communication', reach: 25, dur: 20, mult: 28, qual: 19, cbrk: 18, imm: 28, shk: 22, inv: 'Apple (Jobs) et al.', org: 'USA',
+        dsc: 'iPhone (2007) combined phone, computer, and internet in the pocket.',
+        g: 'amerika', n: 'Artificial Intelligence', y: 2022, c: 'Physics & Tech', reach: 25, dur: 25, mult: 30, qual: 15, cbrk: 30, imm: 30, shk: 28, inv: 'OpenAI / Google et al.', org: 'USA/Global',
+        dsc: 'Breakthrough of generative AI (ChatGPT et al.) marks the beginning of the AI age.',
+        imp: 'Potential to fundamentally change all knowledge work, research, and creativity. Effects still open.',
+        ctx: 'For decades, AI was an academic niche field. Through the combination of massive amounts of data and massive computing power, neural networks (transformer models) suddenly learned to understand and generate human language. This marks the transition from tools that execute commands to tools that think along.'
+      }
     ];
 
 
 
     // ══════════════════════════════════════
-    // STATE
-    // ══════════════════════════════════════
+    // VARS
     let DATASET = 'inv'; // 'inv' or 'nobel'
-    let VIEW = 'grouped';
-    let CATS = new Set(['all']);
-    let SORT = 'score';
-    let MINSC = 0;
+    let VIEW = 'impact'; // 'impact', 'revolution', 'timeline'
+    let SORT = 'score';  // 'score', 'count', 'alpha', 'oldest' (affects Grouped View)
+    let CATS = new Set(['all']); // 'all' or specific IDs
+    // Range Filter
+    let MIN_SCORE_VAL = 0;
+    let MAX_SCORE_VAL = 100;
 
-    const DATASETS = {
-      inv: {
-        data: INV,
-        lbl: 'Erfindungen',
-        cats: ['Medizin', 'Physik & Technik', 'Mathematik', 'Kommunikation', 'Wirtschaft', 'Infrastruktur'],
-        chips: [
-          { id: 'Medizin', l: '🏥 Medizin' },
-          { id: 'Physik & Technik', l: '⚙️ Physik & Technik' },
-          { id: 'Mathematik', l: '🔢 Mathematik' },
-          { id: 'Kommunikation', l: '📡 Kommunikation' },
-          { id: 'Wirtschaft', l: '💰 Wirtschaft' },
-          { id: 'Infrastruktur', l: '🏗️ Infrastruktur' }
-        ],
-        scoreA_lbl: 'Gesellschaftlicher Nutzen',
-        scoreB_lbl: 'Revolutionär',
-        meth: {
-          A: [
-            { t: '🌍 Reichweite', d: 'Lokal bis Global', max: 25 },
-            { t: '⏳ Dauerhaftigkeit', d: 'Jahrzehnte bis Jahrtausende', max: 25 },
-            { t: '🔗 Multiplikator', d: 'Folgeinnovationen', max: 30 },
-            { t: '🏥 Lebensqualität', d: 'Verbesserung des Alltags', max: 20 }
-          ],
-          B: [
-            { t: '🧠 Konzeptbruch', d: 'Überraschungseffekt', max: 40 },
-            { t: '⚡ Sofortwirkung', d: 'Schnelligkeit der Adaption', max: 30 },
-            { t: '🌐 Gesellschafts-Schock', d: 'Veränderung der Ordnung', max: 30 }
-          ]
-        }
-      },
-      nobel: {
-        data: NOBEL,
-        lbl: 'Nobelpreise',
-        cats: ['Physik', 'Chemie', 'Medizin', 'Frieden', 'Literatur', 'Wirtschaft'],
-        chips: [
-          { id: 'Physik', l: '⚛️ Physik' },
-          { id: 'Chemie', l: '🧪 Chemie' },
-          { id: 'Medizin', l: '⚕️ Medizin' },
-          { id: 'Frieden', l: '🕊️ Frieden' },
-          { id: 'Literatur', l: '📖 Literatur' },
-          { id: 'Wirtschaft', l: '📈 Wirtschaft' }
-        ],
-        scoreA_lbl: 'Positiver Impact',
-        scoreB_lbl: 'Disruptions-Faktor',
-        meth: {
-          A: [
-            { t: '🌍 Reichweite', d: 'Millionen bis Milliarden Menschen', max: 25 },
-            { t: '⏳ Nachhaltigkeit', d: 'Kurzfristig bis Dauerhaft', max: 25 },
-            { t: '🔗 Wissenssprung', d: 'Fundament neuer Forschung', max: 30 },
-            { t: '❤️ Humanitärer Wert', d: 'Leidminderung / Wohlstand', max: 20 }
-          ],
-          B: [
-            { t: '🧠 Paradigmenwechsel', d: 'Neues Denken etabliert', max: 40 },
-            { t: '⚡ Dringlichkeit', d: 'Löste akutes Problem', max: 30 },
-            { t: '🌐 Politischer Einfluss', d: 'Veränderte Gesellschaft', max: 30 }
-          ]
-        }
-      }
-    };
-
+    // SCORING
     const scoreA = i => i.reach + i.dur + i.mult + i.qual;
     const scoreB = i => i.cbrk + i.imm + i.shk;
     const calcScore = i => VIEW === 'revolution' ? scoreB(i) : scoreA(i);
+    const maxSc = 100;
 
-    // Dynamic Filter based on Current Dataset
+    // DATA HELPERS
     const getDatasetData = () => DATASETS[DATASET].data;
 
+    // Filtering Logic: group + range + category
     const getFilteredItems = gid => getDatasetData()
-      .filter(i => i.g === gid && calcScore(i) >= MINSC && (CATS.has('all') || CATS.has(i.c)))
+      .filter(i => {
+        const sc = calcScore(i);
+        // Filter by Group
+        if (i.g !== gid) return false;
+        // Filter by Score Range
+        if (sc < MIN_SCORE_VAL || sc > MAX_SCORE_VAL) return false;
+        // Filter by Category
+        if (!CATS.has('all') && !CATS.has(i.c)) return false;
+        return true;
+      })
       .sort((a, b) => a.y - b.y);
 
     const gTot = gid => getFilteredItems(gid).reduce((s, i) => s + calcScore(i), 0);
-    const maxTot = () => Math.max(1, Math.max(...GRP.map(g => gTot(g.id))));
-    const fmtY = y => y < 0 ? `${Math.abs(y)} v. Chr.` : `${y} n. Chr.`;
+    const maxTot = () => Math.max(...GRP.map(g => gTot(g.id)), 1); // Avoid div/0
 
-    function updateCategoryChips() {
-      const cCont = document.getElementById('chips');
-      const conf = DATASETS[DATASET];
-      cCont.innerHTML = `<button class="ch ${CATS.has('all') ? 'on' : ''}" data-c="all">Alle</button>` +
-        conf.chips.map(c => `<button class="ch ${CATS.has(c.id) ? 'on' : ''}" data-c="${c.id}">${c.l}</button>`).join('');
-    }
-
-    function updateMethodology() {
-      const d = DATASETS[DATASET].meth;
-      const mA = d.A.map(m => `
-        <div class="meth-dim">
-          <div class="meth-dim-t">${m.t} (max ${m.max})</div>
-          <p>${m.d}</p>
-        </div>
-      `).join('');
-      const mB = d.B.map(m => `
-        <div class="meth-dim">
-          <div class="meth-dim-t">${m.t} (max ${m.max})</div>
-          <p>${m.d}</p>
-        </div>
-      `).join('');
-
-      const inner = `
-        <div class="meth-group-title">Score A – ${DATASETS[DATASET].scoreA_lbl}</div>
-        ${mA}
-        <div class="meth-group-title">Score B – ${DATASETS[DATASET].scoreB_lbl}</div>
-        ${mB}
-        <div class="meth-note">Methodik angepasst für ${DATASETS[DATASET].lbl}.</div>
-      `;
-      document.querySelector('.meth-inner').innerHTML = inner;
-    }
-
+    // SORTING (Grouped View)
     function sortedGrp() {
+      // Create a shallow copy to sort
       return [...GRP].sort((a, b) => {
         if (SORT === 'score') return gTot(b.id) - gTot(a.id);
         if (SORT === 'count') return getFilteredItems(b.id).length - getFilteredItems(a.id).length;
@@ -1759,26 +1635,9 @@
     }
 
     // ══════════════════════════════════════
-    // RENDER LEGEND
-    // ══════════════════════════════════════
-    function renderLegend() {
-      const maxT = maxTot();
-      document.getElementById('legGrid').innerHTML = GRP.map(g => {
-        const tot = gTot(g.id);
-        const pct = maxT > 0 ? (tot / maxT) * 100 : 0;
-        return `<div class="leg-row">
-      <div class="leg-dot" style="background:${g.col}"></div>
-      <span class="leg-name">${g.name}</span>
-      <div class="leg-bar"><div class="leg-bar-f" style="width:${pct}%;background:${g.col}"></div></div>
-      <span class="leg-pts">${tot}</span>
-    </div>`;
-      }).join('');
-    }
-
-    // ══════════════════════════════════════
     // RENDER GROUPED
     // ══════════════════════════════════════
-    function renderGrouped() {
+    function renderGrouped(sg) {
       const { chartH } = measure();
       const cBody = document.getElementById('cBody');
       const xStrip = document.getElementById('xStrip');
@@ -1803,7 +1662,6 @@
 
       // bars
       const barsWrap = document.createElement('div'); barsWrap.className = 'bars';
-      const sg = sortedGrp();
       sg.forEach(g => {
         const invs = getFilteredItems(g.id);
         const tot = invs.reduce((s, i) => s + calcScore(i), 0);
@@ -1846,17 +1704,11 @@
     // ══════════════════════════════════════
     // RENDER TIMELINE
     // ══════════════════════════════════════
-    function renderTimeline() {
+    function renderTimeline(allInvs) {
       const cBody = document.getElementById('cBody');
       const xStrip = document.getElementById('xStrip');
       cBody.innerHTML = ''; xStrip.innerHTML = '';
       document.getElementById('yLbl').textContent = 'Score der Erfindung';
-
-      document.getElementById('yLbl').textContent = 'Score der Erfindung';
-
-      const allInvs = getDatasetData()
-        .filter(i => calcScore(i) >= MINSC && (CATS.has('all') || CATS.has(i.c)))
-        .sort((a, b) => a.y - b.y);
 
       if (!allInvs.length) {
         cBody.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted);">Keine Erfindungen für diese Filter.</div>';
@@ -1902,7 +1754,6 @@
       });
 
       // Bars
-      // Bars
       allInvs.forEach((inv, idx) => {
         const sc = calcScore(inv), bh = Math.max(4, Math.round((sc / maxSc) * chartH));
         const g = GM[inv.g];
@@ -1925,12 +1776,32 @@
     }
 
     // ══════════════════════════════════════
-    // MAIN RENDER
+    // RENDER MAIN
     // ══════════════════════════════════════
     function render() {
-      renderLegend();
-      if (VIEW === 'timeline') renderTimeline();
-      else renderGrouped();
+      const cont = document.getElementById('chart');
+      cont.innerHTML = '';
+
+      // Timeline Logic Update: also respect min/max
+      if (VIEW === 'timeline') {
+        const allInvs = getDatasetData()
+          .filter(i => {
+            const sc = calcScore(i);
+            // Filter range
+            if (sc < MIN_SCORE_VAL || sc > MAX_SCORE_VAL) return false;
+            // Filter category
+            if (!CATS.has('all') && !CATS.has(i.c)) return false;
+            return true;
+          })
+          .sort((a, b) => a.y - b.y);
+
+        renderTimeline(allInvs);
+      } else {
+        const sg = sortedGrp();
+        renderGrouped(sg);
+        // Important: Update Legend dynamically based on current view content
+        updateLegend();
+      }
     }
 
     // ══════════════════════════════════════
@@ -1945,16 +1816,41 @@
     // ══════════════════════════════════════
     // EVENTS
     // ══════════════════════════════════════
-    document.getElementById('vtabs').addEventListener('click', e => {
-      const t = e.target.closest('.vt'); if (!t) return;
-      VIEW = t.dataset.v;
-      document.querySelectorAll('.vt').forEach(v => v.classList.toggle('on', v === t));
-      document.getElementById('sortSec').style.display = VIEW === 'timeline' ? 'none' : '';
-      document.getElementById('vtDesc').textContent = DESCS[VIEW];
-      render();
-    });
+    // DYNAMIC LEGEND UPDATE
+    function updateLegend() {
+      const legContainer = document.querySelector('.leg');
+      // Calculate total score for each group based on current filters logic
+      // We can use gTot(gid) which already respects range & cats
 
-    // DATASET SWITCHER
+      // Get all groups, attach their current total score
+      const groupsWithScore = GRP.map(g => ({
+        ...g,
+        totalScore: gTot(g.id)
+      }));
+
+      // Sort by total score descending
+      groupsWithScore.sort((a, b) => b.totalScore - a.totalScore);
+
+      // Re-render legend items
+      // <div class="leg-title">Inventions by Region:</div>
+      // <div class="leg-item"><div class="leg-c" style="background:#c9853a"></div>Mesopotamia</div>
+      // ...
+
+      let html = `<div class="leg-title">Sorted by Points:</div>`;
+      groupsWithScore.forEach(g => {
+        // Optional: Maybe hide groups with 0 score? 
+        // For now, we show all, just sorted.
+        html += `
+          <div class="leg-item">
+            <div class="leg-c" style="background:${g.col}"></div>
+            ${g.name} <span style="opacity:0.5; font-size:0.8em; margin-left:4px">(${g.totalScore})</span>
+          </div>
+        `;
+      });
+      legContainer.innerHTML = html;
+    }
+
+    // EVENT LISTENERS
     document.getElementById('dtabs').addEventListener('click', e => {
       const t = e.target.closest('.vt'); if (!t) return;
       if (t.dataset.d === DATASET) return;
@@ -1962,11 +1858,52 @@
       DATASET = t.dataset.d;
       document.querySelectorAll('#dtabs .vt').forEach(v => v.classList.toggle('on', v === t));
 
-      // Reset Categories to All when switching dataset
-      CATS = new Set(['all']);
+      CATS = new Set(['all']); // Reset Categories
 
       updateCategoryChips();
       updateMethodology();
+      render();
+    });
+
+    document.getElementById('vtabs').addEventListener('click', e => {
+      const t = e.target.closest('.vt'); if (!t) return;
+      if (t.dataset.v === VIEW) return;
+
+      VIEW = t.dataset.v;
+      document.querySelectorAll('#vtabs .vt').forEach(v => v.classList.toggle('on', v === t));
+
+      updateMethodology(); // Score labels change
+      render();
+    });
+
+    // Score Range Inputs
+    const minInp = document.getElementById('minScoreInp');
+    const maxInp = document.getElementById('maxScoreInp');
+
+    function updateRange() {
+      let min = parseInt(minInp.value) || 0;
+      let max = parseInt(maxInp.value) || 100;
+
+      // Validate
+      if (min < 0) min = 0;
+      if (max > 100) max = 100;
+      // We allow min > max momentarily while typing, or clamp it?
+      // Let's just clamp min to max if needed for logic, but maybe not inputs to avoid fighting user
+
+      MIN_SCORE_VAL = min;
+      MAX_SCORE_VAL = max;
+
+      render();
+    }
+
+    minInp.addEventListener('input', updateRange);
+    maxInp.addEventListener('input', updateRange);
+
+    // Sort Buttons
+    document.getElementById('sorts').addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      SORT = b.dataset.s;
+      document.querySelectorAll('#sorts button').forEach(btn => btn.classList.toggle('on', btn === b));
       render();
     });
 
@@ -1979,8 +1916,6 @@
       render();
     });
 
-    document.getElementById('sortSel').addEventListener('change', e => { SORT = e.target.value; render(); });
-    document.getElementById('minSel').addEventListener('change', e => { MINSC = +e.target.value; render(); });
 
     document.getElementById('methHdr').addEventListener('click', function () {
       this.classList.toggle('on');
