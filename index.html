@@ -999,6 +999,39 @@
       background: rgba(200, 150, 42, 0.2);
       border-radius: 2px;
     }
+
+    .leg-mode {
+      display: flex;
+      gap: 1px;
+      background: var(--b2);
+      border: 1px solid var(--b2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .leg-btn {
+      flex: 1;
+      background: var(--s2);
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 0.4rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .leg-btn:hover {
+      background: var(--s3);
+      color: var(--fg);
+    }
+
+    .leg-btn.on {
+      background: var(--fg);
+      color: var(--bg);
+      font-weight: 500;
+    }
   </style>
 </head>
 
@@ -1083,7 +1116,11 @@
 
       <!-- Legend -->
       <div class="sb-sec">
-        <div class="sb-lbl">Culture Groups <small>(Sorted by Points)</small></div>
+        <div class="sb-lbl">Culture Groups</div>
+        <div class="leg-mode" id="legMode">
+          <button class="leg-btn on" data-lm="total">∑ Total</button>
+          <button class="leg-btn" data-lm="avg">⌀ Average</button>
+        </div>
         <div class="leg-grid" id="legGrid"></div>
       </div>
 
@@ -1543,6 +1580,7 @@
     let CATS = new Set(['all']);
     let MIN_SCORE_VAL = 0;
     let MAX_SCORE_VAL = 100;
+    let LEG_MODE = 'total'; // 'total' or 'avg'
 
     // SCORING
     const scoreA = i => i.reach + i.dur + i.mult + i.qual;
@@ -1919,22 +1957,36 @@
     // DYNAMIC LEGEND UPDATE
     function updateLegend() {
       const legGrid = document.getElementById('legGrid');
-      const maxT = maxTot();
 
-      // Get all groups with scores, sorted by total descending
-      const groupsWithScore = GRP.map(g => ({
-        ...g,
-        totalScore: gTot(g.id)
-      }));
-      groupsWithScore.sort((a, b) => b.totalScore - a.totalScore);
+      // Calculate total and average for each group
+      const groupsWithScore = GRP.map(g => {
+        const items = getFilteredItems(g.id);
+        const total = items.reduce((s, i) => s + calcScore(i), 0);
+        const count = items.length;
+        const avg = count > 0 ? Math.round(total / count * 10) / 10 : 0;
+        return { ...g, totalScore: total, count, avg };
+      });
+
+      // Sort by selected mode
+      if (LEG_MODE === 'avg') {
+        groupsWithScore.sort((a, b) => b.avg - a.avg);
+      } else {
+        groupsWithScore.sort((a, b) => b.totalScore - a.totalScore);
+      }
+
+      const maxVal = Math.max(...groupsWithScore.map(g => LEG_MODE === 'avg' ? g.avg : g.totalScore), 1);
 
       legGrid.innerHTML = groupsWithScore.map(g => {
-        const pct = maxT > 0 ? (g.totalScore / maxT) * 100 : 0;
+        const val = LEG_MODE === 'avg' ? g.avg : g.totalScore;
+        const pct = maxVal > 0 ? (val / maxVal) * 100 : 0;
+        const label = LEG_MODE === 'avg'
+          ? `⌀ ${g.avg} · ${g.count}`
+          : `${g.totalScore} · ${g.count}`;
         return `<div class="leg-row">
           <div class="leg-dot" style="background:${g.col}"></div>
           <span class="leg-name">${g.name}</span>
           <div class="leg-bar"><div class="leg-bar-f" style="width:${pct}%;background:${g.col}"></div></div>
-          <span class="leg-pts">${g.totalScore}</span>
+          <span class="leg-pts">${label}</span>
         </div>`;
       }).join('');
     }
@@ -1978,6 +2030,15 @@
     }
     minInp.addEventListener('input', updateRange);
     maxInp.addEventListener('input', updateRange);
+
+    // Legend Mode
+    document.getElementById('legMode').addEventListener('click', e => {
+      const b = e.target.closest('.leg-btn'); if (!b) return;
+      if (b.dataset.lm === LEG_MODE) return;
+      LEG_MODE = b.dataset.lm;
+      document.querySelectorAll('#legMode .leg-btn').forEach(btn => btn.classList.toggle('on', btn === b));
+      updateLegend();
+    });
 
     // Sort dropdown
     document.getElementById('sortSel').addEventListener('change', e => { SORT = e.target.value; render(); });
