@@ -1026,7 +1026,6 @@
 
       <!-- Top Bar -->
       <div class="top-bar">
-        <h1 class="logo">Ethnic Progress Bar</h1>
         <div class="d-tabs" id="dtabs">
           <button class="vt on" data-d="inv">Inventions</button>
           <button class="vt" data-d="nobel">Nobel Prizes</button>
@@ -1052,23 +1051,30 @@
         </div>
       </div>
 
-      <!-- Sort & Filter -->
+      <!-- Sort (grouped only) -->
       <div class="sb-sec" id="sortSec">
-        <div class="sb-lbl">Options</div>
+        <div class="sb-lbl">Sort</div>
         <div class="sb-ctls">
           <div class="sb-ctl"><span class="sb-ctl-lbl">Sort By</span>
             <div class="sw"><select id="sortSel">
                 <option value="score">Total Impact</option>
-                <option value="count">Count (Low -> High)</option>
-                <option value="count_desc">Count (High -> Low)</option>
+                <option value="count">Count (Low → High)</option>
+                <option value="count_desc">Count (High → Low)</option>
                 <option value="alpha">Alphabetical</option>
                 <option value="oldest">Oldest Item</option>
               </select></div>
           </div>
-          <div class="sb-ctl"><span class="sb-ctl-lbl">Impact Score Range</span>
+        </div>
+      </div>
+
+      <!-- Score Range (always visible) -->
+      <div class="sb-sec">
+        <div class="sb-lbl">Score Range</div>
+        <div class="sb-ctls">
+          <div class="sb-ctl"><span class="sb-ctl-lbl">Impact Score</span>
             <div class="range-inputs">
               <input type="number" id="minScoreInp" placeholder="Min" value="0" min="0" max="100" class="sc-in">
-              <span>-</span>
+              <span>–</span>
               <input type="number" id="maxScoreInp" placeholder="Max" value="100" min="0" max="100" class="sc-in">
             </div>
           </div>
@@ -1475,12 +1481,12 @@
         lbl: 'Inventions',
         cats: ['Medicine', 'Physics & Tech', 'Math', 'Communication', 'Economy', 'Infrastructure'],
         chips: [
-          { id: 'Medicine', l: '🏥 Medicine' },
-          { id: 'Physics & Tech', l: '⚙️ Physics & Tech' },
-          { id: 'Math', l: '🔢 Math' },
-          { id: 'Communication', l: '📡 Communication' },
-          { id: 'Economy', l: '💰 Economy' },
-          { id: 'Infrastructure', l: '🏗️ Infrastructure' }
+          { id: 'Medicine', l: '◈ Medicine' },
+          { id: 'Physics & Tech', l: '◈ Physics & Tech' },
+          { id: 'Math', l: '◈ Math' },
+          { id: 'Communication', l: '◈ Communication' },
+          { id: 'Economy', l: '◈ Economy' },
+          { id: 'Infrastructure', l: '◈ Infrastructure' }
         ],
         scoreA_lbl: 'Societal Impact',
         scoreB_lbl: 'Revolutionary',
@@ -1503,12 +1509,12 @@
         lbl: 'Nobel Prizes',
         cats: ['Physics', 'Chemistry', 'Medicine', 'Peace', 'Literature', 'Economics'],
         chips: [
-          { id: 'Physics', l: '⚛️ Physics' },
-          { id: 'Chemistry', l: '🧪 Chemistry' },
-          { id: 'Medicine', l: '⚕️ Medicine' },
-          { id: 'Peace', l: '🕊️ Peace' },
-          { id: 'Literature', l: '📖 Literature' },
-          { id: 'Economics', l: '📈 Economics' }
+          { id: 'Physics', l: '◈ Physics' },
+          { id: 'Chemistry', l: '◈ Chemistry' },
+          { id: 'Medicine', l: '◈ Medicine' },
+          { id: 'Peace', l: '◈ Peace' },
+          { id: 'Literature', l: '◈ Literature' },
+          { id: 'Economics', l: '◈ Economics' }
         ],
         scoreA_lbl: 'Positive Impact',
         scoreB_lbl: 'Disruption Factor',
